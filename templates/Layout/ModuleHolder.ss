@@ -4,7 +4,11 @@
 		<div class="content">$Content</div>
 	</article>
 	<% if CurrentMember %>
-		$ModuleUrlForm
+		<% if Success %>
+			$SubmitText
+		<% else %>	
+			$ModuleUrlForm
+		<% end_if %>	
 	<% end_if %>
 	$PageComments
 </div>
