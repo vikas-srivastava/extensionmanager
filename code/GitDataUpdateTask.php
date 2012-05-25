@@ -1,10 +1,12 @@
 <?php
 class GitDataUpdateTask extends DailyTask {
 	function process() {
-		foreach (DataObject::get("JsonContent","") as $JsonContent) {
+
+		$where = '' ;
+		foreach (DataObject::get("JsonContent") as $module) {
 			$jsonFile = new GithubReader();
-			$jsonPath = $jsonFile->cloneModule($JsonContent->$Url);
-			$updateJson = $jsonFile->saveJson($JsonContent->$Url,$jsonPath);
+			$jsonPath = $jsonFile->cloneModule($module->$Url);
+			$updateJson = $jsonFile->saveJson($module->$Url,$jsonPath);
 		}
 	}
 }

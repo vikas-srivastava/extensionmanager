@@ -53,8 +53,25 @@ class GithubReader extends RequestHandler {
 
 			return true ;
 		
-		} else { //calling from cron job to update row 
+		} else { 
 
+		//calling from cron job to update row 
+			DB::query("UPDATE JsonContent SET 
+				Url = $url,
+				ModuleName = $jsonContent['name'],
+				Description = $jsonContent['description'],
+				Keywords = $jsonContent['keywords'][0],
+				MemberID = Member::currentuserID(),
+				Version = $jsonContent['version'],
+				Homepage = $jsonContent['homepage'],
+				Author = $jsonContent['author'],
+				RepositoryType = $jsonContent['repository']['type'],
+				RepositoryUrl = $jsonContent['repository']['url'],
+				BugsEmail = $jsonContent['bugs']['email'],
+				BugsUrl = $jsonContent['bugs']['url'],
+				LicensesType = $jsonContent['licenses'][0]['type'],
+				LicensesUrl = $jsonContent['licenses'][0]['url'],
+				Dependencies = $jsonContent['dependencies']");
 			
 		}
 
