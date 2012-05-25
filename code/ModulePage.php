@@ -1,8 +1,9 @@
 <?php
-class ModulePage extends ModuleHolder {
+class ModulePage extends Page {
 
+	
 }
 
-class ModulePage_Controller extends ModuleHolder_Controller {
+class ModulePage_Controller extends Page {
 	
 }
