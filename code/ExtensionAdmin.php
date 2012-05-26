@@ -4,7 +4,7 @@ class ExtensionAdmin extends ModelAdmin {
 	static $url_segment = "extensions";
 
 	static $managed_models = array(
-		"ModuleUrlSubmission",
+		"JsonContent",
 		"Member",
 	);
 }	

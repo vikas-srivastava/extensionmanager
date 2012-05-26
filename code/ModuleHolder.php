@@ -48,7 +48,7 @@ class ModuleHolder_Controller extends Page_Controller {
 		$jsonPath = $jsonFile->cloneModule($url);
 		
 		if(!file_exists($jsonPath)) {
-			$form->sessionMessage(_t('ModuleHolder.NOJSON','Unable to read json file '));
+			$form->sessionMessage(_t('ModuleHolder.NOJSON','Unable to read json file '),'Er');
 			return $this->redirectBack();
 		}	
 				
