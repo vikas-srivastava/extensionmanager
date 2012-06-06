@@ -21,7 +21,7 @@ class ModuleHolder_Controller extends Page_Controller {
 		define('SPAN', '<span class="required">*</span>');
 
 		$fields = new FieldList(
-			new TextField ('Url', 'Please Submit Read-Only Url of your GitHub Repository'. SPAN) 
+			new TextField ('Url', 'Please Submit Read-Only Url of your Git Repository'. SPAN) 
 		);
 
 		$actions = new FieldList(
@@ -38,13 +38,13 @@ class ModuleHolder_Controller extends Page_Controller {
 	public function submitUrl($data, $form) {
 		$url = $data['Url'];
 		
-		if(empty($url) || substr($url,0, 16) != "git://github.com") {
-			$form->sessionMessage(_t('ModuleHolder.BADURL','Please enter a valid URL valid github read only url'), 'Error');
+		if(empty($url) || substr($url,0, 6) != "git://") {
+			$form->sessionMessage(_t('ModuleHolder.BADURL','Please enter a valid URL valid git read only url'), 'Error');
 			return $this->redirectBack();
 		}
 		
 
-		$jsonFile = new GithubReader();
+		$jsonFile = new GitReader();
 		$jsonPath = $jsonFile->cloneModule($url);
 		
 		if(!file_exists($jsonPath)) {

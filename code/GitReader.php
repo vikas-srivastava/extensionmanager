@@ -1,5 +1,5 @@
 <?php
-class GithubReader extends RequestHandler {
+class GitReader extends RequestHandler {
 
 	Protected $moduleName, $moduleFolder, $url, $jsonPath  ;
 
@@ -12,10 +12,10 @@ class GithubReader extends RequestHandler {
 		$this->moduleFolder = BASE_PATH."/assets/modules/master/";
 
 		
-		//clone repo on local server for reading package.json		
+		//clone repo on local server for reading composer.json		
 		exec("cd $this->moduleFolder && rm -r -f  $this->moduleName && git clone $url && chmod 0755 -R $this-moduleName && cd $this-moduleName && rm -rf .git") ;   	
 
-		$this->jsonPath = Controller::join_links($this->moduleFolder,$this->moduleName, "package.json");
+		$this->jsonPath = Controller::join_links($this->moduleFolder,$this->moduleName, "composer.json");
 
 		return $this->jsonPath ;
 	}	
@@ -38,20 +38,24 @@ class GithubReader extends RequestHandler {
 
 			$Json = new JsonContent();
 			$Json->Url = $url;
+			$Json->MemberID = Member::currentuserID();
 			$Json->ModuleName = $jsonContent["name"];
 			$Json->Description = $jsonContent["description"];
-			$Json->Keywords = $jsonContent["keywords"][0];
-			$Json->MemberID = Member::currentuserID();
-			$Json->Version = $jsonContent["version"];
+			$Json->Type = $jsonContent["type"];
+			
+			foreach ($jsonContent["keywords"] as $key => $value) {
+				$Json->Keywords .= $value.',';
+			}
+			
 			$Json->Homepage = $jsonContent["homepage"];
-			$Json->Author = $jsonContent["author"];
-			$Json->RepositoryType = $jsonContent["repository"]["type"];
-			$Json->RepositoryUrl = $jsonContent["repository"]["url"];
-			$Json->BugsEmail = $jsonContent["bugs"]["email"];
-			$Json->BugsUrl = $jsonContent["bugs"]["url"];
-			$Json->LicensesType = $jsonContent["licenses"][0]["type"];
-			$Json->LicensesUrl = $jsonContent["licenses"][0]["url"];
-			$Json->Dependencies = $jsonContent["dependencies"];
+
+			if(array_key_exists("license",$jsonContent)) {	
+				$Json->LicenseType = $jsonContent["license"];
+			}
+
+			if(array_key_exists("version",$jsonContent)) {
+				$Json->Version = $jsonContent["version"];
+			}			
 
 			$Json->write();
 
@@ -62,21 +66,22 @@ class GithubReader extends RequestHandler {
 			$Json->Url = $url;
 			$Json->ModuleName = $jsonContent["name"];
 			$Json->Description = $jsonContent["description"];
+			$Json->Type = $jsonContent["type"];
 			$Json->Keywords = $jsonContent["keywords"][0];
-			$Json->Version = $jsonContent["version"];
 			$Json->Homepage = $jsonContent["homepage"];
-			$Json->Author = $jsonContent["author"];
-			$Json->RepositoryType = $jsonContent["repository"]["type"];
-			$Json->RepositoryUrl = $jsonContent["repository"]["url"];
-			$Json->BugsEmail = $jsonContent["bugs"]["email"];
-			$Json->BugsUrl = $jsonContent["bugs"]["url"];
-			$Json->LicensesType = $jsonContent["licenses"][0]["type"];
-			$Json->LicensesUrl = $jsonContent["licenses"][0]["url"];
-			$Json->Dependencies = $jsonContent["dependencies"];
 
-			$Json->write();
+			if(array_key_exists("license",$jsonContent)) {	
+				$Json->LicenseType = $jsonContent["license"];
+			}
 
-			return true ;
+			if(array_key_exists("version",$jsonContent)) {
+				$Json->Version = $jsonContent["version"];
+			}			
+
+			if($Json->write()) {
+				return true ;
+			}
+
 
 		}
 	}

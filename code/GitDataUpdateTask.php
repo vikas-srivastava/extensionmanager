@@ -19,12 +19,16 @@ class GitDataUpdateTask extends DailyTask {
 		if ($jsonFile && !empty($jsonFile)) {
 			$count = $jsonFile->Count();
 			foreach ($jsonFile as $jsonFile) {
-				$json = new GithubReader();
+				$json = new GitReader();
 				$jsonPath = $json->cloneModule($jsonFile->Url);
 				$updateJson = $json->saveJson($jsonFile->Url,$jsonPath);               
 				if($updateJson) {
 					echo "{$jsonFile->ModuleName}  is updated <br />" ;
-				}	
+				}
+				else {
+					echo  "{$jsonFile->ModuleName}  could not updated <br />" ;
+				}
+				$json->destroy();	
 			}
 			echo "<br /><br /><strong>{$count} jsonFile processed...</strong><br />";
 		} else { 
