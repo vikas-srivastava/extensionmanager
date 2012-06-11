@@ -1,35 +1,40 @@
-<?php 
+<?php
 class JsonContent extends DataObject {
-	static $db = array(
-		
-		'Url' => 'Varchar(100)',
+	static $db = array(	
 		'MemberID' => 'Int(11)',
-		'ModuleName'=>'Varchar(40)',
-		'Description'=> 'Varchar(100)',
-		'Type' => 'Varchar(100)',
-		'Keywords'=> 'Varchar(100)',
-		'Homepage'=> 'Varchar(100)',
-		'LicenseType'=> 'Varchar(50)',
-		'Version'=> 'Varchar(40)',
+		'Url' => 'Varchar(100)',
+		'Name' => 'VarChar(50)',
+		'Description' => 'VarChar(50)',
+		'Version' => 'VarChar(500)',
+		'Type' => 'VarChar(500)',
+		'Keywords' => 'VarChar(500)',
+		'Homepage' => 'VarChar(500)',
+		'ReleaseTime' => 'SS_Datetime',
+		'Licence' => 'VarChar(500)',
+		'AuthorsName' => 'VarChar(500)',
+		'AuthorsEmail' => 'VarChar(500)',
+		'AuthorsHomepage' => 'VarChar(500)',
+		'AuthorsRole' => 'VarChar(500)',
+		'SupportEmail' => 'VarChar(100)',
+		'SupportIssues' => 'VarChar(100)',
+		'SupportForum' => 'VarChar(100)',
+		'SupportWiki' => 'VarChar(100)',
+		'SupportIrc' => 'VarChar(50)',
+		'SupportSource' => 'VarChar(100)',
+		'TargetDir' => 'VarChar(100)',
+		'Require' => 'VarChar(500)',
+		'RequireDev' => 'VarChar(500)',
+		'Conflict' => 'VarChar(500)',
+		'Replace' => 'VarChar(500)',
+		'Provide' => 'VarChar(500)',
+		'Suggest' => 'VarChar(500)',
+		'ConfigVendorDir' => 'VarChar(500)',
+		'ConfigBinDir' => 'VarChar(500)',
+		'Extra' => 'VarChar(500)',
+		'Repositories' => 'VarChar(500)',
+		'IncludePath' => 'VarChar(500)',
+		'Bin' => 'VarChar(500)',
+		'MinimumStability' => 'VarChar(500)',
 		
-		/*'Author'=> 'Varchar(100)',
-		'RepositoryType'=> 'Varchar(20)',
-		'RepositoryUrl'=>'Varchar(100)',
-		'BugsEmail'=> 'Varchar(50)',
-		'BugsUrl'=> 'Varchar(50)',
-		'LicensesType'=> 'Varchar(50)',
-		'LicenseUrl' => 'Varchar(100)',
-		'Dependencies' => 'Varchar(400)', */
-	);
-
-	static $searchable_fields = array(
-		"ModuleName",
-		//"Author",
-		"Keywords",
-	);
-
-	static $summary_fields = array(
-		"ModuleName",
-		"Description",
-	);
+	);	
 }

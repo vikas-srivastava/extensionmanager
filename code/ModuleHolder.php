@@ -1,8 +1,7 @@
 <?php
 class ModuleHolder extends page {
 
-	static $db = array(
-		
+	static $db = array(	
 	);
 	
 	static $has_many = array(
@@ -10,53 +9,58 @@ class ModuleHolder extends page {
 	);	
 }
 
+/**
+ * Controller for the module holder page.
+ *
+ * @package extensionmanager
+ */
 class ModuleHolder_Controller extends Page_Controller {
 
 	static $allowed_actions = array(
         'ModuleUrlForm'
     );
 
+	/**
+	 * Setting up the form.
+	 *
+	 * @return Form .
+	 */
 	function ModuleUrlForm() {
-
 		define('SPAN', '<span class="required">*</span>');
-
 		$fields = new FieldList(
 			new TextField ('Url', 'Please Submit Read-Only Url of your Git Repository'. SPAN) 
 		);
-
 		$actions = new FieldList(
 			new FormAction('submitUrl', 'Submit')
 		);
-
 		$validator = new RequiredFields('URL');
-
 		return new Form($this, 'ModuleUrlForm', $fields, $actions, $validator);
-
 	}
 
-	
+	/**
+	 * The form handler.
+	 */
 	public function submitUrl($data, $form) {
 		$url = $data['Url'];
 		
-		if(empty($url) || substr($url,0, 6) != "git://") {
-			$form->sessionMessage(_t('ModuleHolder.BADURL','Please enter a valid URL valid git read only url'), 'Error');
+		if(empty($url) || substr($url,0, 4) != "http") {
+			$form->sessionMessage(_t('ModuleHolder.BADURL','Please enter a valid URL'), 'Error');
 			return $this->redirectBack();
 		}
 		
-
-		$jsonFile = new GitReader();
-		$jsonPath = $jsonFile->cloneModule($url);
+		$json = new JsonHandler();
+		$jsonData = $json->cloneJson($url);
 		
-		if(!file_exists($jsonPath)) {
-			$form->sessionMessage(_t('ModuleHolder.NOJSON','Unable to read json file '),'Er');
-			return $this->redirectBack();
-		}	
-				
-		$saveJson = $jsonFile->saveJson($url,$jsonPath);
-
+		if($jsonData) {
+			$saveJson = $json->saveJson($url,$jsonData);
+		} else {
+   				$form->sessionMessage(_t('ModuleHolder.BADURL','Sorry we could not find any composer.json file on given url.'), 'Error');
+		}			
+		
 		if($saveJson) {
 			$form->sessionMessage(_t('ModuleManager.THANKSFORSUBMITTING','Thank you for your submission'),'good');
 		}
+		
 		$this->redirectBack();
 	}
 
