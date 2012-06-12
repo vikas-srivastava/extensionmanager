@@ -41,7 +41,7 @@ class JsonHandler extends RequestHandler {
 	}
 
 	/**
-	  * Write json content in database  
+	  * Save json content in database  
 	  *
 	  * @param string $url, Array $jsonData 
 	  * @return boolean
@@ -50,6 +50,35 @@ class JsonHandler extends RequestHandler {
 		$Json = new JsonContent();
 		$Json->MemberID = Member::currentuserID();
 		$Json->Url = $url;
+		$result = $this->dataFields($Json, $jsonData);
+		return $result ;
+	}	
+
+	/**
+	  * update json content in database  
+	  *
+	  * @param string $url, Array $jsonData 
+	  * @return boolean
+	  */
+	function updateJson($url, $jsonData) {
+		$where = "Url = '$url'";
+		$Json = DataObject::get_one("JsonContent", $where );
+		if($Json) {
+			$result = $this->dataFields($Json, $jsonData);
+			return $result ;
+		} else {
+			return false ;
+		}		
+	}
+
+	/**
+	  * Save each property of json content 
+	  * in corresponidng field of database  
+	  *
+	  * @param string $url, Array $jsonData 
+	  * @return boolean
+	  */
+	function dataFields($Json, $jsonData) {
 		if(array_key_exists('name',$jsonData)) {
 			$Json->Name = $jsonData["name"] ; 
 		}
@@ -70,7 +99,6 @@ class JsonHandler extends RequestHandler {
 			foreach($jsonData['keywords'] as $key => $value) {
 				$Json->Keywords .=  $value . ', ';
 			}
-			
 		}
 
 		if(array_key_exists('homepage',$jsonData)) {
@@ -230,7 +258,9 @@ class JsonHandler extends RequestHandler {
 		if(array_key_exists('minimum-stability', $jsonData)) {
 			$Json->MinimumStability = $jsonData['minimum-stability'];
 		}
+	
 		$Json->write();
 		return true ;
 	}
-}
+
+}   

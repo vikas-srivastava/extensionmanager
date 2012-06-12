@@ -1,7 +1,7 @@
 <?php
 class JsonContent extends DataObject {
 	static $db = array(	
-		'MemberID' => 'Int(11)',
+		'MemberID' => 'Int',
 		'Url' => 'Varchar(100)',
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
