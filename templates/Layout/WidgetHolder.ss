@@ -3,11 +3,9 @@
 		<h1>$Title</h1>
 		<div class="content">$Content</div>
 	</article>
-	<% if CurrentMember %>
 		
-			$WidgetUrlForm
+	$WidgetUrlForm
 			
-	<% end_if %>
 	$PageComments
 </div>
 <% include SideBar %>
