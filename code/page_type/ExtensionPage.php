@@ -3,7 +3,7 @@
 class ExtensionPage extends DataObject {
 
 	static $db = array(	
-		'MemberID' => 'Int',
+		//'MemberID' => 'Int',
 		'Url' => 'Varchar(100)',
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
@@ -50,6 +50,10 @@ class ExtensionPage extends DataObject {
 		'Type',
 		'Description',
 	);
+
+	static $has_one = array(
+        'SubmittedBy' => 'Member'
+    );
 	
 }
 
