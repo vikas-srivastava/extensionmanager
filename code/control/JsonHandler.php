@@ -24,6 +24,9 @@ use Composer\IO\IOInterface;
 
 class JsonHandler extends RequestHandler {
 	
+	private $url;
+
+	private $jsonData;
 	/**
 	  * Convert a module url into json content 
 	  *
@@ -31,13 +34,27 @@ class JsonHandler extends RequestHandler {
 	  * @return array $data
 	  */
 	function cloneJson($url) { 
-		$config = new Config();
-		$config->merge(array('config' => array('home' => BASE_PATH . '/assets/extension' )));   		
-		$repo = new VcsRepository(array('url' => $url), new NullIO(), $config);
-		//$packages = $repo->getPackages();	
-		$driver = $repo->getDriver();
-		$data = $driver->getComposerInformation($driver->getRootIdentifier());
-		return $data;
+		
+		// avoid user@host URLs
+		if (preg_match('{//.+@}', $url)) {
+			return;
+		}
+		try{
+			$this->url = $url ;
+			$config = new Config();
+			$config->merge(array('config' => array('home' => BASE_PATH . '/assets/extension' )));   		
+			$repo = new VcsRepository(array('url' => $url), new NullIO(), $config);
+			//$packages = $repo->getPackages();	
+			$driver = $repo->getDriver();
+			if(!isset($driver)) {
+				return ;
+			} 
+			$data = $driver->getComposerInformation($driver->getRootIdentifier());
+			return $data;
+			
+		} catch (Exception $e) {
+			return ;
+		}
 	}
 
 	/**
@@ -47,8 +64,12 @@ class JsonHandler extends RequestHandler {
 	  * @return boolean
 	  */
 	function saveJson($url,$jsonData) {
+		
+		$this->url = $url ;
+		$this->jsonData = $jsonData ;
+
 		$Json = new ExtensionPage();
-		$Json->MemberID = Member::currentuserID();
+		//$Json->SubmittedByID = $this->Member();
 		$Json->Url = $url;
 		$result = $this->dataFields($Json, $jsonData);
 		return $result ;
@@ -85,8 +106,8 @@ class JsonHandler extends RequestHandler {
 		} else {
 			//type not set
 				return false ;
-		}*/
-	}			
+			}*/
+		}			
 
 	/**
 	  * update json content in database  
@@ -154,7 +175,7 @@ class JsonHandler extends RequestHandler {
 			} else {
 				$Json->Licence = $jsonData['licence'] ;
 			}*/		
-				$Json->Licence = $jsonData['licence'];
+			$Json->Licence = $jsonData['licence'];
 		}
 
 		if(array_key_exists('authors',$jsonData)) {
@@ -304,7 +325,7 @@ class JsonHandler extends RequestHandler {
 		if(array_key_exists('minimum-stability', $jsonData)) {
 			$Json->MinimumStability = $jsonData['minimum-stability'];
 		}
-	
+
 		$Json->write();
 		return true ;
 	}
