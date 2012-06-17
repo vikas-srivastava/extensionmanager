@@ -21,6 +21,8 @@ use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\IO\IOInterface;
+use Composer\Repository\RepositoryManager;
+use Composer\Factory;
 
 class JsonHandler extends RequestHandler {
 	
@@ -34,15 +36,10 @@ class JsonHandler extends RequestHandler {
 	  * @return array $data
 	  */
 	function cloneJson($url) { 
+		$this->url = $url ;
 		
-		// avoid user@host URLs
-		if (preg_match('{//.+@}', $url)) {
-			return;
-		}
-		try{
-			$this->url = $url ;
-			$config = new Config();
-			$config->merge(array('config' => array('home' => BASE_PATH . '/assets/extension' )));   		
+		try{	
+			$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url), new NullIO(), $config);
 			//$packages = $repo->getPackages();	
 			$driver = $repo->getDriver();
