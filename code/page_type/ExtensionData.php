@@ -1,6 +1,6 @@
 <?php
 
-class ExtensionPage extends DataObject {
+class ExtensionData extends DataObject {
 
 	static $db = array(	
 		//'MemberID' => 'Int',
@@ -8,7 +8,7 @@ class ExtensionPage extends DataObject {
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
 		'Version' => 'VarChar(500)',
-		'Type' => 'VarChar(500)',
+		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
 		'ReleaseTime' => 'SS_Datetime',
@@ -54,9 +54,13 @@ class ExtensionPage extends DataObject {
 	static $has_one = array(
         'SubmittedBy' => 'Member'
     );
+
+    static $has_many = array(
+        'ModuleID' => 'ModulePage',
+    );
 	
 }
 
-class ExtensionPage_Controller extends Page_Controller {
+class ExtensionData_Controller extends Page_Controller {
 	
 }

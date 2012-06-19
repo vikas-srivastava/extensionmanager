@@ -1,5 +1,5 @@
 <?php
-class WidgetPage extends ExtensionPage {
+class WidgetPage extends ExtensionData {
 	
 }
 

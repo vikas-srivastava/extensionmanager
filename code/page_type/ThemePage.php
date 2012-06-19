@@ -1,5 +1,5 @@
 <?php
-class ThemePage extends ExtensionPage {
+class ThemePage extends ExtensionData {
 	
 }
 

@@ -33,6 +33,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$url = $data['Url'];
 		
 		if(empty($url) || substr($url,0, 4) != "http" || (preg_match('{//.+@}', $url))) {
+		//if(empty($url) || (preg_match('{//.+@}', $url))) {	
 			$form->sessionMessage(_t('ExtensionHolder.BADURL','Please enter a valid URL'), 'Error');
 			return $this->redirectBack();
 		}

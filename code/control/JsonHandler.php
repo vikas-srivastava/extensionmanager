@@ -65,45 +65,11 @@ class JsonHandler extends RequestHandler {
 		$this->url = $url ;
 		$this->jsonData = $jsonData ;
 
-		$Json = new ExtensionPage();
+		$Json = new ExtensionData();
 		//$Json->SubmittedByID = $this->Member();
 		$Json->Url = $url;
 		$result = $this->dataFields($Json, $jsonData);
 		return $result ;
-		/*if(array_key_exists('type',$jsonData)) {
-			$type = $jsonData["type"] ;
-			//$pattern = '/^module/';
-			if(preg_match("/\bmodule\b/i", $type)){
-				
-				$Json = new ModulePage();
-				$Json->MemberID = Member::currentuserID();
-				$Json->Url = $url;
-				$result = $this->dataFields($Json, $jsonData);
-				return $result ;
-
-			} elseif(preg_match("/\btheme\b/i", $type)) { 
-				
-				$Json = new ThemePage();
-				$Json->MemberID = Member::currentuserID();
-				$Json->Url = $url;
-				$result = $this->dataFields($Json, $jsonData);
-				return $result ;
-
-			} elseif(preg_match("/\bwidget\b/i", $type)) {
-				
-				$Json = new WidgetPage();
-				$Json->MemberID = Member::currentuserID();
-				$Json->Url = $url;
-				$result = $this->dataFields($Json, $jsonData);
-				return $result ;
-
-			} else {
-				return false ;
-			}
-		} else {
-			//type not set
-				return false ;
-			}*/
 		}			
 
 	/**
@@ -113,7 +79,7 @@ class JsonHandler extends RequestHandler {
 	  * @return boolean
 	  */
 	function updateJson($url, $jsonData) {
-		$Json = ExtensionPage::get()->filter(array("Url" => "$url"))->First();
+		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
 		//$Json = DataObject::get_one("JsonContent", $where );
 		if($Json) {
 			$result = $this->dataFields($Json, $jsonData);
@@ -143,9 +109,26 @@ class JsonHandler extends RequestHandler {
 			$Json->Version = $jsonData['version'];
 		}
 
-		if(array_key_exists('type',$jsonData)) {
+		/*if(array_key_exists('type',$jsonData)) {
 			$Json->Type = $jsonData['type'];
-		}
+		}*/
+
+		if(array_key_exists('type',$jsonData)) {
+			$type = $jsonData["type"] ;
+			if(preg_match("/\bmodule\b/i", $type)){
+				
+				$Json->Type = 'Module';
+
+			} elseif(preg_match("/\btheme\b/i", $type)) { 
+				
+				$Json->Type = 'Theme';
+
+			} elseif(preg_match("/\bwidget\b/i", $type)) {
+				
+				$Json->Type = 'Widget';
+			} //todo should have some action if none of type matched  
+
+		} 
 
 		if(array_key_exists('keywords',$jsonData)) {
 			/*foreach($jsonData['keywords'] as $key => $value) {
