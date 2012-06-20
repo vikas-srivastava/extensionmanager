@@ -59,7 +59,7 @@ class ExtensionData extends DataObject {
         'ModuleID' => 'ModulePage',
     );
 	
-}
+} 
 
 class ExtensionData_Controller extends Page_Controller {
 	
