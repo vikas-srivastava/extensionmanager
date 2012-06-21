@@ -2,24 +2,18 @@
 class ModuleController extends Page_Controller {
 	static $allowed_actions = array(
         'index',
-        'register',
-        'editprofile',
         'show',
         
     );
      
     public function init() {
         parent::init();
-        // Requirements, etc. here
     }
      
-    public function index() {
-        // Code for the index action here
-        
+    public function index() {        
         return array();
     }
         
-    //Get the current staffMember from the URL, if any
     public function getExtensionData()
     {
         $Params = $this->getURLParams();
@@ -30,21 +24,18 @@ class ModuleController extends Page_Controller {
         }
     }
      
-    //Displays the StaffMember detail page, using StaffPage_show.ss template
     function show()
     {      
         if($ExtensionData = $this->getExtensionData())
         {
             $Data = array(
                 'ExtensionData' => $ExtensionData
-            );
-             
+            );  
             //return our $Data array to use on the page
             return $this->Customise($Data);
         }
         else
         {
-            //Staff member not found
             return $this->httpError(404, 'Sorry that Module could not be found');
         }
     }

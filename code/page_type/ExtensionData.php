@@ -42,7 +42,8 @@ class ExtensionData extends DataObject {
 	static $searchable_fields = array(
       'Name',
       'Type',
-      'Keywords', 
+      'Keywords',
+      'SubmittedByID' 
    	);
 
 	static $summary_fields = array(
@@ -53,10 +54,6 @@ class ExtensionData extends DataObject {
 
 	static $has_one = array(
         'SubmittedBy' => 'Member'
-    );
-
-    static $has_many = array(
-        'ModuleID' => 'ModulePage',
     );
 	
 } 

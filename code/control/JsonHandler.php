@@ -61,12 +61,8 @@ class JsonHandler extends RequestHandler {
 	  * @return boolean
 	  */
 	function saveJson($url,$jsonData) {
-		
-		$this->url = $url ;
-		$this->jsonData = $jsonData ;
-
 		$Json = new ExtensionData();
-		//$Json->SubmittedByID = $this->Member();
+		$Json->SubmittedByID = Member::currentUserID();
 		$Json->Url = $url;
 		$result = $this->dataFields($Json, $jsonData);
 		return $result ;
@@ -98,7 +94,8 @@ class JsonHandler extends RequestHandler {
 	  */
 	function dataFields($Json, $jsonData) {
 		if(array_key_exists('name',$jsonData)) {
-			$Json->Name = $jsonData["name"] ; 
+			list($vendorName, $moduleName) = explode("/", $jsonData["name"]);
+			$Json->Name = $moduleName ; 
 		}
 
 		if(array_key_exists('description',$jsonData)) {
