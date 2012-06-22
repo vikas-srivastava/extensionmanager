@@ -44,9 +44,9 @@
                 </li>
             <% end_if %>
             
-            <% if $AuthorsName %>
+            <% if $AuthorsInfo %>
                 <li>
-                   Author Name : $AuthorsName
+                   Author Info : $AuthorsInfo
                 </li>
             <% end_if %>
 
@@ -127,7 +127,8 @@
                    Submitted By : $SubmittedByID
                 </li>
             <% end_if %>
-
+            <li>Author Name2 : $Name </li>
+            <li>Author Name : $getAuthors.Name </li>
             </ul>
         <% end_control %>
 
