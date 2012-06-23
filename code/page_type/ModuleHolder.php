@@ -4,7 +4,7 @@ class ModuleHolder extends ExtensionHolder {
 }
 
 /**
- * Controller for the module holder page.
+ * Controller for the module search page.
  *
  * @package extensionmanager
  */

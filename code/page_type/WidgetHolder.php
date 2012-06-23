@@ -4,7 +4,7 @@ class WidgetHolder extends ExtensionHolder {
 }
 
 /**
- * Controller for the module holder page.
+ * Controller for the widget search page.
  *
  * @package extensionmanager
  */

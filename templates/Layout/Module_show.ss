@@ -120,6 +120,9 @@
                 </li>
             </ul>
         <% end_if %>
+
+        URL : $URL 
+        submitted by : $SubmittedBy
         
 
 

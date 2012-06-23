@@ -1,4 +1,10 @@
 <?php 
+
+/**
+ * Acts as base class for Detailed Module Pages .
+ *
+ * @package extensionmanager
+ */
 class Module extends ExtensionData {
 
     static $has_one = array (
@@ -23,6 +29,11 @@ class Module_Controller extends ExtensionData_Controller {
         return array();
     }
 
+    /**
+      * Show module data   
+      *
+      * @return array
+      */
     function show() {      
         if($ExtensionData = $this->getExtensionData())
         {   
@@ -30,6 +41,8 @@ class Module_Controller extends ExtensionData_Controller {
                 'ExtensionData' => $ExtensionData,
                 'MetaTitle' => $ExtensionData->Name,
                 'AuthorsDetail'=> $this->getAuthorsInfo($ExtensionData),
+                'URL' => $this->getUrl($ExtensionData),
+                'SubmittedBy' => $this->getSubmittedBy($ExtensionData),
                 );  
             return $this->customise($Data)->renderWith(array('Module_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 

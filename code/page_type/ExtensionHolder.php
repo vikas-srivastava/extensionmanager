@@ -67,6 +67,12 @@ class ExtensionHolder_Controller extends Page_Controller {
 		}			
 	}
 
+	/**
+	  * Check if submitted module is new or old  
+	  *
+	  * @param string $url  
+	  * @return boolean
+	  */
 	public function isNewExtension($url) {
 		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
 		if(!$Json) {

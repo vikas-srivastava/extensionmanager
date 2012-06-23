@@ -29,6 +29,7 @@ class JsonHandler extends RequestHandler {
 	private $url;
 
 	private $jsonData;
+	
 	/**
 	  * Convert a module url into json content 
 	  *

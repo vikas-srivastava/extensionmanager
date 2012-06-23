@@ -9,7 +9,6 @@
 class ExtensionData extends DataObject {
 
 	static $db = array(	
-		//'MemberID' => 'Int',
 		'Url' => 'Varchar(100)',
 		'Accepted' => 'Boolean',
 		'Name' => 'VarChar(50)',
@@ -65,6 +64,12 @@ class ExtensionData extends DataObject {
 
 class ExtensionData_Controller extends Controller {
 	
+	/**
+	  * Get one Extension data from database using
+	  * Url ID
+	  *
+	  * @return array
+	  */
 	public function getExtensionData() {
         $Params = $this->getURLParams();
 
@@ -74,7 +79,24 @@ class ExtensionData_Controller extends Controller {
         }
     }
 
-    public function getAuthors($ExtensionData) {
+    
+    static function getUrl($ExtensionData) {
+    	return $ExtensionData->Url;
+    }
+
+    static function getSubmittedBy($ExtensionData) {
+    	$id = $ExtensionData->SubmittedByID;
+    	$member = Member::get()->byID($id);
+    	return $member->FirstName.' '.$member->Lastname;
+    }
+
+    /**
+	  * Get Extension Author Info
+	  *
+	  * @param array $ExtensionData
+	  * @return array
+	  */
+    static function getAuthorsInfo($ExtensionData) {
        $AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
 
         return array(
@@ -83,4 +105,9 @@ class ExtensionData_Controller extends Controller {
             'AuthorHomePage'=>$AuthorsInfo['0']['homepage'],
             );
     }
+
+    
+
+
+
 }
