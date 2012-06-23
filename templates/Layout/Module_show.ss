@@ -44,30 +44,6 @@
                 </li>
             <% end_if %>
             
-            <% if $AuthorsInfo %>
-                <li>
-                   Author Info : $AuthorsInfo
-                </li>
-            <% end_if %>
-
-            <% if $AuthorsHomepage %>
-                <li>
-                    Author Homepage : $AuthorsHomepage
-                </li>
-            <% end_if %>
-
-            <% if $AuthorsRole %>
-                <li>
-                   Author Role : $AuthorsRole
-                </li>
-            <% end_if %>
-            
-            <% if $AuthorsEmail %>
-                <li>
-                   Author Email : $AuthorsEmail
-                </li>
-            <% end_if %>
-
             <% if $SupportEmail %>
                 <li>
                    Support Email : $SupportEmail
@@ -127,10 +103,25 @@
                    Submitted By : $SubmittedByID
                 </li>
             <% end_if %>
-            <li>Author Name2 : $Name </li>
-            <li>Author Name : $getAuthors.Name </li>
-            </ul>
+            
         <% end_control %>
+
+        <% if $AuthorsDetail %>
+            <ul>
+            <h2>Authors Detail</h2>
+                <li>
+                    Author Name : $AuthorsDetail.AuthorName 
+                </li>
+                <li>
+                    Author Email : $AuthorsDetail.AuthorEmail 
+                </li>
+                <li>
+                    Author HomePage : $AuthorsDetail.AuthorHomePage 
+                </li>
+            </ul>
+        <% end_if %>
+        
+
 
     </div>
 

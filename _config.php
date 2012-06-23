@@ -6,5 +6,5 @@ FulltextSearchable::enable();
 Object::add_extension('Member', 'ExtensionsMemberDecorator');
 
 Director::addRules(100, array(
-    'module' => 'ModuleController'
+    'module' => 'Module_Controller'
 ));

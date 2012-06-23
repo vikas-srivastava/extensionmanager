@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Acts as base class for stroing and handling 
+ * Extensions(Module/Widget/Theme) Data .
+ *
+ * @package extensionmanager
+ */
 class ExtensionData extends DataObject {
 
 	static $db = array(	
@@ -51,11 +57,30 @@ class ExtensionData extends DataObject {
 	);
 
 	static $has_one = array(
-        'SubmittedBy' => 'Member'
+        'SubmittedBy' => 'Member',
+        'Module' => 'Module',
     );
 	
 } 
 
-class ExtensionData_Controller extends Page_Controller {
+class ExtensionData_Controller extends Controller {
 	
+	public function getExtensionData() {
+        $Params = $this->getURLParams();
+
+        if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
+        {      
+            return $ExtensionData;
+        }
+    }
+
+    public function getAuthors($ExtensionData) {
+       $AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
+
+        return array(
+            'AuthorName'=>$AuthorsInfo['0']['name'],
+            'AuthorEmail'=>$AuthorsInfo['0']['email'],
+            'AuthorHomePage'=>$AuthorsInfo['0']['homepage'],
+            );
+    }
 }
