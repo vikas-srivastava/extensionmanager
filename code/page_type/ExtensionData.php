@@ -40,26 +40,26 @@ class ExtensionData extends DataObject {
 		'IncludePath' => 'VarChar(500)',
 		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
-	);	
+		);	
 
-	static $searchable_fields = array(
-      'Name',
-      'Type',
-      'Keywords',
-      'SubmittedByID' 
-   	);
-
-	static $summary_fields = array(
-		'Name',
-		'Type',
-		'Description',
+static $searchable_fields = array(
+	'Name',
+	'Type',
+	'Keywords',
+	'SubmittedByID' 
 	);
 
-	static $has_one = array(
-        'SubmittedBy' => 'Member',
-        'Module' => 'Module',
-    );
-	
+static $summary_fields = array(
+	'Name',
+	'Type',
+	'Description',
+	);
+
+static $has_one = array(
+	'SubmittedBy' => 'Member',
+	'Module' => 'Module',
+	);
+
 } 
 
 class ExtensionData_Controller extends Controller {
@@ -71,32 +71,13 @@ class ExtensionData_Controller extends Controller {
 	  * @return array
 	  */
 	public function getExtensionData() {
-        $Params = $this->getURLParams();
+		$Params = $this->getURLParams();
 
-        if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
-        {      
-            return $ExtensionData;
-        }
-    }
-    
-    /**
-	  * Get one Extension Name
-	  *
-	  *	@param ExtensionData
-	  * @return striUrl  */
-    static function getExtensionName($ExtensionData) {
-    	return $ExtensionData->Name;
-    }
-
-    /**
-	  * Get URL of extenson Repository
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-   	static function getExtensionUrl($ExtensionData) {
-    	return $ExtensionData->Url;
-    }
+		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
+		{      
+			return $ExtensionData;
+		}
+	}
 
     /**
 	  * Get Name of submiited by Member
@@ -108,46 +89,6 @@ class ExtensionData_Controller extends Controller {
     	$id = $ExtensionData->SubmittedByID;
     	$member = Member::get()->byID($id);
     	return $member->FirstName.' '.$member->Lastname;
-    }
-
-    /**
-	  * Check if extension is accepted
-	  *
-	  *	@param ExtensionData
-	  * @return boolean
-	  */
-    static function isExtensionAccepted($ExtensionData) {
-    	return $ExtensionData->Accepted;
-    }
-
-    /**
-	  * Get Extension Description
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionDescription($ExtensionData) {
-    	return $ExtensionData->Description;
-    }
-
-    /**
-	  * Get Version of Extension
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionVersion($ExtensionData) {
-    	return $ExtensionData->Version;
-    }
-
-    /**
-	  * Get Type of extension
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionType($ExtensionData) {
-    	return $ExtensionData->Type;
     }
 
     /**
@@ -163,45 +104,15 @@ class ExtensionData_Controller extends Controller {
     }
 
     /**
-	  * Get Homepage of Extension
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionHomepage($ExtensionData) {
-    	return $ExtensionData->Homepage;
-    }
-
-    /**
-	  * Get Time of release
-	  *
-	  *	@param ExtensionData
-	  * @return datatime
-	  */
-    static function getExtensionReleaseTime($ExtensionData) {
-    	return $ExtensionData->ReleaseTime;
-    }
-
-    /**
-	  * Get Licence
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionLicence($ExtensionData) {
-    	return $ExtensionData->Licence;
-    }
-
-    /**
 	  * Get Extension Author Info
 	  *
 	  * @param ExtensionData
 	  * @return array
 	  */
     static function getExtensionAuthorsInfo($ExtensionData) {
-       $AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
-
-        return array(
+    	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
+      	
+      	return array(
             
             'AuthorName'=>$AuthorsInfo['0']['name'],
             'AuthorEmail'=>$AuthorsInfo['0']['email'],
@@ -209,67 +120,7 @@ class ExtensionData_Controller extends Controller {
             //'AuthorRole' => $AuthorsInfo['0']['role']            
             );
         //todo now it can display only one author info .. not checking if value is set
-    }
-
-    /**
-	  * Get Support email
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportEmail($ExtensionData) {
-    	return $ExtensionData->SupportEmail;
-    }
-
-    /**
-	  * Get Url of issue list
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportIssues($ExtensionData) {
-    	return $ExtensionData->SupportIssues;
-    }
-
-    /**
-	  * Get Url of support forum
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportForum($ExtensionData) {
-    	return $ExtensionData->SupportForum;
-    }
-
-    /**
-	  * Get Url of support wiki page
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportWiki($ExtensionData) {
-    	return $ExtensionData->SupportWiki;
-    }
-
-    /**
-	  * Get IRC channel of extension
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportIrc($ExtensionData) {
-    	return $ExtensionData->SupportIrc;
-    }
-
-    /**
-	  * Get Support source URL
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSupportSource($ExtensionData) {
-    	return $ExtensionData->SupportSource;
-    }
+}
 
     /**
 	  * Get URL's of other repository of this extension
@@ -277,7 +128,7 @@ class ExtensionData_Controller extends Controller {
 	  *	@param ExtensionData
 	  * @return string
 	  */
-	static function getExtensionRepositories($ExtensionData) {
+    static function getExtensionRepositories($ExtensionData) {
     	$Repositories = unserialize($ExtensionData->TargetDir);	
     }
 

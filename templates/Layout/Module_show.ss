@@ -4,18 +4,21 @@
 
     <div id="Content">
 
-    <h1>$ExtensionName</h1>    
-    <ul>
+    <% if ExtensionData %>
+    <ul id="Extension-Data-List">
+        <% control ExtensionData %>
+        <h1>$Name</h1>    
+
+         <% if $URL %>
+            <li>
+                <a href="$URL">Repository </a>
+            </li>
+        <% end_if %>
+
         <% if $Description %>
             <li>
                 Description : $Description
             </li> 
-        <% end_if %>
-        
-        <% if $URL %>
-            <li>
-                <a href="$URL">Repository </a>
-            </li>
         <% end_if %>
 
         <% if $Version %>
@@ -24,49 +27,16 @@
             </li>
         <% end_if %>
 
-        <% if $Keywords %>
-            <li>
-                Keywords : $Keywords
-            </li>
-        <% end_if %>
-        
-        <% if $SubmittedBy %>
-            <li>
-                Submitted By : $SubmittedBy
-            </li>
-        <% end_if %>
-
         <% if $Homepage %>
             <li>
                 <a href="$Homepage">Home Page</a>
             </li>
-        <% end_if %>          
+        <% end_if %>
 
         <% if $ReleaseTime %>
             <li>
                 Release Time : $ReleaseTime 
             </li>
-        <% end_if %>
-            
-        <% if $Licence %>
-            <li>
-                Licence : $Licence
-            </li>
-        <% end_if %> 
-
-        <% if $AuthorsDetail %>
-            <ul>
-            <h2>Authors Detail</h2>
-                <li>
-                    Author Name : $AuthorsDetail.AuthorName 
-                </li>
-                <li>
-                    Author Email : $AuthorsDetail.AuthorEmail 
-                </li>
-                <li>
-                    Author HomePage : 
-                    <a href="$AuthorsDetail.AuthorHomePage "> $AuthorsDetail.AuthorHomePage> </a> 
-            </ul>
         <% end_if %>
 
         <h2>Support </h2>
@@ -105,6 +75,45 @@
                 Support Irc : $SupportIrc
             </li>
         <% end_if %>
+
+        <% end_control %>
+    </ul>
+    <% end_if %>
+    <ul>
+        <% if $Keywords %>
+            <li>
+                Keywords : $Keywords
+            </li>
+        <% end_if %>
+        
+        <% if $SubmittedBy %>
+            <li>
+                Submitted By : $SubmittedBy
+            </li>
+        <% end_if %>               
+
+        <% if $Licence %>
+            <li>
+                Licence : $Licence
+            </li>
+        <% end_if %> 
+
+        <% if $AuthorsDetail %>
+            <h1>$AuthorsDetail</h1>
+            <ul>
+            <h2>Authors Detail</h2>
+                <li>
+                    Author Name : $AuthorsDetail.AuthorName 
+                </li>
+                <li>
+                    Author Email : $AuthorsDetail.AuthorEmail 
+                </li>
+                <li>
+                    Author HomePage : 
+                    <a href="$AuthorsDetail.AuthorHomePage "> $AuthorsDetail.AuthorHomePage> </a> 
+            </ul>
+
+        <% end_if %>  
 
     </ul>
         

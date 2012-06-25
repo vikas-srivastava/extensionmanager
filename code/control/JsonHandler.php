@@ -13,16 +13,25 @@
  * @package extensionmanager
  */
 
-use Composer\Config;
+/*use Composer\Config;
 use Composer\IO\NullIO;
 use Composer\Repository\VcsRepository;
 use Composer\Downloader\TransportException;
-use Composer\Repository\Vcs\VcsDriverInterface;
+//use Composer\Repository\Vcs\VcsDriverInterface;
 use Composer\Package\Version\VersionParser;
 use Composer\Package\Loader\ArrayLoader;
 use Composer\IO\IOInterface;
 use Composer\Repository\RepositoryManager;
 use Composer\Factory;
+use Composer\Package\AliasPackage;
+use Composer\Package\PackageInterface;
+use Composer\Repository\RepositoryInterface;*/
+
+
+use Composer\IO\NullIO;
+use Composer\Factory;
+use Composer\Repository\VcsRepository;
+use Composer\Repository\RepositoryManager;
 
 class JsonHandler extends RequestHandler {
 	
@@ -41,14 +50,19 @@ class JsonHandler extends RequestHandler {
 		
 		try{	
 			$config = Factory::createConfig();
-			$repo = new VcsRepository(array('url' => $url), new NullIO(), $config);
+			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
 			//$packages = $repo->getPackages();	
+			/*$distUrl = new PackageInterface;
+			$packageUrl = $distType->getDistUrl;*/
 			$driver = $repo->getDriver();
 			if(!isset($driver)) {
 				return ;
 			} 
 			$data = $driver->getComposerInformation($driver->getRootIdentifier());
-			return $data;
+			return array(
+				'Data' => $data,
+				
+			);
 			
 		} catch (Exception $e) {
 			return ;

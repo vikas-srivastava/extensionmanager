@@ -41,9 +41,9 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
 		
-		if($jsonData) {
+		if($jsonData['Data']) {
 			if($this->isNewExtension($url)) {
-				$saveJson = $json->saveJson($url,$jsonData);
+				$saveJson = $json->saveJson($url,$jsonData['Data']);
 				if($saveJson) {
 					$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
 					return $this->redirectBack();
@@ -52,7 +52,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 					return $this->redirectBack();
 				}
 			} else {
-				$updateJson = $json->updateJson($url, $jsonData);
+				$updateJson = $json->updateJson($url, $jsonData['Data']);
 				if($updateJson) {
 					$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
 					return $this->redirectBack();
