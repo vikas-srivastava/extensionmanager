@@ -99,7 +99,7 @@ class ExtensionData_Controller extends Controller {
 	  */
     static function getExtensionKeywords($ExtensionData) {
     	$keywords = unserialize($ExtensionData->Keywords);
-    	$values = implode(" ", $keywords);
+    	$values = implode(", ", $keywords);
     	return $values ;
     }
 
@@ -112,13 +112,26 @@ class ExtensionData_Controller extends Controller {
     static function getExtensionAuthorsInfo($ExtensionData) {
     	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
       	
-      	return array(
-            
-            'AuthorName'=>$AuthorsInfo['0']['name'],
-            'AuthorEmail'=>$AuthorsInfo['0']['email'],
-            'AuthorHomePage'=>$AuthorsInfo['0']['homepage'],
-            //'AuthorRole' => $AuthorsInfo['0']['role']            
-            );
+      	$AuthorsData = array();
+
+      	if(array_key_exists('name', $AuthorsInfo['0'])) {
+      		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
+      	}
+
+      	if(array_key_exists('email', $AuthorsInfo['0'])) {
+      		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
+      	}
+
+      	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
+      		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
+      	}
+
+      	if(array_key_exists('role', $AuthorsInfo['0'])) {
+      		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
+      	}
+
+      	return $AuthorsData  ;
+      	
         //todo now it can display only one author info .. not checking if value is set
 }
 
@@ -131,23 +144,4 @@ class ExtensionData_Controller extends Controller {
     static function getExtensionRepositories($ExtensionData) {
     	$Repositories = unserialize($ExtensionData->TargetDir);	
     }
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
 }

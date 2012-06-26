@@ -5,13 +5,13 @@
     <div id="Content">
 
     <% if ExtensionData %>
-    <ul id="Extension-Data-List">
+    <ul >
         <% control ExtensionData %>
         <h1>$Name</h1>    
 
-         <% if $URL %>
+         <% if $Url %>
             <li>
-                <a href="$URL">Repository </a>
+                <a href="$Url">Repository </a>
             </li>
         <% end_if %>
 
@@ -92,27 +92,44 @@
             </li>
         <% end_if %>               
 
+        <!--
         <% if $Licence %>
             <li>
                 Licence : $Licence
             </li>
         <% end_if %> 
-
+        -->
         <% if $AuthorsDetail %>
-            <h1>$AuthorsDetail</h1>
+            <h1>AuthorsDetail</h1>
+            <% control AuthorsDetail %>
             <ul>
-            <h2>Authors Detail</h2>
+                <% if $AuthorName %>
                 <li>
-                    Author Name : $AuthorsDetail.AuthorName 
+                    Author Name : $AuthorName
                 </li>
+                <% end_if %>  
+
+                <% if $AuthorEmail %>
                 <li>
-                    Author Email : $AuthorsDetail.AuthorEmail 
+                    Author Email : $AuthorEmail 
                 </li>
+                <% end_if %>  
+
+                <% if $AuthorHomePage %>
                 <li>
                     Author HomePage : 
-                    <a href="$AuthorsDetail.AuthorHomePage "> $AuthorsDetail.AuthorHomePage> </a> 
-            </ul>
+                    <a href="$AuthorHomePage "> $AuthorHomePage </a>
+                <li>
+                <% end_if %>
 
+                <% if $AuthorRole %>
+                <li>
+                    Author Email : $AuthorRole 
+                </li>
+                <% end_if %>  
+            </ul>
+            <% end_control %>
+            
         <% end_if %>  
 
     </ul>

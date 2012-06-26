@@ -7,10 +7,6 @@
  */
 class Module extends ExtensionData {
 
-    static $has_one = array (
-        'ExtensionData' => 'ExtensionData',
-        );
-
 }
 
 class Module_Controller extends ExtensionData_Controller {
