@@ -5,8 +5,6 @@ class ExtensionAdmin extends ModelAdmin {
 
 	static $managed_models = array(
 		"ExtensionData",
-		"Member",
-		"ModulePage",
-		
+		"Member",	
 	);
 }	

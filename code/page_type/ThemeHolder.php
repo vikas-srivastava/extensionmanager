@@ -4,7 +4,7 @@ class ThemeHolder extends ExtensionHolder {
 }
 
 /**
- * Controller for the module holder page.
+ * Controller for the Theme Search page.
  *
  * @package extensionmanager
  */

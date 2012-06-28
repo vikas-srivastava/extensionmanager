@@ -20,7 +20,6 @@ class JsonUpdateTask extends DailyTask {
 				else {
 					echo  "{$jsonFile->Name}  could not updated <br />" ;
 				}
-				// $json->destroy();	
 			}
 			echo "<br /><br /><strong>{$count} Json File processed...</strong><br />";
 		} else { 
