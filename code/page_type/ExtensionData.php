@@ -57,7 +57,6 @@ static $summary_fields = array(
 
 static $has_one = array(
 	'SubmittedBy' => 'Member',
-	'Module' => 'Module',
 	);
 
 } 
