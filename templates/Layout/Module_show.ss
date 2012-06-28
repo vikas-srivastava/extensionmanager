@@ -6,7 +6,7 @@
 
     <% if ExtensionData %>
     <ul >
-        <% control ExtensionData %>
+        <% loop ExtensionData %>
         <h1>$Name</h1>    
 
          <% if $Url %>
@@ -76,7 +76,7 @@
             </li>
         <% end_if %>
 
-        <% end_control %>
+        <% end_loop %>
     </ul>
     <% end_if %>
     <ul>
@@ -101,7 +101,7 @@
         -->
         <% if $AuthorsDetail %>
             <h1>AuthorsDetail</h1>
-            <% control AuthorsDetail %>
+            <% loop AuthorsDetail %>
             <ul>
                 <% if $AuthorName %>
                 <li>
@@ -128,7 +128,7 @@
                 </li>
                 <% end_if %>  
             </ul>
-            <% end_control %>
+           <% end_loop %>
             
         <% end_if %>  
 

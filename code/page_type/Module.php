@@ -22,15 +22,17 @@ class Module_Controller extends ExtensionData_Controller {
     }
 
     public function index() {        
-        return array();
-    }
+        $this->redirect('modules/');
+        
+    }   
 
     /**
       * Show module data   
       *
       * @return array
       */
-    function show() {      
+    function show() { 
+
         if($ExtensionData = $this->getExtensionData())
         {   
             $Data = array(

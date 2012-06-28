@@ -72,7 +72,7 @@ class ExtensionData_Controller extends Controller {
 	  */
 	public function getExtensionData() {
 		$Params = $this->getURLParams();
-
+		
 		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
 		{      
 			return $ExtensionData;
