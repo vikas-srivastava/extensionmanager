@@ -1,0 +1,15 @@
+Module:
+	testmodule:
+		RepositoryUrl: test-url
+
+Member:
+	testmember:
+		FirstName: Test Member
+
+ExtensionHolder:
+	ModuleHolder:
+		URLSegment: modules
+
+
+
+
