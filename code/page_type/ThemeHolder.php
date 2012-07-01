@@ -1,5 +1,5 @@
 <?php
-class ThemeHolder extends ExtensionCRUD {
+class ThemeHolder extends Page {
 
 }
 
@@ -8,7 +8,7 @@ class ThemeHolder extends ExtensionCRUD {
  *
  * @package extensionmanager
  */
-class ThemeHolder_Controller extends ExtensionCRUD_Controller {
+class ThemeHolder_Controller extends Page_Controller {
 	
 	/**
 	 * Setting up the form.

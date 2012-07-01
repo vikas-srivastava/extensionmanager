@@ -4,7 +4,7 @@
 		<div class="content">$Content</div>
 	</article>
 	
-	$ModuleUrlForm
+	<p><a class="submitButton" href="{$Link}manage/add">Submit your Module</a></p>
 	
 	$PageComments
 </div>

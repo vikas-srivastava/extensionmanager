@@ -1,16 +1,50 @@
 <?php
-class ExtensionHolder extends Page {
+class ExtensionCRUD extends Page_Controller {
 
-}
+	static $urlhandlers = array(
+		'add' => 'add',
+		
+	);
 
-class ExtensionHolder_Controller extends Page_Controller {
+	public $basePage, $baseLink, $addContent, $afterEditContent;
+	public $reviewerEmail; //will use for sending mail after extension submission
+		
+	function  __construct($basePage, $reviewerEmail, $addContent = array(), $afterEditContent = array()) {
+		$this->basePage = $basePage;
+		$this->baseLink = Controller::join_links($basePage->Link(), 'manage');
+		$this->addContent = $addContent;
+		$this->$reviewerEmail = $reviewerEmail;
+				
+		if($afterEditContent) $this->afterEditContent = $afterEditContent;
+		parent::__construct($basePage);
+	}
+
+	//Not working 
+	/*public function Link() {
+		return $this->baseLink;
+	}*/ 
+	
+	/**
+	 * Setting page content on /manage/add.
+	 *
+	 * @return Array $content .
+	 */	
+	function add() {
+		if(!Member::currentUser()) return Security::permissionFailure();
+
+		$content = $this->addContent;
+		$content['Form'] = $this->AddForm();
+		$content['BasePageLinK'] = $this->baseLink;//not showing in template
+				
+		return $this->customise($content)->renderWith(array('ExtensionCRUDPage', 'Page'));
+	}
 
 	/**
 	 * Setting up the form.
 	 *
 	 * @return Form .
 	 */
-	public function UrlForm() {
+	public function AddForm() {
 		
 		define('SPAN', '<span class="required">*</span>');
 		
@@ -23,7 +57,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 			new FormAction('submitUrl', 'Submit')
 			);
 		$validator = new RequiredFields('URL');
-		return new Form($this, 'UrlForm', $fields, $actions, $validator);
+		return new Form($this, 'AddForm', $fields, $actions, $validator);
 	}
 
 	/**
