@@ -1,9 +1,6 @@
 <?php
-class ExtensionHolder extends Page {
 
-}
-
-class ExtensionHolder_Controller extends Page_Controller {
+class ExtensionCRUD extends Page_Controller {
 
 	/**
 	 * Setting up the form.

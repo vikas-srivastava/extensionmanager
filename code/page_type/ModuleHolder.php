@@ -1,5 +1,5 @@
 <?php
-class ModuleHolder extends ExtensionCRUD {
+class ModuleHolder extends ExtensionHolder {
 
 }
 
@@ -8,7 +8,7 @@ class ModuleHolder extends ExtensionCRUD {
  *
  * @package extensionmanager
  */
-class ModuleHolder_Controller extends ExtensionCRUD_Controller {
+class ModuleHolder_Controller extends ExtensionHolder_Controller {
 
 	/**
 	 * Setting up the form.
