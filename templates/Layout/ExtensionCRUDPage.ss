@@ -1,11 +1,9 @@
 <div class="typography">
-	<div id="content">
-		<h1>
-			<% if BasePageLink %><a href="$BasePageLink"><% end_if %>
+	<h1>
 			$Title
-			<% if BasePageLink %></a><% end_if %>
-		</h1>
-			
+	</h1>
+	
+	<div id="content">
 		$Content
 		<br>
 		<br>

@@ -1,7 +1,7 @@
 <?php
-class ModuleHolder extends Page {
+class ModuleHolder extends ExtensionCRUD {
 	static $db = array(
-		"AddContent" => 'HTMLText'
+		'AddContent' => 'HTMLText',
 	);
 
 	static $default_records = array(
@@ -22,7 +22,8 @@ class ModuleHolder extends Page {
 
 		<h3>What if I need to make changes to my module?</h3>	
 
-		<p>Once your module is listed on the SilverStripe website, you can edit it via the same submission form </p>"
+		<p>Once your module is listed on the SilverStripe website, you can edit it via the same submission form </p>",
+		
 	);
 
 	function getCMSFields() {
@@ -37,32 +38,29 @@ class ModuleHolder extends Page {
  *
  * @package extensionmanager
  */
-class ModuleHolder_Controller extends Page_Controller {
+class ModuleHolder_Controller extends ExtensionCRUD_Controller {
 
-	/**
-	 * Setting up the form.
-	 *
-	 * @return Form .
-	 */
-	/*function Manage() {
-		return $this->AddForm() ;
-	}*/
-
-	function manage() {
-		$to = 'modules@silverstripe.org';
+	static $urlhandlers = array(
+		'addnew' => 'addnew',
 		
-		return new ExtensionCRUD($this->data(), $to,
-			// Add form content
-			array(
+	);
+	/**
+	 * Setting up the form for module submission.
+	 *
+	 * @return Array .
+	 */
+	function addNew() {
+			
+		$this->basePage = $this->data();
+		$this->addContent = array(
 				'Title' => 'Submit a module',
 				'Content' => $this->dataRecord->AddContent
-			), 
-			
-			// After add/edit content
-			array(
-				'Title' => 'Thanks for your submission',
-				'Content' => "<p>You'll be notified when your module has been listed on the site. We try and approve new submissions quickly but please know that it typically takes at least 4 weeks for your module to appear on the SilverStripe website. If you have questions, please contact <a href=\"mailto:modules@silverstripe.org\">modules@silverstripe.org</a></p>"
-			)
-		);
+			);
+		$this->reviewerEmail = 'modules@silverstripe.org';
+
+		$content = $this->addContent;
+		$content['Form'] = $this->AddForm();
+						
+		return $this->customise($content)->renderWith(array('ExtensionCRUDPage', 'Page'));
 	}	
 }			
