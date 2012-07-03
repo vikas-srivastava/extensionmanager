@@ -69,10 +69,10 @@ class ExtensionData_Controller extends Controller {
 	  */
 	public function getExtensionData() {
 		$Params = $this->getURLParams();
-		
-		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
+	
+		if(is_numeric($Params['ID']) && $extensionData = ExtensionData::get()->byID((int)$Params['ID']))
 		{      
-			return $ExtensionData;
+			return $extensionData;
 		}
 	}
 
@@ -82,8 +82,8 @@ class ExtensionData_Controller extends Controller {
 	  *	@param ExtensionData
 	  * @return string
 	  */
-    static function getExtensionSubmittedBy($ExtensionData) {
-    	$id = $ExtensionData->SubmittedByID;
+    static function getExtensionSubmittedBy($extensionData) {
+    	$id = $extensionData->SubmittedByID;
     	$member = Member::get()->byID($id);
     	return $member->FirstName.' '.$member->Lastname;
     }
@@ -94,8 +94,8 @@ class ExtensionData_Controller extends Controller {
 	  *	@param ExtensionData
 	  * @return string
 	  */
-    static function getExtensionKeywords($ExtensionData) {
-    	$keywords = unserialize($ExtensionData->Keywords);
+    static function getExtensionKeywords($extensionData) {
+    	$keywords = unserialize($extensionData->Keywords);
     	$values = implode(", ", $keywords);
     	return $values ;
     }
@@ -106,8 +106,8 @@ class ExtensionData_Controller extends Controller {
 	  * @param ExtensionData
 	  * @return array
 	  */
-    static function getExtensionAuthorsInfo($ExtensionData) {
-    	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
+    static function getExtensionAuthorsInfo($extensionData) {
+    	$AuthorsInfo = unserialize($extensionData->AuthorsInfo);
       	
       	$AuthorsData = array();
 
@@ -138,7 +138,7 @@ class ExtensionData_Controller extends Controller {
 	  *	@param ExtensionData
 	  * @return string
 	  */
-    static function getExtensionRepositories($ExtensionData) {
-    	$Repositories = unserialize($ExtensionData->TargetDir);	
+    static function getExtensionRepositories($extensionData) {
+    	$Repositories = unserialize($extensionData->TargetDir);	
     }
 }

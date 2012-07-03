@@ -32,14 +32,13 @@ class Module_Controller extends ExtensionData_Controller {
       */
     function show() { 
 
-        if($ExtensionData = $this->getExtensionData())
-        {   
+        if($extensionData = $this->getExtensionData()) {   
             $Data = array(
-                'MetaTitle' => $ExtensionData->Name,
-                'ExtensionData' => $ExtensionData,
-                'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
-                'Keywords' => $this->getExtensionKeywords($ExtensionData),
-                'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
+                'MetaTitle' => $extensionData->Name,
+                'ExtensionData' => $extensionData,
+                'SubmittedBy' => $this->getExtensionSubmittedBy($extensionData),
+                'Keywords' => $this->getExtensionKeywords($extensionData),
+                'AuthorsDetail'=> $this->getExtensionAuthorsInfo($extensionData),
             );  
             return $this->customise($Data)->renderWith(array('Module_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 
