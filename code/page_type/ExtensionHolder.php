@@ -18,7 +18,6 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 * @return Form .
 	 */
 	public function UrlForm() {
-		define('SPAN', '<span class="required">*</span>');
 		if(!Member::currentUser()) return Security::permissionFailure();		
 		$fields = new FieldList(
 			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository'. SPAN) 
