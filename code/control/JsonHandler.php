@@ -13,25 +13,11 @@
  * @package extensionmanager
  */
 
-/*use Composer\Config;
 use Composer\IO\NullIO;
+use Composer\Factory;
 use Composer\Repository\VcsRepository;
-use Composer\Downloader\TransportException;
-//use Composer\Repository\Vcs\VcsDriverInterface;
+use Composer\Repository\RepositoryManager;
 use Composer\Package\Version\VersionParser;
-use Composer\Package\Loader\ArrayLoader;
-use Composer\IO\IOInterface;
-use Composer\Repository\RepositoryManager;
-use Composer\Factory;
-use Composer\Package\AliasPackage;
-use Composer\Package\PackageInterface;
-use Composer\Repository\RepositoryInterface;*/
-
-
-use Composer\IO\NullIO;
-use Composer\Factory;
-use Composer\Repository\VcsRepository;
-use Composer\Repository\RepositoryManager;
 
 class JsonHandler extends RequestHandler {
 	
@@ -239,5 +225,4 @@ class JsonHandler extends RequestHandler {
 		$Json->write();
 		return true ;
 	}
-
 }   
