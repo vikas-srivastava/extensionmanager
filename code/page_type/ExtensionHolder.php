@@ -1,4 +1,11 @@
 <?php
+/**
+ * This class will serve as base class for 
+ * all the ExtensionHolder classes (module/widget/theme)
+ * contains extension submission forms and their handler. 
+ *
+ * @package extensionmanager
+ */
 class ExtensionHolder extends Page {
 
 }
@@ -11,11 +18,8 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 * @return Form .
 	 */
 	public function UrlForm() {
-		
 		define('SPAN', '<span class="required">*</span>');
-		
-		if(!Member::currentUser()) return Security::permissionFailure();
-		
+		if(!Member::currentUser()) return Security::permissionFailure();		
 		$fields = new FieldList(
 			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository'. SPAN) 
 			);
@@ -31,9 +35,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 */
 	public function submitUrl($data, $form) {
 		$url = $data['Url'];
-		
 		if(empty($url) || substr($url,0, 4) != "http" || (preg_match('{//.+@}', $url))) {
-		//if(empty($url) || (preg_match('{//.+@}', $url))) {	
 			$form->sessionMessage(_t('ExtensionHolder.BADURL','Please enter a valid URL'), 'bad');
 			return $this->redirectBack();
 		}
@@ -81,5 +83,4 @@ class ExtensionHolder_Controller extends Page_Controller {
 			return false;
 		}
 	}
-
-} 
+}

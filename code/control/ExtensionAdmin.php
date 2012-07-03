@@ -1,4 +1,9 @@
 <?php
+/**
+ * Model Admin for controlling ExtensionData class in CMS.
+ *
+ * @package extensionmanager
+ */
 class ExtensionAdmin extends ModelAdmin {
 	static $menu_title = "Extensions";
 	static $url_segment = "extensions";
@@ -7,4 +12,4 @@ class ExtensionAdmin extends ModelAdmin {
 		"ExtensionData",
 		"Member",	
 	);
-}	
+}

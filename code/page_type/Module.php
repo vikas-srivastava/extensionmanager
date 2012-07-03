@@ -1,5 +1,4 @@
 <?php 
-
 /**
  * Acts as base class for Detailed Module Pages .
  *

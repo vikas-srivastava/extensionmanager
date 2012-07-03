@@ -1,4 +1,9 @@
 <?php
+/**
+ * For Updating composer.Json data of extensions. 
+ *
+ * @package extensionmanager
+ */
 class JsonUpdateTask extends DailyTask {
 	
 	function process() {
@@ -28,11 +33,15 @@ class JsonUpdateTask extends DailyTask {
 	}
 }
 
+/**
+ * For Manually Updating composer.Json data of extensions. 
+ *
+ * @package extensionmanager
+ */
 class JsonUpdateTask_Manual extends BuildTask {
 
 	function run($request) {
 		echo "Running Json Data Update - Rebuilding the Database entries of all Json Files \n\n";
-
 		$update = new JsonUpdateTask();
 		$update->process();
 	}

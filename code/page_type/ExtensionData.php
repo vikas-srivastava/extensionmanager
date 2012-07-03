@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Acts as base class for stroing and handling 
  * Extensions(Module/Widget/Theme) Data .
@@ -58,7 +57,6 @@ static $summary_fields = array(
 static $has_one = array(
 	'SubmittedBy' => 'Member',
 	);
-
 } 
 
 class ExtensionData_Controller extends Controller {
@@ -130,7 +128,7 @@ class ExtensionData_Controller extends Controller {
       	}
 
       	return $AuthorsData  ;
-      	
+     
         //todo now it can display only one author info .. not checking if value is set
 }
 

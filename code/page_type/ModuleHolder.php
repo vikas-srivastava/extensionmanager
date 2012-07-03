@@ -1,4 +1,9 @@
 <?php
+/**
+ * Model for the module search page.
+ * 
+ * @package extensionmanager
+ */
 class ModuleHolder extends ExtensionHolder {
 
 }

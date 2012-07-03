@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Test for show() function of Module class
+ * 
+ * @package extensionmanager
+ */
 class ModuleTest extends FunctionalTest{
 	
 	static $fixture_file = 'extensionmanager/tests/ExtensionManagerTest.yml';

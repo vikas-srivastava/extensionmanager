@@ -1,6 +1,10 @@
 <?php
+/**
+ * Model for the Theme Search page.
+ *
+ * @package extensionmanager
+ */
 class ThemeHolder extends ExtensionHolder {
-
 }
 
 /**

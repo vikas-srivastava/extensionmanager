@@ -1,4 +1,9 @@
 <?php
+/**
+ * Model for the widget search page.
+ * 
+ * @package extensionmanager
+ */
 class WidgetHolder extends ExtensionHolder {
 
 }

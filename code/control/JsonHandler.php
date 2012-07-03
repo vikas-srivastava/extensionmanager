@@ -1,5 +1,4 @@
 <?php
-
 /**
  * All task related to json file.
  * 
@@ -21,7 +20,6 @@ use Composer\Repository\RepositoryManager;
 class JsonHandler extends RequestHandler {
 	
 	private $url;
-
 	private $jsonData;
 	
 	/**
@@ -36,17 +34,13 @@ class JsonHandler extends RequestHandler {
 		try{	
 			$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-			//$packages = $repo->getPackages();	
-			/*$distUrl = new PackageInterface;
-			$packageUrl = $distType->getDistUrl;*/
 			$driver = $repo->getDriver();
 			if(!isset($driver)) {
 				return ;
 			} 
 			$data = $driver->getComposerInformation($driver->getRootIdentifier());
 			return array(
-				'Data' => $data,
-				
+				'Data' => $data,		
 			);
 			
 		} catch (Exception $e) {
@@ -208,7 +202,6 @@ class JsonHandler extends RequestHandler {
 			$Json->Repositories = serialize($jsonData['repositories']);
 		}
 
-
 		if(array_key_exists('include-path',$jsonData)) {
 			$Json->IncludePath = serialize($jsonData['include-path']);
 		}
@@ -224,5 +217,4 @@ class JsonHandler extends RequestHandler {
 		$Json->write();
 		return true ;
 	}
-
-}   
+}
