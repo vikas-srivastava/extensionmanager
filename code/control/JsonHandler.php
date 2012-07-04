@@ -36,7 +36,7 @@ class JsonHandler extends RequestHandler {
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
 			$driver = $repo->getDriver();
 			if(!isset($driver)) {
-				return ;
+				return false;
 			} 
 			$data = $driver->getComposerInformation($driver->getRootIdentifier());
 			return array(
@@ -44,7 +44,7 @@ class JsonHandler extends RequestHandler {
 			);
 			
 		} catch (Exception $e) {
-			return ;
+			return false;
 		}
 	}
 

@@ -20,7 +20,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 	public function UrlForm() {
 		if(!Member::currentUser()) return Security::permissionFailure();		
 		$fields = new FieldList(
-			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository'. SPAN) 
+			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository') 
 			);
 		$actions = new FieldList(
 			new FormAction('submitUrl', 'Submit')
@@ -63,7 +63,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 				}
 			}
 		} else {
-			$form->sessionMessage(_t('ExtensionHolder.NOJSON','Sorry we could not find any composer.json file on given url. please submit url again'), 'bad');
+			$form->sessionMessage(_t('ExtensionHolder.NOJSON','Sorry we could not find any composer.json file on given url . Please read our extension Submission Guide for more details and submit url again'), 'bad');
 			return $this->redirectBack();
 		}			
 	}
