@@ -1,5 +1,5 @@
 <?php
-class ModuleHolder extends ExtensionCRUD {
+class ModuleHolder extends ExtensionHolder{
 	static $db = array(
 		'AddContent' => 'HTMLText',
 		);
@@ -38,13 +38,12 @@ class ModuleHolder extends ExtensionCRUD {
  *
  * @package extensionmanager
  */
-class ModuleHolder_Controller extends ExtensionCRUD_Controller {
+class ModuleHolder_Controller extends ExtensionHolder_Controller {
 
 	static $urlhandlers = array(
 		'addnew' => 'addnew',
-		
-		);
-
+		);	
+	
 
 	/**
 	 * Setting up the form for module submission.
@@ -63,7 +62,7 @@ class ModuleHolder_Controller extends ExtensionCRUD_Controller {
 		$content = $this->addContent;
 		$content['Form'] = $this->AddForm();
 
-		return $this->customise($content)->renderWith(array('ExtensionCRUDPage', 'Page'));
+		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
 	}
 
 	/**

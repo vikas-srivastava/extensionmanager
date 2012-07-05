@@ -1,12 +1,11 @@
 <?php
-class ExtensionCRUD extends Page {
+class ExtensionHolder extends Page {
 
 }
-class ExtensionCRUD_Controller extends Page_Controller {
+class ExtensionHolder_Controller extends Page_Controller {
 
 	public $basePage, $baseLink, $addContent, $afterEditContent;
 	public $reviewerEmail; //will use for sending mail after extension submission
-		
 	
 	/**
 	 * Setting up the form.
