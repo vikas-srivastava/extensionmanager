@@ -12,3 +12,7 @@ Director::addRules(100, array(
 Director::addRules(100, array(
     'theme' => 'Theme_Controller'
 ));
+
+Director::addRules(100, array(
+    'widget' => 'Widget_Controller'
+));
