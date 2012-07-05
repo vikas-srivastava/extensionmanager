@@ -2,11 +2,11 @@
 class ModuleHolder extends ExtensionCRUD {
 	static $db = array(
 		'AddContent' => 'HTMLText',
-	);
+		);
 
 	static $default_records = array(
 		array('Title' => "Modules")
-	);
+		);
 
 	//copied from addons module 
 	static $defaults = array(
@@ -24,7 +24,7 @@ class ModuleHolder extends ExtensionCRUD {
 
 		<p>Once your module is listed on the SilverStripe website, you can edit it via the same submission form </p>",
 		
-	);
+		);
 
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
@@ -43,24 +43,38 @@ class ModuleHolder_Controller extends ExtensionCRUD_Controller {
 	static $urlhandlers = array(
 		'addnew' => 'addnew',
 		
-	);
+		);
+
+
 	/**
 	 * Setting up the form for module submission.
 	 *
 	 * @return Array .
 	 */
 	function addNew() {
-			
+
 		$this->basePage = $this->data();
 		$this->addContent = array(
-				'Title' => 'Submit a module',
-				'Content' => $this->dataRecord->AddContent
+			'Title' => 'Submit a module',
+			'Content' => $this->dataRecord->AddContent
 			);
 		$this->reviewerEmail = 'modules@silverstripe.org';
 
 		$content = $this->addContent;
 		$content['Form'] = $this->AddForm();
-						
+
 		return $this->customise($content)->renderWith(array('ExtensionCRUDPage', 'Page'));
+	}
+
+	/**
+	 * Show module list on page 
+	 *
+	 * @return Array .
+	 */
+	function moduleList() { 
+		$modules = ExtensionData::get()->filter(array('Type' => 'Module'))->sort('Name');
+			return $modules ;			
 	}	
+	//todo showing list of all module is not permanent solution 
+	//but we need more time for implementing solr or sphinx search  
 }			
