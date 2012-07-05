@@ -69,12 +69,14 @@ class ExtensionData_Controller extends Controller {
 	  *
 	  * @return array
 	  */
-	public function getExtensionData() {
+	public function getExtensionData($type) {
 		$Params = $this->getURLParams();
 		
 		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
-		{      
-			return $ExtensionData;
+		{  
+			if($ExtensionData->Type == $type) {
+				return $ExtensionData;
+			}   	
 		}
 	}
 

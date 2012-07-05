@@ -1,15 +1,15 @@
 <?php 
 
 /**
- * Acts as base class for Detailed Module Pages .
+ * Acts as base class for Detailed Theme Pages .
  *
  * @package extensionmanager
  */
-class Module extends ExtensionData {
+class Theme extends ExtensionData {
 
 }
 
-class Module_Controller extends ExtensionData_Controller {
+class Theme_Controller extends ExtensionData_Controller {
 
     static $allowed_actions = array(
         'index',
@@ -22,7 +22,7 @@ class Module_Controller extends ExtensionData_Controller {
     }
 
     public function index() {        
-        $this->redirect('modules/');
+        $this->redirect('themes/');
         
     }   
 
@@ -32,7 +32,7 @@ class Module_Controller extends ExtensionData_Controller {
       * @return array
       */
     function show() { 
-        $type = "Module" ;
+        $type = "Theme" ;
         if($ExtensionData = $this->getExtensionData($type))
         {   
             $Data = array(
@@ -42,12 +42,12 @@ class Module_Controller extends ExtensionData_Controller {
                 'Keywords' => $this->getExtensionKeywords($ExtensionData),
                 'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
             );  
-            return $this->customise($Data)->renderWith(array('Module_show', 'Page'));
+            return $this->customise($Data)->renderWith(array('Theme_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 
         }
         else
         {
-            return $this->httpError(404, 'Sorry that Module could not be found');
+            return $this->httpError(404, 'Sorry that Theme could not be found');
         }
     }
 }
