@@ -61,7 +61,7 @@ static $has_one = array(
 
 } 
 
-class ExtensionData_Controller extends Controller {
+class ExtensionData_Controller extends ContentController {
 	
 	/**
 	  * Get one Extension data from database using
