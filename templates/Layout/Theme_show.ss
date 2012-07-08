@@ -1,20 +1,13 @@
-<div class="typography">
-
-    <% include SideBar %>
-
-    <div id="Content">
-
-    <% if ExtensionData %>
+<div class="content-container">    
+    
+    <div class="content">$Content</div>
+    
+    <% if ExtensionData %>      
     <ul >
-        <% loop ExtensionData %>
-        <h1>$Name</h1>    
-
-         <% if $Url %>
-            <li>
-                <a href="$Url">Repository </a>
-            </li>
-        <% end_if %>
-
+        <% loop ExtensionData %>    
+     
+        <h1>$Name</h1>
+    
         <% if $Description %>
             <li>
                 Description : $Description
@@ -27,7 +20,7 @@
             </li>
         <% end_if %>
 
-        <% if $Homepage %>
+         <% if $Homepage %>
             <li>
                 <a href="$Homepage">Home Page</a>
             </li>
@@ -35,7 +28,13 @@
 
         <% if $ReleaseTime %>
             <li>
-                Release Time : $ReleaseTime 
+                Release Date : $ReleaseTime.nice 
+            </li>
+        <% end_if %>
+
+        <% if $Url %>
+            <li>
+                <h4><a href="$Url">Download From Repository </a></h4>
             </li>
         <% end_if %>
 
@@ -100,7 +99,7 @@
         <% end_if %> 
         -->
         <% if $AuthorsDetail %>
-            <h1>AuthorsDetail</h1>
+            <h2>Authors Detail</h2>
             <% loop AuthorsDetail %>
             <ul>
                 <% if $AuthorName %>
@@ -134,6 +133,4 @@
 
     </ul>
         
-    </div>
-
 </div>
