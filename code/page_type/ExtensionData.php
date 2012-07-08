@@ -74,12 +74,12 @@ class ExtensionData_Controller extends ContentController {
 		
 		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID']))
 		{  
-			if($ExtensionData->Type == $type) {
+			if($ExtensionData->Type == $type && $ExtensionData->Accepted == "1" ) {
 				return $ExtensionData;
-			}   	
+			}
 		}
 	}
-
+	
     /**
 	  * Get Name of submiited by Member
 	  *
@@ -112,29 +112,29 @@ class ExtensionData_Controller extends ContentController {
 	  */
     static function getExtensionAuthorsInfo($ExtensionData) {
     	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
-      	
-      	$AuthorsData = array();
+    	
+    	$AuthorsData = array();
 
-      	if(array_key_exists('name', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
-      	}
+    	if(array_key_exists('name', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
+    	}
 
-      	if(array_key_exists('email', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
-      	}
+    	if(array_key_exists('email', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
+    	}
 
-      	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
-      	}
+    	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
+    	}
 
-      	if(array_key_exists('role', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
-      	}
+    	if(array_key_exists('role', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
+    	}
 
-      	return $AuthorsData  ;
-      	
+    	return $AuthorsData  ;
+    	
         //todo now it can display only one author info .. not checking if value is set
-}
+    }
 
     /**
 	  * Get URL's of other repository of this extension

@@ -13,8 +13,7 @@ class Module_Controller extends ExtensionData_Controller {
 
     static $allowed_actions = array(
         'index',
-        'show',
-        
+        'show',   
         );
 
     public function init() {
