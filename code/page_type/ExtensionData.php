@@ -12,11 +12,9 @@ class ExtensionData extends DataObject {
 		'Accepted' => 'Boolean',
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
-		'Version' => 'VarChar(500)',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
-		'ReleaseTime' => 'SS_Datetime',
 		'Licence' => 'VarChar(500)',
 		'AuthorsInfo' => 'VarChar(500)',
 		'SupportEmail' => 'VarChar(100)',
@@ -57,25 +55,31 @@ static $summary_fields = array(
 static $has_one = array(
 	'SubmittedBy' => 'Member',
 	);
+
+static $has_many = array(
+	'ExtensionVersion' => 'ExtensionVersion',
+	);
 } 
 
-class ExtensionData_Controller extends Controller {
+class ExtensionData_Controller extends ContentController {
 	
 	/**
 	  * Get one Extension data from database using
 	  * Url ID
 	  *
+	  * @param string $type
 	  * @return array
 	  */
-	public function getExtensionData() {
+	public function getExtensionData($type) {
 		$Params = $this->getURLParams();
-	
-		if(is_numeric($Params['ID']) && $extensionData = ExtensionData::get()->byID((int)$Params['ID']))
-		{      
-			return $extensionData;
+		
+		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {  
+			if($ExtensionData->Type == $type && $ExtensionData->Accepted == "1" ) {
+				return $ExtensionData;
+			}
 		}
 	}
-
+	
     /**
 	  * Get Name of submiited by Member
 	  *
@@ -106,31 +110,30 @@ class ExtensionData_Controller extends Controller {
 	  * @param ExtensionData
 	  * @return array
 	  */
-    static function getExtensionAuthorsInfo($extensionData) {
-    	$AuthorsInfo = unserialize($extensionData->AuthorsInfo);
-      	
-      	$AuthorsData = array();
+    static function getExtensionAuthorsInfo($ExtensionData) {
+    	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
+    	
+    	$AuthorsData = array();
 
-      	if(array_key_exists('name', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
-      	}
+    	if(array_key_exists('name', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
+    	}
 
-      	if(array_key_exists('email', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
-      	}
+    	if(array_key_exists('email', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
+    	}
 
-      	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
-      	}
+    	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
+    	}
 
-      	if(array_key_exists('role', $AuthorsInfo['0'])) {
-      		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
-      	}
+    	if(array_key_exists('role', $AuthorsInfo['0'])) {
+    		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
+    	}
 
-      	return $AuthorsData  ;
-     
+    	return $AuthorsData  ;
         //todo now it can display only one author info .. not checking if value is set
-}
+    }
 
     /**
 	  * Get URL's of other repository of this extension

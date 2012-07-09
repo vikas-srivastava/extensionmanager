@@ -9,16 +9,20 @@
 class ExtensionHolder extends Page {
 
 }
-
 class ExtensionHolder_Controller extends Page_Controller {
 
+	public $basePage, $baseLink, $addContent, $afterEditContent;
+	public $reviewerEmail; //todo will use for sending mail after extension submission
+	
 	/**
 	 * Setting up the form.
 	 *
 	 * @return Form .
 	 */
-	public function UrlForm() {
-		if(!Member::currentUser()) return Security::permissionFailure();		
+	public function AddForm() {
+
+		if(!Member::currentUser()) return Security::permissionFailure();
+		
 		$fields = new FieldList(
 			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository') 
 			);
@@ -26,7 +30,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 			new FormAction('submitUrl', 'Submit')
 			);
 		$validator = new RequiredFields('URL');
-		return new Form($this, 'UrlForm', $fields, $actions, $validator);
+		return new Form($this, 'AddForm', $fields, $actions, $validator);
 	}
 
 	/**
@@ -44,19 +48,28 @@ class ExtensionHolder_Controller extends Page_Controller {
 		
 		if($jsonData['Data']) {
 			if($this->isNewExtension($url)) {
-				$saveJson = $json->saveJson($url,$jsonData['Data']);
+				$saveJson = $json->saveJson();
 				if($saveJson) {
-					$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
-					return $this->redirectBack();
+					//need review: is it right way to get last written dataobject
+					$id = $saveJson;
+					$saveVersion = $json->saveVersionData($id);
+					if($saveVersion){
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
+						return $this->redirectBack();
+					}
 				} else {
 					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','We are unable to save module info, Please Re-check format of you composer.json file. '),'bad');
 					return $this->redirectBack();
 				}
 			} else {
-				$updateJson = $json->updateJson($url, $jsonData['Data']);
+				$updateJson = $json->updateJson();
 				if($updateJson) {
-					$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
-					return $this->redirectBack();
+					$id = $updateJson;
+					$updateVersion = $json->updateVersionData($id);
+					if($updateVersion) {
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
+						return $this->redirectBack();
+					}
 				} else {
 					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINUPDATING','We are unable to UPDATE module info, Please Re-check format of you composer.json file. '),'bad');
 					return $this->redirectBack();
