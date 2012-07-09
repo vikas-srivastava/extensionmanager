@@ -66,7 +66,7 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 * @return Array .
 	 */
 	function themeList() { 
-		$themes = ExtensionData::get()->filter(array('Type' => 'Theme'))->sort('Name');
+		$themes = ExtensionData::get()->filter(array('Type' => 'Theme','Accepted' => '1'))->sort('Name');
 			return $themes ;			
 	}	
 	//todo showing list of all themes is not permanent solution 

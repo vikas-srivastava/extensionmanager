@@ -13,7 +13,7 @@
 	<% end_loop %>
 	</ol>
 	
-	<h3>Submit new Module</h3>
+	<h3>Submit new Theme</h3>
 	<p><h3><a class="submitButton" href="{$Link}addnew">Here</a></h3></p>
 			
 	$PageComments

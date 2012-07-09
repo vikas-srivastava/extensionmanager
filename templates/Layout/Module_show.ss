@@ -1,3 +1,8 @@
+<!-- ToDo -
+Right Now all module/widget/themes are look similar. But they will change later
+according to diffrent design and data
+-->
+
 <div class="content-container">    
 
     <div class="content">$Content</div>

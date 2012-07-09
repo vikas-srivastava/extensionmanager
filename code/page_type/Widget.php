@@ -41,6 +41,8 @@ class Widget_Controller extends ExtensionData_Controller {
                 'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
                 'Keywords' => $this->getExtensionKeywords($ExtensionData),
                 'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
+                'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
+                'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
             );  
             return $this->customise($Data)->renderWith(array('Widget_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 

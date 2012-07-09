@@ -71,7 +71,7 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 * @return Array .
 	 */
 	function widgetList() { 
-		$modules = ExtensionData::get()->filter(array('Type' => 'Widget'))->sort('Name');
+		$modules = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
 			return $modules ;			
 	}	
 	//todo showing list of all widget is not permanent solution 
