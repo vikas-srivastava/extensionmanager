@@ -43,7 +43,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		
 		if($jsonData['Data']) {
 			if($this->isNewExtension($url)) {
-				$saveJson = $json->saveJson($url,$jsonData['Data']);
+				$saveJson = $json->saveJson();
 				if($saveJson) {
 					$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
 					return $this->redirectBack();
