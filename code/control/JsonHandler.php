@@ -1,5 +1,4 @@
 <?php
-
 /**
  * All task related to json file.
  * 
@@ -12,55 +11,59 @@
  *
  * @package extensionmanager
  */
-
+use Composer\Config;
 use Composer\IO\NullIO;
 use Composer\Factory;
 use Composer\Repository\VcsRepository;
 use Composer\Repository\RepositoryManager;
-use Composer\Package\Version\VersionParser;
 
-class JsonHandler extends RequestHandler {
+class JsonHandler extends ContentController {
 	
-	private $url;
-
-	private $jsonData;
-	
+	public $url;
+	public $jsonData;
+	public $versionData;
 	/**
 	  * Convert a module url into json content 
 	  *
 	  * @param string $url
 	  * @return array $data
 	  */
-	function cloneJson($url) { 
+	public function cloneJson($url) { 
 		$this->url = $url ;
 		
 		try{	
-			$config = Factory::createConfig();
+			$config = new Config();
+			$config->merge(array('config' => array('home' => '/home/vikas/.composer')));
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-			//$packages = $repo->getPackages();	
-			/*$distUrl = new PackageInterface;
-			$packageUrl = $distType->getDistUrl;*/
 			$driver = $repo->getDriver();
 			if(!isset($driver)) {
-				return ;
+				return false;
 			} 
 			$data = $driver->getComposerInformation($driver->getRootIdentifier());
-			
-			$this->jsonData = $data ;
 
+			if($data) {
+				$this->jsonData = $data;
+			}	
+			
+			$versions =  $repo->getPackages();			
+			
+			if($versions) {
+				$this->versionData = $versions;
+			}
+			
 			return array(
-				'Data' => $data,	
-			);
+				'Data' => $data,
+				'Versions' => $versions,
+				);
 			
 		} catch (Exception $e) {
-			return ;
+			return false;
 		}
 	}
 
 	/**
 	  * Save json content in database  
 	  *
-	  * @param string $url, Array $jsonData 
 	  * @return boolean
 	  */
 	function saveJson() {
@@ -69,21 +72,22 @@ class JsonHandler extends RequestHandler {
 		$Json->Url = $this->url;
 		$result = $this->dataFields($Json);
 		return $result ;
-		}			
+	}			
 
 	/**
 	  * update json content in database  
 	  *
-	  * @param string $url, Array $jsonData 
 	  * @return boolean
 	  */
 	function updateJson() {
-		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
+
+		$Json = ExtensionData::get()->filter(array("Url" => "$this->url"))->First();
+
 		if($Json) {
 			$result = $this->dataFields($Json);
 			return $result ;
 		} else {
-			return false ;
+			return Null ;
 		}		
 	}
 
@@ -91,7 +95,7 @@ class JsonHandler extends RequestHandler {
 	  * Save each property of json content 
 	  * in corresponidng field of database  
 	  *
-	  * @param string $url, Array $jsonData 
+	  * @param  object $Json 
 	  * @return boolean
 	  */
 	function dataFields($Json) {
@@ -211,7 +215,6 @@ class JsonHandler extends RequestHandler {
 			$Json->Repositories = serialize($this->jsonData['repositories']);
 		}
 
-
 		if(array_key_exists('include-path',$this->jsonData)) {
 			$Json->IncludePath = serialize($this->jsonData['include-path']);
 		}
@@ -223,8 +226,91 @@ class JsonHandler extends RequestHandler {
 		if(array_key_exists('minimum-stability', $this->jsonData)) {
 			$Json->MinimumStability = $this->jsonData['minimum-stability'];
 		}
-
-		$Json->write();
-		return true ;
+		$Json->write() ;
+		return $Json->ID;
 	}
-}   
+
+	/**
+	  * Save Version related data of Extension 
+	  *
+	  * @param int $id  
+	  * @return boolean
+	  */
+	public function saveVersionData($id) {
+		
+		$availableVersions = count($this->versionData);
+		for ($i=0; $i < $availableVersions ; $i++) { 
+			$version = new ExtensionVersion();
+			$version->ExtensionDataID = $id;
+			$result = $this->versionDataField($version,$this->versionData[$i]);
+		}
+		return $result ;
+	}
+	
+ 	/**
+	  * Update Version related data of Extension 
+	  *
+	  * @param int $id  
+	  * @return boolean
+	  */
+ 	//something strange happening probably wrong way to update each row ?
+ 	public function updateVersionData($id) { 
+ 		$version = ExtensionVersion::get()->filter(array('ExtensionDataID' => "$id"));
+ 		$availableVersions = count($this->versionData);
+ 		if($version) { 
+ 			for($i=0; $i < $availableVersions ; $i++) {
+ 				$result = $this->versionDataField($version[$i],$this->versionData[$i]);
+ 			} return $result ;
+ 		} else {
+ 			return false ;
+ 		}
+ 	}
+
+	/**
+	  * Save each version related property of json content 
+	  *
+	  * @param  object $version, object $Data 
+	  * @return boolean
+	  */
+	public function versionDataField($version,$data) {
+		
+		if($Data->getSourceType()) {
+			$version->SourceType = $data->getSourceType();
+		}
+
+		if($Data->getSourceUrl()) {
+			$version->SourceUrl = $data->getSourceUrl();
+		}
+		
+		if($Data->getSourceReference()) {
+			$version->SourceReference = $data->getSourceReference();
+		}
+
+		if($Data->getDistType()) {
+			$version->DistType = $data->getDistType();
+		}
+
+		if($Data->getDistUrl()) {
+			$version->DistUrl = $data->getDistUrl();
+		}
+
+		if($Data->getDistReference()) {
+			$version->DistReference = $data->getDistReference();
+		}
+
+		if($Data->getDistSha1Checksum()) {
+			$version->DistSha1Checksum = $data->getDistSha1Checksum();
+		}
+
+		if($Data->getVersion()) {
+			$version->Version = $data->getVersion();
+		}
+
+		if($Data->getPrettyVersion()) {
+			$version->PrettyVersion = $data->getPrettyVersion();
+		}
+		
+		$version->write();
+		return true;
+	}
+}
