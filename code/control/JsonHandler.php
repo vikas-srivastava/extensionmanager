@@ -23,14 +23,14 @@ class JsonHandler extends RequestHandler {
 	
 	private $url;
 	private $jsonData;
-	private $versionParser;
+	private $versionData;
 	/**
 	  * Convert a module url into json content 
 	  *
 	  * @param string $url
 	  * @return array $data
 	  */
-	function cloneJson($url) { 
+	public function cloneJson($url) { 
 		$this->url = $url ;
 		
 		try{	
@@ -38,24 +38,23 @@ class JsonHandler extends RequestHandler {
     		$config->merge(array('config' => array('home' => '/home/vikas/.composer')));
 			//$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-			/*$driver = $repo->getDriver();
+			$driver = $repo->getDriver();
 			if(!isset($driver)) {
 				return false;
 			} 
-			$data = $driver->getComposerInformation($driver->getRootIdentifier());*/
-			/*return array(
-				'Data' => $data,		
-			);*/
+			$data = $driver->getComposerInformation($driver->getRootIdentifier());
 			
-			$packages =  $repo->getPackages();
-			$subpackages = $packages['0'];
-			$bb = $packages['1']->getType();
-			//Debug::show($bb);
+			if($data) {
+				$this->$jsonData = $data;
+			}	
 
-			return $bb;
+			$versions =  $repo->getPackages();
 
-				
-
+			return array(
+				'Data' => $data,
+				'Versions' => $versions,
+				);
+	
 		} catch (Exception $e) {
 			return false;
 		}
@@ -67,19 +66,15 @@ class JsonHandler extends RequestHandler {
 	  * @param string $url, Array $jsonData 
 	  * @return boolean
 	  */
-	function saveJson($url,$jsonData) {
+	public function saveJson($jsonData) {
+		//$this->jsonData = $jsonData['Data'];
+		$this->versionData = $jsonData['Versions'];
+		
 		$Json = new ExtensionData();
 		$Json->SubmittedByID = Member::currentUserID();
-		//foreach ($jsonData as $key => $value) {
-			//$Json->Url = $jsonData['stability']['stable'] ;
-		//}
-		//$jj = $jsonData->stability;
-		
 		$Json->Url = $jsonData;
-		$Json->write();
-		return true ;
-		/*$result = $this->dataFields($Json, $jsonData);
-		return $result ;*/
+		$result = $this->dataFields($Json, $jsonData['Data']);
+		return $result ;
 		}			
 
 	/**
@@ -88,10 +83,10 @@ class JsonHandler extends RequestHandler {
 	  * @param string $url, Array $jsonData 
 	  * @return boolean
 	  */
-	function updateJson($url, $jsonData) {
+	public function updateJson($url, $jsonData) {
 		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
 		if($Json) {
-			$result = $this->dataFields($Json, $jsonData);
+			$result = $this->dataFields($Json,$this->jsonData);
 			return $result ;
 		} else {
 			return false ;
@@ -105,7 +100,7 @@ class JsonHandler extends RequestHandler {
 	  * @param string $url, Array $jsonData 
 	  * @return boolean
 	  */
-	function dataFields($Json, $jsonData) {
+	public function dataFields($Json, $jsonData) {
 		if(array_key_exists('name',$jsonData)) {
 			list($vendorName, $moduleName) = explode("/", $jsonData["name"]);
 			$Json->Name = $moduleName ; 
@@ -238,7 +233,44 @@ class JsonHandler extends RequestHandler {
 			$Json->MinimumStability = $jsonData['minimum-stability'];
 		}
 
-		$Json->write();
-		return true ;
+		$this->onBeforeWrite() ;
+		return true;
+	}
+
+	function onBeforeWrite() {
+		parent::onBeforeWrite();
+		$this->saveVersionData($this->id,$this->versionData);
+		$json->write;
+		} 
+
+	public function saveVersionData($id ,$versionData) {
+		
+		$availableVersions = count($versionData);
+		for ($i=0; $i <$availableVersions ; $i++) { 
+			$version = new ExtensionVersion();
+			$version->ExtensionDataID = $id;
+			$result = $this->versionDataField($version, $versionData);
+		}
+		//$result = $this->versionDataField($version, $versionData);
+		return $result ;
+	}
+
+	//todo implement update task 
+	/*public function updateVersionData($id, $versionData ) {
+		$version = ExtensionVersion::get()->byID($id);
+
+		if($version) {
+			$result = $this->versionDataField($version, $versionData);
+			return $result ;
+		} else {
+			return false ;
+		}
+
+	}*/
+
+	public function versionDataField($version, $versionData) {
+		$version->SourceType = $versionData->getSourceType();
+		$version->write();
+		return true;
 	}
 }

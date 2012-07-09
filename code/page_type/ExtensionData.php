@@ -13,8 +13,6 @@ class ExtensionData extends DataObject {
 		'Accepted' => 'Boolean',
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
-		'Version' => 'VarChar(500)',
-		'VersionNormalized' => 'VarChar(500)',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
@@ -41,8 +39,6 @@ class ExtensionData extends DataObject {
 		'IncludePath' => 'VarChar(500)',
 		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
-		'Dist' => 'VarChar(500)',
-		'Source' => 'Varchar(500)'
 		);	
 
 static $searchable_fields = array(
@@ -60,6 +56,10 @@ static $summary_fields = array(
 
 static $has_one = array(
 	'SubmittedBy' => 'Member',
+	);
+
+static $has_many = array(
+	'ExtesnsionVersion' => 'ExtesnsionVersion',
 	);
 
 } 
