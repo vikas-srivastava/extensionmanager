@@ -16,7 +16,6 @@ class ExtensionData extends DataObject {
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
-		'ReleaseTime' => 'SS_Datetime',
 		'Licence' => 'VarChar(500)',
 		'AuthorsInfo' => 'VarChar(500)',
 		'SupportEmail' => 'VarChar(100)',
@@ -59,7 +58,7 @@ static $has_one = array(
 	);
 
 static $has_many = array(
-	'ExtesnsionVersion' => 'ExtesnsionVersion',
+	'ExtensionVersion' => 'ExtensionVersion',
 	);
 
 } 
@@ -70,6 +69,7 @@ class ExtensionData_Controller extends ContentController {
 	  * Get one Extension data from database using
 	  * Url ID
 	  *
+	  * @param string $type
 	  * @return array
 	  */
 	public function getExtensionData($type) {

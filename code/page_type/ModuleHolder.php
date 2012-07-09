@@ -71,7 +71,7 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 	 * @return Array .
 	 */
 	function moduleList() { 
-		$modules = ExtensionData::get()->filter(array('Type' => 'Module'))->sort('Name');
+		$modules = ExtensionData::get()->filter(array('Type' => 'Module', 'Accepted' => '1'))->sort('Name');
 			return $modules ;			
 	}	
 	//todo showing list of all module is not permanent solution 

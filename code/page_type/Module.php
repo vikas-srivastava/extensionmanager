@@ -1,5 +1,4 @@
 <?php 
-
 /**
  * Acts as base class for Detailed Module Pages .
  *
@@ -34,12 +33,15 @@ class Module_Controller extends ExtensionData_Controller {
         $type = "Module" ;
         if($ExtensionData = $this->getExtensionData($type))
         {   
+
             $Data = array(
                 'MetaTitle' => $ExtensionData->Name,
                 'ExtensionData' => $ExtensionData,
                 'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
                 'Keywords' => $this->getExtensionKeywords($ExtensionData),
                 'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
+                'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
+                'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
             );  
             return $this->customise($Data)->renderWith(array('Module_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 

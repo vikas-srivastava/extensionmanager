@@ -309,6 +309,11 @@ class JsonHandler extends ContentController {
 		if($data->getPrettyVersion()) {
 			$version->PrettyVersion = $data->getPrettyVersion();
 		}
+
+		//todo add release data of each version 
+		/*if($data->getReleaseDate()) {
+			$version->ReleaseDate = $data->getReleaseDate();
+		}*/
 		
 		$version->write();
 		return true;
