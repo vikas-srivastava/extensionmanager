@@ -274,39 +274,39 @@ class JsonHandler extends ContentController {
 	  */
 	public function versionDataField($version,$data) {
 		
-		if($Data->getSourceType()) {
+		if($data->getSourceType()) {
 			$version->SourceType = $data->getSourceType();
 		}
 
-		if($Data->getSourceUrl()) {
+		if($data->getSourceUrl()) {
 			$version->SourceUrl = $data->getSourceUrl();
 		}
 		
-		if($Data->getSourceReference()) {
+		if($data->getSourceReference()) {
 			$version->SourceReference = $data->getSourceReference();
 		}
 
-		if($Data->getDistType()) {
+		if($data->getDistType()) {
 			$version->DistType = $data->getDistType();
 		}
 
-		if($Data->getDistUrl()) {
+		if($data->getDistUrl()) {
 			$version->DistUrl = $data->getDistUrl();
 		}
 
-		if($Data->getDistReference()) {
+		if($data->getDistReference()) {
 			$version->DistReference = $data->getDistReference();
 		}
 
-		if($Data->getDistSha1Checksum()) {
+		if($data->getDistSha1Checksum()) {
 			$version->DistSha1Checksum = $data->getDistSha1Checksum();
 		}
 
-		if($Data->getVersion()) {
+		if($data->getVersion()) {
 			$version->Version = $data->getVersion();
 		}
 
-		if($Data->getPrettyVersion()) {
+		if($data->getPrettyVersion()) {
 			$version->PrettyVersion = $data->getPrettyVersion();
 		}
 		
