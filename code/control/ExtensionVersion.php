@@ -1,6 +1,7 @@
 <?php
-class ExtesnsionVersion extends DataObject {
-	static $db = array(	
+class ExtensionVersion extends DataObject {
+	
+    static $db = array(	
 	'SourceType' => 'Varchar(300)',
     'SourceUrl' => 'Varchar(300)',
     'SourceReference' => 'Varchar(300)',
@@ -9,9 +10,16 @@ class ExtesnsionVersion extends DataObject {
     'DistReference' => 'Varchar(300)',
     'DistSha1Checksum' => 'Varchar(300)',
     'Version' => 'Varchar(300)',
+    'PrettyVersion' => 'Varchar(300)',
     );
 
     static $has_one = array(
 	'ExtensionData' => 'ExtensionData',
 	);
+
+    static $summary_fields = array(
+    'ID',
+    'ExtensionDataID',
+    'PrettyVersion',
+    );
 }

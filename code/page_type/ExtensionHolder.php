@@ -13,7 +13,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 * @return Form .
 	 */
 	public function AddForm() {
-			
+
 		if(!Member::currentUser()) return Security::permissionFailure();
 		
 		$fields = new FieldList(
@@ -41,28 +41,30 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
 		
-		if($jsonData) {
+		if($jsonData['Data']) {
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
 				if($saveJson) {
-					$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
-					return $this->redirectBack();
+					//need review: is it right way to get last written dataobject
+					$id = $saveJson;
+					$saveVersion = $json->saveVersionData($id);
+					if($saveVersion){
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
+						return $this->redirectBack();
+					}
 				} else {
 					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','We are unable to save module info, Please Re-check format of you composer.json file. '),'bad');
 					return $this->redirectBack();
 				}
-
-				//$saveVersions 
-				$availableVersions = count($jsonData['Versions']);
-				for ($i=0; $i < $availableVersions ; $i++) { 
-					$json->saveVersions($jsonData[$i]);
-				}
-
 			} else {
-				$updateJson = $json->updateJson($url, $jsonData);
+				$updateJson = $json->updateJson();
 				if($updateJson) {
-					$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
-					return $this->redirectBack();
+					$id = $updateJson;
+					$updateVersion = $json->updateVersionData($id);
+					if($updateVersion) {
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
+						return $this->redirectBack();
+					}
 				} else {
 					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINUPDATING','We are unable to UPDATE module info, Please Re-check format of you composer.json file. '),'bad');
 					return $this->redirectBack();
@@ -88,5 +90,4 @@ class ExtensionHolder_Controller extends Page_Controller {
 			return false;
 		}
 	}
-
 } 
