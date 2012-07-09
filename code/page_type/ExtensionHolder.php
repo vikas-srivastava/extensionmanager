@@ -40,10 +40,11 @@ class ExtensionHolder_Controller extends Page_Controller {
 		
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
-		
-		if($jsonData['Data']) {
+		$saveJson = $json->saveJson($url,$jsonData);
+		return $this->redirectBack();
+		/*if($jsonData) {
 			if($this->isNewExtension($url)) {
-				$saveJson = $json->saveJson($url,$jsonData['Data']);
+				$saveJson = $json->saveJson($url,$jsonData);
 				if($saveJson) {
 					$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
 					return $this->redirectBack();
@@ -52,7 +53,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 					return $this->redirectBack();
 				}
 			} else {
-				$updateJson = $json->updateJson($url, $jsonData['Data']);
+				$updateJson = $json->updateJson($url, $jsonData);
 				if($updateJson) {
 					$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
 					return $this->redirectBack();
@@ -64,7 +65,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		} else {
 			$form->sessionMessage(_t('ExtensionHolder.NOJSON','Sorry we could not find any composer.json file on given url. please submit url again'), 'bad');
 			return $this->redirectBack();
-		}			
+		}	*/		
 	}
 
 	/**

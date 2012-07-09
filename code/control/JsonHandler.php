@@ -1,5 +1,4 @@
 <?php
-
 /**
  * All task related to json file.
  * 
@@ -12,19 +11,19 @@
  *
  * @package extensionmanager
  */
-
+use Composer\Config;
 use Composer\IO\NullIO;
 use Composer\Factory;
 use Composer\Repository\VcsRepository;
 use Composer\Repository\RepositoryManager;
 use Composer\Package\Version\VersionParser;
+use Composer\Package\Loader\ArrayLoader;
 
 class JsonHandler extends RequestHandler {
 	
 	private $url;
-
 	private $jsonData;
-	
+	private $versionParser;
 	/**
 	  * Convert a module url into json content 
 	  *
@@ -35,23 +34,30 @@ class JsonHandler extends RequestHandler {
 		$this->url = $url ;
 		
 		try{	
-			$config = Factory::createConfig();
+			$config = new Config();
+    		$config->merge(array('config' => array('home' => '/home/vikas/.composer')));
+			//$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-			//$packages = $repo->getPackages();	
-			/*$distUrl = new PackageInterface;
-			$packageUrl = $distType->getDistUrl;*/
-			$driver = $repo->getDriver();
+			/*$driver = $repo->getDriver();
 			if(!isset($driver)) {
-				return ;
+				return false;
 			} 
-			$data = $driver->getComposerInformation($driver->getRootIdentifier());
-			return array(
-				'Data' => $data,
-				
-			);
+			$data = $driver->getComposerInformation($driver->getRootIdentifier());*/
+			/*return array(
+				'Data' => $data,		
+			);*/
 			
+			$packages =  $repo->getPackages();
+			$subpackages = $packages['0'];
+			$bb = $packages['1']->getType();
+			//Debug::show($bb);
+
+			return $bb;
+
+				
+
 		} catch (Exception $e) {
-			return ;
+			return false;
 		}
 	}
 
@@ -64,9 +70,16 @@ class JsonHandler extends RequestHandler {
 	function saveJson($url,$jsonData) {
 		$Json = new ExtensionData();
 		$Json->SubmittedByID = Member::currentUserID();
-		$Json->Url = $url;
-		$result = $this->dataFields($Json, $jsonData);
-		return $result ;
+		//foreach ($jsonData as $key => $value) {
+			//$Json->Url = $jsonData['stability']['stable'] ;
+		//}
+		//$jj = $jsonData->stability;
+		
+		$Json->Url = $jsonData;
+		$Json->write();
+		return true ;
+		/*$result = $this->dataFields($Json, $jsonData);
+		return $result ;*/
 		}			
 
 	/**
@@ -104,6 +117,10 @@ class JsonHandler extends RequestHandler {
 		
 		if(array_key_exists('version',$jsonData)) {
 			$Json->Version = $jsonData['version'];
+		}
+
+		if(array_key_exists('version_normalized',$jsonData)) {
+			$Json->VersionNormalized = $jsonData['version_normalized'];
 		}
 
 		if(array_key_exists('type',$jsonData)) {
@@ -209,7 +226,6 @@ class JsonHandler extends RequestHandler {
 			$Json->Repositories = serialize($jsonData['repositories']);
 		}
 
-
 		if(array_key_exists('include-path',$jsonData)) {
 			$Json->IncludePath = serialize($jsonData['include-path']);
 		}
@@ -225,4 +241,4 @@ class JsonHandler extends RequestHandler {
 		$Json->write();
 		return true ;
 	}
-}   
+}
