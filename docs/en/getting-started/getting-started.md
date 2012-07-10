@@ -3,7 +3,7 @@
 ## Requirements
 
  * silverstripe 3.0
- * composer [https://github.com/composer/composer]
+ * [https://github.com/composer/composer](composer )
 
 ## Installation
 
