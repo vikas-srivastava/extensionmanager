@@ -28,3 +28,5 @@ Widget Page:
 ![Detail Module page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/widget-page.png)
 
 Detail pages are using [show()](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Module.php#L32) function of controller and by writing few Url rule. Every detail page link looks like ``path/to/root/module/show/extensionId``.
+
+### 	[Previous](https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/topics/submit-extension.md)		[Next](https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/topics/update-extension.md)

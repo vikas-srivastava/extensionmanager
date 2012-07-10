@@ -25,4 +25,6 @@ For approving module we need to check approved field in Model Admin of Extension
 Now approved module is appearing on module listing.
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/listing-of-approved-modules.png)
 
-Similar steps are required for all other types of extensions (Theme/Widget) .
+Similar steps are required for all other types of extensions (Theme/Widget).
+
+### 	[Previous](https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/topics/add-search-pages.md)		[Next](https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/topics/detail-module-page.md)

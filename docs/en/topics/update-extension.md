@@ -15,3 +15,5 @@ Update of extension can be done in either of two methods.
 We have created one scheduled task class [JsonUpdateTask](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/task/JsonUpdateTask.php#L1) which can be run manually or by using cron job. 
 
 ![Extension submission form](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/update-by-cron.png)
+
+### 	[Previous](https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/topics/detail-module-page.md)
