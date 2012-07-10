@@ -4,7 +4,7 @@ Each Extension Holder page contains link to form submission. Following step requ
 
 ![Create Page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/module-page.png)
 
-By submitting read-only address of repository we are fetching all the information of [composer.json](https://github.com/vikas-srivastava/demo_composer_module/blob/master/composer.json#L1) file placed in root of module directory using [composer](https://github.com/composer/composer). Along with content of composer.json we are also fetching data of all orher versions.
+By submitting read-only address of repository we are fetching all the information of [composer.json](https://github.com/vikas-srivastava/demo_composer_module/blob/master/composer.json#L1) file placed in root of module directory using [composer](https://github.com/composer/composer). Along with content of composer.json we are also fetching data of all other versions.
 
 ![Extension submission form](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/module-submission-form.png)
 
@@ -23,6 +23,7 @@ For approving module we need to check approved field in Model Admin of Extension
 ![Model Admin](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/approving-extension.png)
 
 Now approved module is appearing on module listing.
+
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/listing-of-approved-modules.png)
 
 Similar steps are required for all other types of extensions (Theme/Widget).

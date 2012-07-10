@@ -19,7 +19,7 @@ extension.silverstripe.org (proposed website for silverstripe extensions)
 ## Documentation
  
  * http://openbees.blogspot.in/
- * https://github.com/silverstripe/gsoc-wiki/wiki/GSOC-2012-Project:-Improve-silverstripe.org-Modules-and-Widgets-page
+ * https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/index.md 
  
 ## Installation Instructions
  
