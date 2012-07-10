@@ -6,14 +6,14 @@ We will create 3 pages for each extension type (Module/Widget/Theme). Right now 
 
 Go to CMS select Module Holder Page type and create Modules page. 
 
-![Select Page type](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/create-module-page-1.png) 
+![Select Page type](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/create-module-page-1.png) 
 
-![Create Page](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/create-module-page-2.png)
+![Create Page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/create-module-page-2.png)
 
 ## Add Themes/Widget pages :
 
 Similarly create pages of Theme Holder and Widget Holder page type.
 
-![Create Themes Page ](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/create-themes-page.png)
+![Create Themes Page ](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/create-themes-page.png)
   
-![Create Widgets Page](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/create-widgets-page.png)
+![Create Widgets Page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/create-widgets-page.png)
