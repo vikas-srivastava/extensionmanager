@@ -12,10 +12,12 @@
 			
 	<% end_loop %>
 	</ol>
-	
-	<h3>Submit new Theme</h3>
-	<p><h3><a class="submitButton" href="{$Link}addnew">Here</a></h3></p>
 			
 	$PageComments
+
 </div>
 <% include SideBar %>
+
+	<aside>
+		<h3><a class="submitButton" href="{$Link}addnew">Submit new Theme Here</a></h3>	
+	</aside>
