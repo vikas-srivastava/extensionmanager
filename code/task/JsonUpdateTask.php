@@ -11,16 +11,16 @@ class JsonUpdateTask extends DailyTask {
 	}
 
 	function updateJson() {
-		$jsonFile = ExtensionPage::get();
+		$jsonFile = ExtensionData::get();
 		$count = 0;
 		if ($jsonFile && !empty($jsonFile)) {
 			$count = $jsonFile->Count();
 			foreach ($jsonFile as $jsonFile) {
 				$json = new JsonHandler();
 				$jsonData = $json->cloneJson($jsonFile->Url);
-				$updateJson = $json->UpdateJson($jsonFile->Url,$jsonData);               
+				$updateJson = $json->UpdateJson();               
 				if($updateJson) {
-					echo "{$jsonFile->Name}  is updated <br />" ;
+					echo "<br />{$jsonFile->Name}  is updated <br />" ;
 				}
 				else {
 					echo  "{$jsonFile->Name}  could not updated <br />" ;
