@@ -1,6 +1,6 @@
 # Detail Extension Page 
 
-After approving every extenion we can get a detail page for extension. For creating detail page we are using coustom controller for each extension type ( [Module]() / [widget]() / [Theme]()).
+After approving Extension we can get a detail page for extension. For creating detail page we are using coustom controller for each extension type ( [Module](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Module.php) / [widget](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Widget.php) / [Theme](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Theme.php)).
 
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/listing-of-approved-modules.png)
 
@@ -26,3 +26,5 @@ Theme Page:
 Widget Page: 
 
 ![Detail Module page](https://github.com/vikas-srivastava/extensionmanager/raw/doc/docs/img/widget-page.png)
+
+Detail pages are using [show()](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Module.php#L32) function of controller and by writing few Url rule. Every detail page link looks like ``path/to/root/module/show/extensionId``.
