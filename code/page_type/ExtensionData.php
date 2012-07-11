@@ -63,6 +63,13 @@ static $has_many = array(
 
 class ExtensionData_Controller extends ContentController {
 	
+	public $type;
+
+	static $allowed_actions = array(
+        'index',
+        'show',   
+        );
+
 	/**
 	  * Get one Extension data from database using
 	  * Url ID
@@ -70,11 +77,11 @@ class ExtensionData_Controller extends ContentController {
 	  * @param string $type
 	  * @return array
 	  */
-	public function getExtensionData($type) {
+	public function getExtensionData() {
 		$Params = $this->getURLParams();
 		
 		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {  
-			if($ExtensionData->Type == $type && $ExtensionData->Accepted == "1" ) {
+			if($ExtensionData->Type == $this->type && $ExtensionData->Accepted == "1" ) {
 				return $ExtensionData;
 			}
 		}
@@ -143,5 +150,31 @@ class ExtensionData_Controller extends ContentController {
 	  */
     static function getExtensionRepositories($extensionData) {
     	$Repositories = unserialize($extensionData->TargetDir);	
+    }
+
+    /**
+      * Show module data   
+      *
+      * @return array
+      */
+    function show() { 
+
+        //$type = "Module" ;
+        if($ExtensionData = $this->getExtensionData($this->type)) {   
+            $Data = array(
+                'MetaTitle' => $ExtensionData->Name,
+                'ExtensionData' => $ExtensionData,
+                'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
+                'Keywords' => $this->getExtensionKeywords($ExtensionData),
+                'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
+                'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
+                'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
+            );  
+            return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
+            //todo .. not rendering header and navigation templates from theme 
+        }
+        else{
+            return $this->httpError(404, "Sorry that $this->type could not be found");
+        }
     }
 }
