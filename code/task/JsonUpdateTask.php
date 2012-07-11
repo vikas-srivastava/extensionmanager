@@ -11,24 +11,31 @@ class JsonUpdateTask extends DailyTask {
 	}
 
 	function updateJson() {
-		$jsonFile = ExtensionData::get();
+		$extensionData = ExtensionData::get();
 		$count = 0;
-		if ($jsonFile && !empty($jsonFile)) {
-			$count = $jsonFile->Count();
-			foreach ($jsonFile as $jsonFile) {
+		if ($extensionData && !empty($extensionData)) {
+			$count = $extensionData->Count();
+			foreach ($extensionData as $extension) {
 				$json = new JsonHandler();
-				$jsonData = $json->cloneJson($jsonFile->Url);
+				$jsonData = $json->cloneJson($extension->Url);
 				$updateJson = $json->UpdateJson();               
 				if($updateJson) {
-					echo "<br />{$jsonFile->Name}  is updated <br />" ;
+					$id = $updateJson;
+					$deleteVersion = $json->deleteVersionData($id);
+					if($deleteVersion){
+						$saveVersion = $json->saveVersionData($id);
+						if($saveVersion){
+						echo "<br />$$extension->Name is updated <br />" ;
+						}
+					}	
 				}
 				else {
-					echo  "{$jsonFile->Name}  could not updated <br />" ;
+					echo  "$extension->Name  could not updated <br />" ;
 				}
 			}
 			echo "<br /><br /><strong>{$count} Json File processed...</strong><br />";
 		} else { 
-			echo 'No jsonFile found...';
+			echo 'No Extension found...';
 		}	
 	}
 }
