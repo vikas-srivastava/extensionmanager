@@ -65,9 +65,15 @@ class ExtensionHolder_Controller extends Page_Controller {
 				$updateJson = $json->updateJson();
 				if($updateJson) {
 					$id = $updateJson;
-					$updateVersion = $json->updateVersionData($id);
-					if($updateVersion) {
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating Your Module'),'good');
+					$deleteVersion = $json->deleteVersionData($id);
+					if($deleteVersion){
+						$saveVersion = $json->saveVersionData($id);
+						if($saveVersion){
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating you extension'),'good');
+						return $this->redirectBack();
+						}
+					} else {
+						$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','Something went wrong we are not able to save versions of submitted extension '),'bad');
 						return $this->redirectBack();
 					}
 				} else {

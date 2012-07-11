@@ -80,7 +80,7 @@ class JsonHandler extends ContentController {
 	  */
 	function updateJson() {
 
-		$Json = ExtensionData::get()->filter(array("Url" => "$this->url"))->First();
+		$Json = ExtensionData::get()->filter(array("Url" => $this->url))->First();
 
 		if($Json) {
 			$result = $this->dataFields($Json);
@@ -246,24 +246,15 @@ class JsonHandler extends ContentController {
 		return $result ;
 	}
 
- 	/**
-	  * Update Version related data of Extension 
+	/**
+	  * Delete old version of extension  
 	  *
-	  * @param int $id  
+	  * @param  int $id 
 	  * @return boolean
 	  */
- 	//something strange happening probably wrong way to update each row ?
- 	public function updateVersionData($id) { 
- 		$version = ExtensionVersion::get()->filter(array('ExtensionDataID' => "$id"));
- 		$availableVersions = count($this->versionData);
- 		if($version) { 
- 			for($i=0; $i < $availableVersions ; $i++) {
- 				$result = $this->versionDataField($version[$i],$this->versionData[$i]);
- 			} return $result ;
- 		} else {
- 			return false ;
- 		}
- 	}
+	public function deleteVersionData($id){
+		return ExtensionVersion::get()->filter('ExtensionDataID', $id)->removeAll();
+	}
 
 	/**
 	  * Save each version related property of json content 
