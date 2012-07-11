@@ -8,11 +8,11 @@ By submitting read-only address of repository we are fetching all the informatio
 
 ![Extension submission form](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/module-submission-form.png)
 
-After sucessfull submission we are getting this form messeage.
+After successful submission we are getting this form message.
 
 ![Module submitted](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/module-submitted.png)
 
-But recently submitted module is not appearing becuase its yet not accepted.
+But recently submitted module is not appearing because its yet not accepted.
 
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/not-listing-newly-submitted- module.png)
 
@@ -22,7 +22,7 @@ For approving module we need to check approved field in Model Admin of Extension
 
 ![Model Admin](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/approving-extension.png)
 
-Now approved module is appearing on module listing.
+Now approved module is appearing in module listing.
 
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/listing-of-approved-modules.png)
 
