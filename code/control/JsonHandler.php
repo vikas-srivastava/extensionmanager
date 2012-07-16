@@ -37,17 +37,16 @@ class JsonHandler extends ContentController {
 			$config = new Config();
 			$config->merge(array('config' => array('home' => '/home/vikas/.composer')));
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-			$driver = $repo->getDriver();
-			if(!isset($driver)) {
-				return false;
+			
+			if(!isset($repo)) {
+				throw new InvalidArgumentException('We are not able to parse submitted url "'
+					.$url.'" Please make sure you are following our module submission Instructions');
 			} 
-			//$data = $driver->getComposerInformation($driver->getRootIdentifier());	
 			
 			$versions =  $repo->getPackages();			
 			
-			$releaseDateTimeStamps = array();
-
 			if($versions) {
+				$releaseDateTimeStamps = array();
 				$this->versionData = $versions;
 				$this->availableVersions = count($this->versionData);
 
@@ -68,7 +67,7 @@ class JsonHandler extends ContentController {
 			return $this->latestReleaseData;
 
 		} catch (Exception $e) {
-			return false;
+			echo $e->getMessage();
 		}
 	}
 
