@@ -51,16 +51,12 @@ class JsonHandler extends ContentController {
 				$this->availableVersions = count($this->versionData);
 
 				for ($i=0; $i < $this->availableVersions ; $i++) {
-
-					if($this->versionData[$i]->getStability()== 'stable' ) {
 						array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
-					}	
 				}
 
 				foreach ($releaseDateTimeStamps as $key => $val) {
 					if ($val == max($releaseDateTimeStamps)) {
 						$this->latestReleaseData = $this->versionData[$key];
-						Debug::show($key);
 					}
 				}
 			}
@@ -155,10 +151,6 @@ class JsonHandler extends ContentController {
 			$ExtensionData->Licence = $this->latestReleaseData->getLicense();
 		}
 
-		if($this->latestReleaseData->getAuthors()) {
-			$ExtensionData->AuthorsInfo = serialize($this->latestReleaseData->getAuthors());
-		}
-
 		if($this->latestReleaseData->getSupport()) {
 			$supportData = $this->latestReleaseData->getSupport() ;
 			if(array_key_exists('email',$supportData)) {
@@ -225,6 +217,12 @@ class JsonHandler extends ContentController {
 			$ExtensionData->MinimumStability = $this->latestReleaseData->getMinimumStability();
 		}
 		$ExtensionData->write() ;
+
+		if($this->latestReleaseData->getAuthors()) {
+			$authorInfoId = ExtensionAuthors_Controller::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
+			Debug::show($authorInfoId);
+		}
+
 		return $ExtensionData->ID;
 	}
 
