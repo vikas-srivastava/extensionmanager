@@ -6,7 +6,7 @@
  * <code>
  * $json = new JsonReader();
  * $json->cloneJson($url);
- * $json->saveJson($url,$jsonData);
+ * $json->saveJson($url,$latestReleaseData);
  * </code>
  *
  * @package extensionmanager
@@ -20,8 +20,10 @@ use Composer\Repository\RepositoryManager;
 class JsonHandler extends ContentController {
 	
 	public $url;
-	public $jsonData;
+	public $latestReleaseData;
 	public $versionData;
+	public $availableVersions;
+
 	/**
 	  * Convert a module url into json content 
 	  *
@@ -39,22 +41,32 @@ class JsonHandler extends ContentController {
 			if(!isset($driver)) {
 				return false;
 			} 
-			$data = $driver->getComposerInformation($driver->getRootIdentifier());
-
-			if($data) {
-				$this->jsonData = $data;
-			}	
+			//$data = $driver->getComposerInformation($driver->getRootIdentifier());	
 			
 			$versions =  $repo->getPackages();			
 			
+			$releaseDateTimeStamps = array();
+
 			if($versions) {
 				$this->versionData = $versions;
+				$this->availableVersions = count($this->versionData);
+
+				for ($i=0; $i < $this->availableVersions ; $i++) {
+
+					if($this->versionData[$i]->getStability()== 'stable' ) {
+						array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
+					}	
+				}
+
+				foreach ($releaseDateTimeStamps as $key => $val) {
+					if ($val == max($releaseDateTimeStamps)) {
+						$this->latestReleaseData = $this->versionData[$key];
+						Debug::show($key);
+					}
+				}
 			}
-			
-			return array(
-				'Data' => $data,
-				'Versions' => $versions,
-				);			
+			return $this->latestReleaseData;
+
 		} catch (Exception $e) {
 			return false;
 		}
@@ -66,10 +78,10 @@ class JsonHandler extends ContentController {
 	  * @return boolean
 	  */
 	function saveJson() {
-		$Json = new ExtensionData();
-		$Json->SubmittedByID = Member::currentUserID();
-		$Json->Url = $this->url;
-		$result = $this->dataFields($Json);
+		$ExtensionData = new ExtensionData();
+		$ExtensionData->SubmittedByID = Member::currentUserID();
+		$ExtensionData->Url = $this->url;
+		$result = $this->dataFields($ExtensionData);
 		return $result ;
 	}			
 
@@ -80,10 +92,10 @@ class JsonHandler extends ContentController {
 	  */
 	function updateJson() {
 
-		$Json = ExtensionData::get()->filter(array("Url" => $this->url))->First();
+		$ExtensionData = ExtensionData::get()->filter(array("Url" => $this->url))->First();
 
-		if($Json) {
-			$result = $this->dataFields($Json);
+		if($ExtensionData) {
+			$result = $this->dataFields($ExtensionData);
 			return $result ;
 		} else {
 			return Null ;
@@ -97,136 +109,124 @@ class JsonHandler extends ContentController {
 	  * @param  object $Json 
 	  * @return boolean
 	  */
-	function dataFields($Json) {
-		if(array_key_exists('name',$this->jsonData)) {
-			list($vendorName, $moduleName) = explode("/", $this->jsonData["name"]);
-			$Json->Name = $moduleName ; 
+	function dataFields($ExtensionData) {
+		if($this->latestReleaseData->getPrettyName()) {
+			list($vendorName, $moduleName) = explode("/", $this->latestReleaseData->getPrettyName());
+			$ExtensionData->Name = $moduleName ; 
 		}
 
-		if(array_key_exists('description',$this->jsonData)) {
-			$Json->Description = $this->jsonData['description'];
+		if($this->latestReleaseData->getDescription()) {
+			$ExtensionData->Description = $this->latestReleaseData->getDescription();
 		}
 		
-		if(array_key_exists('version',$this->jsonData)) {
-			$Json->Version = $this->jsonData['version'];
+		if($this->latestReleaseData->getPrettyVersion()) {
+			$ExtensionData->Version = $this->latestReleaseData->getPrettyVersion();
 		}
 
-		if(array_key_exists('type',$this->jsonData)) {
-			$type = $this->jsonData["type"] ;
+		if($this->latestReleaseData->getType()) {
+			$type = $this->latestReleaseData->getType() ;
 			if(preg_match("/\bmodule\b/i", $type)){
 				
-				$Json->Type = 'Module';
+				$ExtensionData->Type = 'Module';
 
 			} elseif(preg_match("/\btheme\b/i", $type)) { 
 				
-				$Json->Type = 'Theme';
+				$ExtensionData->Type = 'Theme';
 
 			} elseif(preg_match("/\bwidget\b/i", $type)) {
 				
-				$Json->Type = 'Widget';
+				$ExtensionData->Type = 'Widget';
 			} //todo should have some action if none of type matched  
 
 		} 
 
-		if(array_key_exists('keywords',$this->jsonData)) {
-			$Json->Keywords = serialize($this->jsonData['keywords']);
+		if($this->latestReleaseData->getKeywords()) {
+			$ExtensionData->Keywords = serialize($this->latestReleaseData->getKeywords());
 		}
 
-		if(array_key_exists('homepage',$this->jsonData)) {
-			$Json->Homepage = $this->jsonData['homepage'];			
+		if($this->latestReleaseData->getHomepage()) {
+			$ExtensionData->Homepage = $this->latestReleaseData->getHomepage();			
 		}
 
-		if(array_key_exists('time',$this->jsonData)) {
-			$Json->ReleaseTime = $this->jsonData['time'];
+		if($this->latestReleaseData->getReleaseDate()) {
+			$ExtensionData->ReleaseTime = $this->latestReleaseData->getReleaseDate()->format('Y-m-d H:i:s');
 		}
 
-		if(array_key_exists('licence',$this->jsonData)) {
-			$Json->Licence = $this->jsonData['licence'];
+		if($this->latestReleaseData->getLicense()) {
+			$ExtensionData->Licence = $this->latestReleaseData->getLicense();
 		}
 
-		if(array_key_exists('authors',$this->jsonData)) {
-			$Json->AuthorsInfo = serialize($this->jsonData['authors']);
+		if($this->latestReleaseData->getAuthors()) {
+			$ExtensionData->AuthorsInfo = serialize($this->latestReleaseData->getAuthors());
 		}
 
-		if(array_key_exists('support',$this->jsonData)) {
-			if(array_key_exists('email',$this->jsonData['support'])) {
-				$Json->SupportEmail = $this->jsonData['support']['email'];
+		if($this->latestReleaseData->getSupport()) {
+			$supportData = $this->latestReleaseData->getSupport() ;
+			if(array_key_exists('email',$supportData)) {
+				$ExtensionData->SupportEmail = $supportData['email'];
 			}
-			if(array_key_exists('issues',$this->jsonData['support'])) {
-				$Json->SupportIssues = $this->jsonData['support']['issues'];
+			if(array_key_exists('issues',$supportData)) {
+				$ExtensionData->SupportIssues = $supportData['issues'];
 			}
-			if(array_key_exists('forum',$this->jsonData['support'])) {
-				$Json->SupportForum = $this->jsonData['support']['forum'];
+			if(array_key_exists('forum',$supportData)) {
+				$ExtensionData->SupportForum = $supportData['forum'];
 			}
-			if(array_key_exists('wiki',$this->jsonData['support'])) {
-				$Json->SupportWiki = $this->jsonData['support']['wiki'];
+			if(array_key_exists('wiki',$supportData)) {
+				$ExtensionData->SupportWiki = $supportData['wiki'];
 			}
-			if(array_key_exists('irc',$this->jsonData['support'])) {
-				$Json->SupportIrc = $this->jsonData['support']['irc'];
+			if(array_key_exists('irc',$supportData)) {
+				$ExtensionData->SupportIrc = $supportData['irc'];
 			}
-			if(array_key_exists('source',$this->jsonData['support'])) {
-				$Json->SupportSource = $this->jsonData['support']['source'];
+			if(array_key_exists('source',$supportData)) {
+				$ExtensionData->SupportSource = $supportData['source'];
 			}			
 		}
 
-		if(array_key_exists('target-dir',$this->jsonData)) {
-			$Json->TargetDir = $this->jsonData['target-dir'];
+		if($this->latestReleaseData->getTargetDir()) {
+			$ExtensionData->TargetDir = $this->latestReleaseData->getTargetDir();
 		}
 
-		if(array_key_exists('require',$this->jsonData)) {
-			$Json->Require = serialize($this->jsonData['require']);
+		if($this->latestReleaseData->getRequires()) {
+			$ExtensionData->Require = serialize($this->latestReleaseData->getRequires());
 		}
 
-		if(array_key_exists('require-dev',$this->jsonData)) {
-			$Json->RequireDev = serialize($this->jsonData['require-dev']);
+		if($this->latestReleaseData->getDevRequires()) {
+			$ExtensionData->RequireDev = serialize($this->latestReleaseData->getDevRequires());
 		}
 
-		if(array_key_exists('conflict',$this->jsonData)) {
-			$Json->Conflict = serialize($this->jsonData['conflict']);
+		if($this->latestReleaseData->getConflicts()) {
+			$ExtensionData->Conflict = serialize($this->latestReleaseData->getConflicts());
 		}
 
-		if(array_key_exists('replace',$this->jsonData)) {
-			$Json->Replace = serialize($this->jsonData['replace']);
+		if($this->latestReleaseData->getReplaces()) {
+			$ExtensionData->Replace = serialize($this->latestReleaseData->getReplaces());
 		}
 
-		if(array_key_exists('provide',$this->jsonData)) {
-			$Json->Provide = serialize($this->jsonData['provide']);
+		if($this->latestReleaseData->getProvides()) {
+			$ExtensionData->Provide = serialize($this->latestReleaseData->getProvides());
 		}
 
-		if(array_key_exists('suggest',$this->jsonData)) {
-			$Json->Suggest = serialize($this->jsonData['suggest']);
+		if($this->latestReleaseData->getSuggests()) {
+			$ExtensionData->Suggest = serialize($this->latestReleaseData->getSuggests());
 		}
 
-		if(array_key_exists('config',$this->jsonData)) {
-			if(array_key_exists('wiki',$this->jsonData['config'])) {
-				$Json->ConfigVendorDir = $this->jsonData['config']['vendor-dir'];
-			}
-			if(array_key_exists('irc',$this->jsonData['config'])) {
-				$Json->ConfigBinDir = $this->jsonData['config']['bin-dir'];
-			}
+		if($this->latestReleaseData->getExtra()) {
+			$ExtensionData->Extra = serialize($this->latestReleaseData->getExtra());
 		}
 
-		if(array_key_exists('extra',$this->jsonData)) {
-			$Json->Extra = serialize($this->jsonData['extra']);
+		if($this->latestReleaseData->getRepositories()) {
+			$ExtensionData->Repositories = serialize($this->latestReleaseData->getRepositories());
 		}
 
-		if(array_key_exists('repositories',$this->jsonData)) {
-			$Json->Repositories = serialize($this->jsonData['repositories']);
+		if($this->latestReleaseData->getIncludePaths()) {
+			$ExtensionData->IncludePath = serialize($this->latestReleaseData->getIncludePaths());
 		}
 
-		if(array_key_exists('include-path',$this->jsonData)) {
-			$Json->IncludePath = serialize($this->jsonData['include-path']);
+		if($this->latestReleaseData->getMinimumStability()) {
+			$ExtensionData->MinimumStability = $this->latestReleaseData->getMinimumStability();
 		}
-
-		if(array_key_exists('bin',$this->jsonData)) {
-			$Json->Bin = serialize($this->jsonData['bin']);
-		}
-
-		if(array_key_exists('minimum-stability', $this->jsonData)) {
-			$Json->MinimumStability = $this->jsonData['minimum-stability'];
-		}
-		$Json->write() ;
-		return $Json->ID;
+		$ExtensionData->write() ;
+		return $ExtensionData->ID;
 	}
 
 	/**
@@ -237,8 +237,8 @@ class JsonHandler extends ContentController {
 	  */
 	public function saveVersionData($id) {
 		
-		$availableVersions = count($this->versionData);
-		for ($i=0; $i < $availableVersions ; $i++) { 
+		
+		for ($i=0; $i < $this->availableVersions ; $i++) { 
 			$version = new ExtensionVersion();
 			$version->ExtensionDataID = $id;
 			$result = $this->versionDataField($version,$this->versionData[$i]);
@@ -301,9 +301,9 @@ class JsonHandler extends ContentController {
 		}
 
 		//todo add release data of each version 
-		/*if($data->getReleaseDate()) {
-			$version->ReleaseDate = $data->getReleaseDate();
-		}*/
+		if($data->getReleaseDate()) {
+			$version->ReleaseDate = $data->getReleaseDate()->format('Y-m-d H:i:s');
+		}
 		
 		$version->write();
 		return true;

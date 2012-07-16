@@ -46,7 +46,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
 		
-		if($jsonData['Data']) {
+		if($jsonData) {
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
 				if($saveJson) {

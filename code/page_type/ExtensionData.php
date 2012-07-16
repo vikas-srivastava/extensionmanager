@@ -30,12 +30,9 @@ class ExtensionData extends DataObject {
 		'Replace' => 'VarChar(500)',
 		'Provide' => 'VarChar(500)',
 		'Suggest' => 'VarChar(500)',
-		'ConfigVendorDir' => 'VarChar(500)',
-		'ConfigBinDir' => 'VarChar(500)',
 		'Extra' => 'VarChar(500)',
 		'Repositories' => 'VarChar(500)',
 		'IncludePath' => 'VarChar(500)',
-		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
 		);	
 
