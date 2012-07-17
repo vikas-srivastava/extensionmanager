@@ -3,13 +3,13 @@
 ## Requirements
 
  * silverstripe 3.0
- * [https://github.com/composer/composer](composer )
+ * [composer](https://github.com/composer/composer)
 
 ## Installation
 
 To install this module:
 
-1. Either clone the code from the GitHub repository with ``git clone git@github.com:vikas-srivastava/extensionmanager.git `` or download it at [https://github.com/vikas-srivastava/extensionmanager/downloads](https://github.com/vikas-srivastava/extensionmanager/downloads).
+1. Either clone the code from the GitHub repository with ``git clone git@github.com:vikas-srivastava/extensionmanager.git `` or download at [Here](https://github.com/vikas-srivastava/extensionmanager/downloads).
 
 2. Add the folder to your SilverStripe installation and rename it to ``extensionmanager``.
 
