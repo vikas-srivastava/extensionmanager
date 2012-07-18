@@ -57,6 +57,7 @@ class JsonHandler extends ContentController {
 				foreach ($releaseDateTimeStamps as $key => $val) {
 					if ($val == max($releaseDateTimeStamps)) {
 						$this->latestReleaseData = $this->versionData[$key];
+
 					}
 				}
 			}
@@ -116,6 +117,7 @@ class JsonHandler extends ContentController {
 		
 		if($this->latestReleaseData->getPrettyVersion()) {
 			$ExtensionData->Version = $this->latestReleaseData->getPrettyVersion();
+			Debug::show($this->latestReleaseData->getPrettyVersion());
 		}
 
 		if($this->latestReleaseData->getType()) {
@@ -216,13 +218,13 @@ class JsonHandler extends ContentController {
 		if($this->latestReleaseData->getMinimumStability()) {
 			$ExtensionData->MinimumStability = $this->latestReleaseData->getMinimumStability();
 		}
+
 		$ExtensionData->write() ;
 
 		if($this->latestReleaseData->getAuthors()) {
-			$authorInfoId = ExtensionAuthors_Controller::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
-			Debug::show($authorInfoId);
+			$ExtensionData->storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
 		}
-
+		
 		return $ExtensionData->ID;
 	}
 
