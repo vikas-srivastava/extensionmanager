@@ -16,6 +16,7 @@ class ExtensionData extends DataObject {
 		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
 		'Licence' => 'VarChar(500)',
+		'Version' => 'Varchar(30)',
 		'AuthorsInfo' => 'VarChar(500)',
 		'SupportEmail' => 'VarChar(100)',
 		'SupportIssues' => 'VarChar(100)',
@@ -30,32 +31,39 @@ class ExtensionData extends DataObject {
 		'Replace' => 'VarChar(500)',
 		'Provide' => 'VarChar(500)',
 		'Suggest' => 'VarChar(500)',
+		'ConfigVendorDir' => 'VarChar(500)',
+		'ConfigBinDir' => 'VarChar(500)',
 		'Extra' => 'VarChar(500)',
 		'Repositories' => 'VarChar(500)',
 		'IncludePath' => 'VarChar(500)',
+		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
 		);	
 
-static $searchable_fields = array(
-	'Name',
-	'Type',
-	'Keywords',
-	'SubmittedByID' 
-	);
+	static $searchable_fields = array(
+		'Name',
+		'Type',
+		'Keywords',
+		'SubmittedByID' 
+		);
 
-static $summary_fields = array(
-	'Name',
-	'Type',
-	'Description',
-	);
+	static $summary_fields = array(
+		'Name',
+		'Type',
+		'Description',
+		);
 
-static $has_one = array(
-	'SubmittedBy' => 'Member',
-	);
+	static $has_one = array(
+		'SubmittedBy' => 'Member',
+		);
 
-static $has_many = array(
-	'ExtensionVersion' => 'ExtensionVersion',
-	);
+	static $has_many = array(
+		'ExtensionVersions' => 'ExtensionVersion',
+		);
+
+	static $belongs_many_many = array(
+		'ExtensionAuthors' => 'Member',
+		);
 } 
 
 class ExtensionData_Controller extends ContentController {
@@ -63,9 +71,9 @@ class ExtensionData_Controller extends ContentController {
 	public $type;
 
 	static $allowed_actions = array(
-        'index',
-        'show',   
-        );
+		'index',
+		'show',   
+		);
 
 	/**
 	  * Get one Extension data from database using
@@ -107,6 +115,7 @@ class ExtensionData_Controller extends ContentController {
     	$values = implode(", ", $keywords);
     	return $values ;
     }
+
 
     /**
 	  * Get Extension Author Info
@@ -157,21 +166,21 @@ class ExtensionData_Controller extends ContentController {
     function show() { 
 
         //$type = "Module" ;
-        if($ExtensionData = $this->getExtensionData($this->type)) {   
-            $Data = array(
-                'MetaTitle' => $ExtensionData->Name,
-                'ExtensionData' => $ExtensionData,
-                'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
-                'Keywords' => $this->getExtensionKeywords($ExtensionData),
-                'AuthorsDetail'=> $this->getExtensionAuthorsInfo($ExtensionData),
-                'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
-                'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
-            );  
-            return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
+    	if($ExtensionData = $this->getExtensionData($this->type)) {   
+    		$Data = array(
+    			'MetaTitle' => $ExtensionData->Name,
+    			'ExtensionData' => $ExtensionData,
+    			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
+    			'Keywords' => $this->getExtensionKeywords($ExtensionData),
+    			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
+    			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
+    			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
+    			);  
+    		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
             //todo .. not rendering header and navigation templates from theme 
-        }
-        else{
-            return $this->httpError(404, "Sorry that $this->type could not be found");
-        }
+    	}
+    	else{
+    		return $this->httpError(404, "Sorry that $this->type could not be found");
+    	}
     }
 }

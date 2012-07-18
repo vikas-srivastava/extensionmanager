@@ -1,13 +1,22 @@
 <?php
 /**
- * For creating has_many relationship with Member class
+ * For creating relationship between ExtensionData and  Member class
  * 
  *
  * @package extensionmanager
  */
 class ExtensionsMemberDecorator extends DataExtension {
 	
+	static $db = array (
+		'HomePage' => 'Varchar(300)',
+		'Role' => 'Varchar(300)',
+		);
+
 	static $has_many = array(
-        'Extensions' => 'ExtensionData',
+        'SubmittedExtension' => 'ExtensionData',
     );
+
+    static $many_many = array(
+		'AuthorOf' => 'ExtensionData',
+		);
 }
