@@ -94,32 +94,34 @@ according to diffrent design and data
     <% if $AuthorsDetail %>
     <h2>Authors Detail</h2>
     <% loop AuthorsDetail %>
+    <p>
     <ul>
-        <% if $AuthorName %>
+        <% if $FirstName %>
         <li>
-            Author Name : $AuthorName
+            Author Name : $FirstName
         </li>
         <% end_if %>  
 
-        <% if $AuthorEmail %>
+        <% if $Email %>
         <li>
-            Author Email : $AuthorEmail 
+            Author Email : $Email
         </li>
         <% end_if %>  
 
-        <% if $AuthorHomePage %>
+        <% if $HomePage %>
         <li>
             Author HomePage : 
-            <a href="$AuthorHomePage "> $AuthorHomePage </a>
+            <a href="$AuthorHomePage "> $HomePage  </a>
             <li>
         <% end_if %>
 
-        <% if $AuthorRole %>
+        <% if $Role %>
             <li>
-                Author Email : $AuthorRole 
+                Author Email : $Role 
             </li>
         <% end_if %>  
     </ul>
+    </p>
     <% end_loop %>        
     <% end_if %>  
 

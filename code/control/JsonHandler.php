@@ -117,7 +117,6 @@ class JsonHandler extends ContentController {
 		
 		if($this->latestReleaseData->getPrettyVersion()) {
 			$ExtensionData->Version = $this->latestReleaseData->getPrettyVersion();
-			Debug::show($this->latestReleaseData->getPrettyVersion());
 		}
 
 		if($this->latestReleaseData->getType()) {
@@ -222,7 +221,7 @@ class JsonHandler extends ContentController {
 		$ExtensionData->write() ;
 
 		if($this->latestReleaseData->getAuthors()) {
-			$ExtensionData->storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
+			ExtensionAuthor::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
 		}
 		
 		return $ExtensionData->ID;
