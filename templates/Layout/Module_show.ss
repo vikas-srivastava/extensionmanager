@@ -33,6 +33,12 @@ according to diffrent design and data
 
         <% end_loop %>
 
+        <% if $Category %>
+        <li>
+            Category : $Category
+        </li>
+        <% end_if %> 
+
         <h3><a href="$DownloadLink.DistUrl"> Download Latest Version</a></h3>     
 
         <% loop ExtensionData %>
@@ -89,7 +95,7 @@ according to diffrent design and data
         <li>
             Submitted By : $SubmittedBy
         </li>
-        <% end_if %>               
+        <% end_if %> 
 
     <% if $AuthorsDetail %>
     <h2>Authors Detail</h2>

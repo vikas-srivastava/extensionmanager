@@ -55,6 +55,7 @@ class ExtensionData extends DataObject {
 
 	static $has_one = array(
 		'SubmittedBy' => 'Member',
+		'Category' => 'ExtensionCategory',
 		);
 
 	static $has_many = array(
@@ -98,9 +99,8 @@ class ExtensionData_Controller extends ContentController {
 	  *	@param ExtensionData
 	  * @return string
 	  */
-    static function getExtensionSubmittedBy($extensionData) {
-    	$id = $extensionData->SubmittedByID;
-    	$member = Member::get()->byID($id);
+    static function getExtensionSubmittedBy($submittedByID) {
+    	$member = Member::get()->byID($submittedByID);
     	return $member->FirstName.' '.$member->Lastname;
     }
 
@@ -159,6 +159,17 @@ class ExtensionData_Controller extends ContentController {
     }
 
     /**
+	  * Get Category Name of Extension
+	  *
+	  *	@param extensionData
+	  * @return string
+	  */
+    static function getExtensionCategory($categoryID) {
+    	$category = ExtensionCategory::get()->byID($categoryID);
+    	return $category->CategoryName;	
+    }
+
+    /**
       * Show module data   
       *
       * @return array
@@ -169,11 +180,12 @@ class ExtensionData_Controller extends ContentController {
     		$Data = array(
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
-    			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData),
+    			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData->SubmittedByID),
     			'Keywords' => $this->getExtensionKeywords($ExtensionData),
     			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
-    			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
+    			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
+    			'Category' =>$this->getExtensionCategory($ExtensionData->CategoryID),
     			);  
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
     	}
