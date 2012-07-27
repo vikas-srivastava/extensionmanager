@@ -165,7 +165,6 @@ class ExtensionData_Controller extends ContentController {
       */
     function show() { 
 
-        //$type = "Module" ;
     	if($ExtensionData = $this->getExtensionData($this->type)) {   
     		$Data = array(
     			'MetaTitle' => $ExtensionData->Name,
@@ -177,7 +176,6 @@ class ExtensionData_Controller extends ContentController {
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID)
     			);  
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
-            //todo .. not rendering header and navigation templates from theme 
     	}
     	else{
     		return $this->httpError(404, "Sorry that $this->type could not be found");
