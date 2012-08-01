@@ -86,12 +86,14 @@ according to diffrent design and data
     <% end_if %>
     <ul>
         <% if $Keywords %>
-        <li>
-            Keywords : $Keywords
-        </li>
+        <h3>Keywords</h3>
+        <% loop Keywords %>
+            $KeywordName 
+        <% end_loop %>    
         <% end_if %>
         
         <% if $SubmittedBy %>
+        <h3>Submitted By</h3>
         <li>
             Submitted By : $SubmittedBy
         </li>

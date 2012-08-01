@@ -136,10 +136,6 @@ class JsonHandler extends ContentController {
 
 		} 
 
-		if($this->latestReleaseData->getKeywords()) {
-			$ExtensionData->Keywords = serialize($this->latestReleaseData->getKeywords());
-		}
-
 		if($this->latestReleaseData->getHomepage()) {
 			$ExtensionData->Homepage = $this->latestReleaseData->getHomepage();			
 		}
@@ -223,7 +219,12 @@ class JsonHandler extends ContentController {
 		if($this->latestReleaseData->getAuthors()) {
 			ExtensionAuthor::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
 		}
-		
+
+		if($this->latestReleaseData->getKeywords()) {
+			$keywords = new ExtensionKeywords;
+			$keywords->saveKeywords($this->latestReleaseData->getKeywords(),$ExtensionData->ID);
+		}
+				
 		return $ExtensionData->ID;
 	}
 

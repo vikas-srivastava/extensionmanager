@@ -13,7 +13,6 @@ class ExtensionData extends DataObject {
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
-		'Keywords' => 'VarChar(500)',
 		'Homepage' => 'VarChar(500)',
 		'Licence' => 'VarChar(500)',
 		'Version' => 'Varchar(30)',
@@ -43,7 +42,6 @@ class ExtensionData extends DataObject {
 	static $searchable_fields = array(
 		'Name',
 		'Type',
-		'Keywords',
 		'SubmittedByID' 
 		);
 
@@ -64,6 +62,7 @@ class ExtensionData extends DataObject {
 
 	static $belongs_many_many = array(
 		'ExtensionAuthors' => 'Member',
+		'Keywords' => 'ExtensionKewords',
 		);
 } 
 
@@ -108,14 +107,12 @@ class ExtensionData_Controller extends ContentController {
 	  * Get Keywords of extension
 	  *
 	  *	@param ExtensionData
-	  * @return string
+	  * @return array
 	  */
-    static function getExtensionKeywords($extensionData) {
-    	$keywords = unserialize($extensionData->Keywords);
-    	$values = implode(", ", $keywords);
-    	return $values ;
+    static function getExtensionKeywords($extensionId) {
+    	return ExtensionKeywords::get()->leftJoin("ExtensionKeywords_Extension", "\"ExtensionKeywords_Extension\".\"ExtensionDataID\" = $extensionId ");
+    	
     }
-
 
     /**
 	  * Get Extension Author Info
@@ -166,7 +163,9 @@ class ExtensionData_Controller extends ContentController {
 	  */
     static function getExtensionCategory($categoryID) {
     	$category = ExtensionCategory::get()->byID($categoryID);
-    	return $category->CategoryName;	
+    	if($category) {
+    		return $category->CategoryName;
+    	}	
     }
 
     /**
@@ -181,7 +180,7 @@ class ExtensionData_Controller extends ContentController {
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
     			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData->SubmittedByID),
-    			'Keywords' => $this->getExtensionKeywords($ExtensionData),
+    			'Keywords' => $this->getExtensionKeywords($ExtensionData->ID),
     			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),

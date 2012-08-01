@@ -13,6 +13,7 @@ class ExtensionAdmin extends ModelAdmin {
 		"ExtensionData",
 		"ExtensionVersion",
 		"ExtensionCategory",
+		"ExtensionKeywords",
 		"Member",	
 	);
 }
