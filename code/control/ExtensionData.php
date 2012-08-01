@@ -62,7 +62,7 @@ class ExtensionData extends DataObject {
 
 	static $belongs_many_many = array(
 		'ExtensionAuthors' => 'Member',
-		'Keywords' => 'ExtensionKewords',
+		'Keywords' => 'ExtensionKeywords',
 		);
 } 
 
