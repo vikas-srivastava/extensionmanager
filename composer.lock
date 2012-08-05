@@ -10,8 +10,8 @@
         {
             "package": "composer/composer",
             "version": "dev-master",
-            "source-reference": "98743ba95b1f393aa4db2d6f89427604300a8b13",
-            "commit-date": "1343449529"
+            "source-reference": "65e95ed7966792d9fa2aec8493a2c8175cebec40",
+            "commit-date": "1343773848"
         },
         {
             "package": "justinrainbow/json-schema",

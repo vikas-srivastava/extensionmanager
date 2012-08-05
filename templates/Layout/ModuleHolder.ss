@@ -15,7 +15,5 @@
 	$PageComments
 </div>
 <% include SideBar %>
-
-	<aside>
-		<h3><a class="submitButton" href="{$Link}addnew">Submit new Module Here</a></h3>	
-	</aside>
+	
+<h3><a class="submitButton" href="{$Link}addnew">Submit new Module Here</a></h3>	
