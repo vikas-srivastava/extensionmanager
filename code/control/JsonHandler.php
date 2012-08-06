@@ -200,6 +200,10 @@ class JsonHandler extends ContentController {
 
 		if($this->latestReleaseData->getExtra()) {
 			$ExtensionData->Extra = serialize($this->latestReleaseData->getExtra());
+			$extra = $this->latestReleaseData->getExtra();
+			if(array_key_exists('snapshot',$extra)) {
+				$ExtensionData->ThumbnailID = ExtensionSnapshot::saveSnapshot($extra['snapshot'],$this->latestReleaseData->getPrettyName());
+			}
 		}
 
 		if($this->latestReleaseData->getRepositories()) {
@@ -224,7 +228,7 @@ class JsonHandler extends ContentController {
 			$keywords = new ExtensionKeywords;
 			$keywords->saveKeywords($this->latestReleaseData->getKeywords(),$ExtensionData->ID);
 		}
-				
+
 		return $ExtensionData->ID;
 	}
 

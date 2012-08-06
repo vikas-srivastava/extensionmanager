@@ -54,6 +54,7 @@ class ExtensionData extends DataObject {
 	static $has_one = array(
 		'SubmittedBy' => 'Member',
 		'Category' => 'ExtensionCategory',
+		'Thumbnail' => 'Image',
 		);
 
 	static $has_many = array(
