@@ -186,6 +186,7 @@ class ExtensionData_Controller extends ContentController {
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
     			'Category' =>$this->getExtensionCategory($ExtensionData->CategoryID),
+    			'SnapShot' => ExtensionSnapshot::getSnapshot($ExtensionData->ThumbnailID),
     			);  
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
     	}

@@ -43,7 +43,6 @@ according to diffrent design and data
 
         <% loop ExtensionData %>
 
-      
         <h2>Support </h2>
         <% if $SupportEmail %>
         <li>
@@ -142,6 +141,11 @@ according to diffrent design and data
             <a href="$SourceUrl"> Source Url</a><br><br> 
         </p>
         <% end_loop %>
-    <% end_if %> 
-    
+    <% end_if %>
+
+    <!--  Resize according to theme -->
+    <% if $SnapShot %>
+        <img src="$SnapShot.Url" alt="$SnapShot.Name"/> 
+    <% end_if %>
+   
  </div>

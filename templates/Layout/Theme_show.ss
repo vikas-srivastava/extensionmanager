@@ -144,4 +144,9 @@ according to diffrent design and data
         <% end_loop %>
     <% end_if %> 
     
+    <!--  Resize according to theme -->
+    <% if $SnapShot %>
+        <img src="$SnapShot.Url" alt="$SnapShot.Name"/> 
+    <% end_if %>
+   
  </div>
