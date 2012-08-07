@@ -37,7 +37,7 @@ class ExtensionSnapshot extends Controller {
 		$imageContent = $data;
 
 		if($folderObject ) {
-			$thumbnailFile = fopen('./../'.$folderToSave.$thumbnailName, 'w');
+			$thumbnailFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$folderToSave.$thumbnailName, 'w');
 			fwrite($thumbnailFile, $imageContent); 
 			fclose($thumbnailFile); 
 		}
