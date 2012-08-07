@@ -116,47 +116,6 @@ class ExtensionData_Controller extends ContentController {
     }
 
     /**
-	  * Get Extension Author Info
-	  *
-	  * @param ExtensionData
-	  * @return array
-	  */
-    static function getExtensionAuthorsInfo($ExtensionData) {
-    	$AuthorsInfo = unserialize($ExtensionData->AuthorsInfo);
-    	
-    	$AuthorsData = array();
-
-    	if(array_key_exists('name', $AuthorsInfo['0'])) {
-    		$AuthorsData['AuthorName'] = $AuthorsInfo['0']['name'];
-    	}
-
-    	if(array_key_exists('email', $AuthorsInfo['0'])) {
-    		$AuthorsData['AuthorEmail'] = $AuthorsInfo['0']['email'];
-    	}
-
-    	if(array_key_exists('homepage', $AuthorsInfo['0'])) {
-    		$AuthorsData['AuthorHomePage'] = $AuthorsInfo['0']['homepage'];
-    	}
-
-    	if(array_key_exists('role', $AuthorsInfo['0'])) {
-    		$AuthorsData['AuthorRole'] = $AuthorsInfo['0']['role'];
-    	}
-
-    	return $AuthorsData  ;
-        //todo now it can display only one author info .. not checking if value is set
-    }
-
-    /**
-	  * Get URL's of other repository of this extension
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionRepositories($extensionData) {
-    	$Repositories = unserialize($extensionData->TargetDir);	
-    }
-
-    /**
 	  * Get Category Name of Extension
 	  *
 	  *	@param extensionData
