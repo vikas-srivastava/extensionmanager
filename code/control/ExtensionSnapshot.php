@@ -42,22 +42,27 @@ class ExtensionSnapshot extends Controller {
 			fclose($thumbnailFile); 
 		}
 
-		if(!Image::get()->filter("Name" , $thumbnailName)->first()) {
-            $thumbnailObject = new Image();
+		if($thumbnailObject = Image::get()->filter("Name" , $thumbnailName)->first()) {
+        	return $thumbnailObject->ID ; 
+        } else {
+        	$thumbnailObject = new Image();
             $thumbnailObject->ParentID = $folderObject->ID; 
             $thumbnailObject->Name = $thumbnailName;
             $thumbnailObject->OwnerID = (Member::currentUser() ? Member::currentUser()->ID : 0);
             $thumbnailObject->write();
             return $thumbnailObject->ID ;
         }
+
     }
 
     public static function getSnapshot($imageId) {
     	$thumbnailObject = Image::get()->byID($imageId);
-    	$imageData = array(
-    		'Url' => $thumbnailObject->URL,
-    		'Name' => $thumbnailObject->Name,
-    		);
-    	return $imageData;
+    	if($thumbnailObject) {
+	    	$imageData = array(
+	    		'Url' => $thumbnailObject->URL,
+	    		'Name' => $thumbnailObject->Name,
+	    		);
+	    	return $imageData;
+    	}
     }
 }
