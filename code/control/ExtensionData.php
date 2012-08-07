@@ -117,7 +117,7 @@ class ExtensionData_Controller extends ContentController {
     			'ExtensionData' => $ExtensionData,
     			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData->SubmittedByID),
     			'Keywords' => ExtensionKeywords::getExtensionKeywords($ExtensionData->ID),
-    			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
+    			'AuthorsDetail'=> ExtensionAuthorController::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
     			'Category' => ExtensionCategory::getExtensionCategory($ExtensionData->CategoryID),

@@ -5,7 +5,7 @@
  *
  * @package extensionmanager
  */
-class ExtensionAuthor extends Controller {
+class ExtensionAuthorController extends Controller {
 	
 	/**
 	  * Store Multiple Author Info in Member class

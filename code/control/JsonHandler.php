@@ -221,7 +221,7 @@ class JsonHandler extends ContentController {
 		$ExtensionData->write() ;
 
 		if($this->latestReleaseData->getAuthors()) {
-			ExtensionAuthor::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
+			ExtensionAuthorController::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
 		}
 
 		if($this->latestReleaseData->getKeywords()) {
