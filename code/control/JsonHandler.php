@@ -16,6 +16,8 @@ use Composer\IO\NullIO;
 use Composer\Factory;
 use Composer\Repository\VcsRepository;
 use Composer\Repository\RepositoryManager;
+use Composer\package\Dumper\ArrayDumper;
+use Composer\Json\JsonFile;
 
 class JsonHandler extends ContentController {
 	
@@ -60,13 +62,37 @@ class JsonHandler extends ContentController {
 
 					}
 				}
+
+				$this->dumpJson();
 			}
 			return $this->latestReleaseData;
 
 		} catch (Exception $e) {
 			echo $e->getMessage();
-		}
+		}		
 	}
+
+	/**
+	  * Create root level package.json 
+	  *
+	  * @return boolean
+	  */
+	private function dumpJson() {
+	   	$packages = $this->versionData;
+    	$filename = 'packages.json';
+        $repo = array('packages' => array());
+        $dumper = new ArrayDumper;
+        
+        foreach ($packages as $package) {
+            $repo['packages'][$package->getPrettyName()][$package->getPrettyVersion()] = $dumper->dump($package);
+        }
+
+        $packagesJsonData = Convert::array2json($repo);
+        $packagesJsonData = $this->createNiceJson($packagesJsonData);
+        $packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
+		fwrite($packageJsonFile, $packagesJsonData); 
+		fclose($packageJsonFile);
+    }
 
 	/**
 	  * Save json content in database  
@@ -102,7 +128,7 @@ class JsonHandler extends ContentController {
 	  * Save each property of json content 
 	  * in corresponidng field of database  
 	  *
-	  * @param  object $Json 
+	  * @param  object $ExtensionData 
 	  * @return boolean
 	  */
 	function dataFields($ExtensionData) {
@@ -309,5 +335,55 @@ class JsonHandler extends ContentController {
 		
 		$version->write();
 		return true;
+	}
+
+	/**
+	  * Format Json data in nice readable format
+	  *
+	  * @param  string $json 
+	  * @return string
+	  */
+	public function createNiceJson($json) {
+
+		$result      = '';
+		$pos         = 0;
+		$strLen      = strlen($json);
+		$indentStr   = '  ';
+		$newLine     = "\n";
+		$prevChar    = '';
+		$outOfQuotes = true;
+
+		for ($i=0; $i<=$strLen; $i++) {
+
+			$char = substr($json, $i, 1);
+
+			if ($char == '"' && $prevChar != '\\') {
+				$outOfQuotes = !$outOfQuotes;
+
+			} else if(($char == '}' || $char == ']') && $outOfQuotes) {
+				$result .= $newLine;
+				$pos --;
+					
+				for ($j=0; $j<$pos; $j++) {
+					$result .= $indentStr;
+				}
+			}
+
+			$result .= $char;
+
+			if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
+				$result .= $newLine;
+				
+				if ($char == '{' || $char == '[') {
+					$pos ++;
+				}
+
+				for ($j = 0; $j < $pos; $j++) {
+					$result .= $indentStr;
+				}
+			}       
+			$prevChar = $char;
+		}
+		return $result;
 	}
 }
