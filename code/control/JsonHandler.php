@@ -34,8 +34,7 @@ class JsonHandler extends ContentController {
 		$this->url = $url ;
 		
 		try{	
-			$config = new Config();
-			$config->merge(array('config' => array('home' => '/home/vikas/.composer')));
+			$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
 			
 			if(!isset($repo)) {
@@ -51,7 +50,7 @@ class JsonHandler extends ContentController {
 				$this->availableVersions = count($this->versionData);
 
 				for ($i=0; $i < $this->availableVersions ; $i++) {
-						array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
+					array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
 				}
 
 				foreach ($releaseDateTimeStamps as $key => $val) {
