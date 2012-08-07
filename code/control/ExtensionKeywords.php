@@ -28,7 +28,7 @@ class ExtensionKeywords extends DataObject {
 	  *
 	  * @param array $authorsRawData, int $extensionId 
 	  */
-	public function saveKeywords($rawKeywordData, $extensionId) {
+	public static function saveKeywords($rawKeywordData, $extensionId) {
 
 		$totalKeywords = count($rawKeywordData);
 		for ($i = 0; $i < $totalKeywords; $i++) { 	
@@ -43,4 +43,14 @@ class ExtensionKeywords extends DataObject {
 			}
 		}
 	}
+
+	/**
+	  * Get Keywords of extension
+	  *
+	  *	@param ExtensionData
+	  * @return array
+	  */
+    static function getExtensionKeywords($extensionId) {
+    	return ExtensionKeywords::get()->leftJoin("ExtensionKeywords_Extension", "\"ExtensionKeywords_Extension\".\"ExtensionDataID\" = $extensionId ");	
+    }
 }

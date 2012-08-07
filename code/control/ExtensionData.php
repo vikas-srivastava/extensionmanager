@@ -105,17 +105,6 @@ class ExtensionData_Controller extends ContentController {
     }
 
     /**
-	  * Get Keywords of extension
-	  *
-	  *	@param ExtensionData
-	  * @return array
-	  */
-    static function getExtensionKeywords($extensionId) {
-    	return ExtensionKeywords::get()->leftJoin("ExtensionKeywords_Extension", "\"ExtensionKeywords_Extension\".\"ExtensionDataID\" = $extensionId ");
-    	
-    }
-
-    /**
       * Show module data   
       *
       * @return array
@@ -127,7 +116,7 @@ class ExtensionData_Controller extends ContentController {
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
     			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData->SubmittedByID),
-    			'Keywords' => $this->getExtensionKeywords($ExtensionData->ID),
+    			'Keywords' => ExtensionKeywords::getExtensionKeywords($ExtensionData->ID),
     			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),

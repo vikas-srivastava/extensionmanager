@@ -225,8 +225,7 @@ class JsonHandler extends ContentController {
 		}
 
 		if($this->latestReleaseData->getKeywords()) {
-			$keywords = new ExtensionKeywords;
-			$keywords->saveKeywords($this->latestReleaseData->getKeywords(),$ExtensionData->ID);
+			ExtensionKeywords::saveKeywords($this->latestReleaseData->getKeywords(),$ExtensionData->ID);
 		}
 
 		return $ExtensionData->ID;
