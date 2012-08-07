@@ -116,19 +116,6 @@ class ExtensionData_Controller extends ContentController {
     }
 
     /**
-	  * Get Category Name of Extension
-	  *
-	  *	@param extensionData
-	  * @return string
-	  */
-    static function getExtensionCategory($categoryID) {
-    	$category = ExtensionCategory::get()->byID($categoryID);
-    	if($category) {
-    		return $category->CategoryName;
-    	}	
-    }
-
-    /**
       * Show module data   
       *
       * @return array
@@ -144,7 +131,7 @@ class ExtensionData_Controller extends ContentController {
     			'AuthorsDetail'=> ExtensionAuthor::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
-    			'Category' =>$this->getExtensionCategory($ExtensionData->CategoryID),
+    			'Category' => ExtensionCategory::getExtensionCategory($ExtensionData->CategoryID),
     			'SnapShot' => ExtensionSnapshot::getSnapshot($ExtensionData->ThumbnailID),
     			);  
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));

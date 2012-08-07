@@ -1,4 +1,10 @@
 <?php
+/**
+ * Class containing methods for fetching and storing  
+ * extension Category information.
+ *
+ * @package extensionmanager
+ */
 class ExtensionCategory extends DataObject {
 
 	static $db = array(	
@@ -13,4 +19,17 @@ class ExtensionCategory extends DataObject {
 		'ID',
 		'CategoryName',
 		);
+
+	/**
+	  * Get Category Name of Extension
+	  *
+	  *	@param extensionData
+	  * @return string
+	  */
+    public static function getExtensionCategory($categoryID) {
+    	$category = ExtensionCategory::get()->byID($categoryID);
+    	if($category) {
+    		return $category->CategoryName;
+    	}	
+    }
 }
