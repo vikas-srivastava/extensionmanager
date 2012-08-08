@@ -14,26 +14,31 @@ class JsonUpdateTask extends DailyTask {
 		$extensionData = ExtensionData::get();
 		$count = 0;
 		if ($extensionData && !empty($extensionData)) {
-			$count = $extensionData->Count();
+			$count = 0 ;
 			
 			foreach ($extensionData as $extension) {
-
-				$updateJson = $json->UpdateJson();               
-				if($updateJson) {
-					$id = $updateJson;
-					$deleteVersion = $json->deleteVersionData($id);
-					if($deleteVersion){
-						$saveVersion = $json->saveVersionData($id);
-						if($saveVersion){
-							echo "<br />$extension->Name is updated <br />" ;
+				// Include only Approved extensions
+				if($extension->Accepted == '1') {
+					$json = new JsonHandler();
+					$jsonData = $json->cloneJson($extension->Url);
+					$updateJson = $json->UpdateJson();
+					if($updateJson) {
+						$id = $updateJson;
+						$deleteVersion = $json->deleteVersionData($id);
+						if($deleteVersion){
+							$saveVersion = $json->saveVersionData($id);
+							if($saveVersion){
+								echo "<br>$extension->Name is updated <br>" ;
+							}
 						}
-					}	
+					}
+					else {
+						throw new InvalidArgumentException("$extension->Name  could not updated <br />");
+					}
+					$count++ ;
 				}
-				else {
-					throw new InvalidArgumentException("$extension->Name  could not updated <br />");
-				} 		
 			}
-			echo "<br /><br /><strong>{$count} Json File processed...</strong><br />";
+			echo "<br><br><strong>{$count} Repositories processed...</strong><br>";
 		} else { 
 			throw new InvalidArgumentException('No Extension found...');
 		}	
