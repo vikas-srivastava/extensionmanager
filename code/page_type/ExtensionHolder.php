@@ -46,7 +46,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
 		
-		if($jsonData) {
+		if($jsonData['LatestRelease']) {
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
 				if($saveJson) {
@@ -69,8 +69,8 @@ class ExtensionHolder_Controller extends Page_Controller {
 					if($deleteVersion){
 						$saveVersion = $json->saveVersionData($id);
 						if($saveVersion){
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating you extension'),'good');
-						return $this->redirectBack();
+							$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating you extension'),'good');
+							return $this->redirectBack();
 						}
 					} else {
 						$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','Something went wrong we are not able to save versions of submitted extension '),'bad');
@@ -82,9 +82,9 @@ class ExtensionHolder_Controller extends Page_Controller {
 				}
 			}
 		} else {
-			$form->sessionMessage(_t('ExtensionHolder.NOJSON','Sorry we could not find any composer.json file on given url . Please read our extension Submission Guide for more details and submit url again'), 'bad');
+			$form->sessionMessage(_t('ExtensionHolder.NOJSON',"We had problems parsing your composer.json file, the parser reports: {$jsonData['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"), 'bad');
 			return $this->redirectBack();
-		}			
+		}	
 	}
 
 	/**

@@ -34,7 +34,8 @@ class JsonHandler extends ContentController {
 	  */
 	public function cloneJson($url) { 
 		$this->url = $url ;
-		
+		$jsonData = array();
+
 		try{	
 			$config = Factory::createConfig();
 			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
@@ -58,40 +59,17 @@ class JsonHandler extends ContentController {
 				foreach ($releaseDateTimeStamps as $key => $val) {
 					if ($val == max($releaseDateTimeStamps)) {
 						$this->latestReleaseData = $this->versionData[$key];
-
 					}
 				}
-
-				$this->dumpJson();
 			}
-			return $this->latestReleaseData;
-
 		} catch (Exception $e) {
-			echo $e->getMessage();
-		}		
+			$jsonData['ErrorMsg'] = $e->getMessage();
+		}
+
+		$jsonData['AllRelease'] = $this->versionData;
+		$jsonData['LatestRelease'] = $this->latestReleaseData;
+		return $jsonData;		
 	}
-
-	/**
-	  * Create root level package.json 
-	  *
-	  * @return boolean
-	  */
-	private function dumpJson() {
-	   	$packages = $this->versionData;
-    	$filename = 'packages.json';
-        $repo = array('packages' => array());
-        $dumper = new ArrayDumper;
-        
-        foreach ($packages as $package) {
-            $repo['packages'][$package->getPrettyName()][$package->getPrettyVersion()] = $dumper->dump($package);
-        }
-
-        $packagesJsonData = Convert::array2json($repo);
-        $packagesJsonData = $this->createNiceJson($packagesJsonData);
-        $packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
-		fwrite($packageJsonFile, $packagesJsonData); 
-		fclose($packageJsonFile);
-    }
 
 	/**
 	  * Save json content in database  
@@ -334,55 +312,5 @@ class JsonHandler extends ContentController {
 		
 		$version->write();
 		return true;
-	}
-
-	/**
-	  * Format Json data in nice readable format
-	  *
-	  * @param  string $json 
-	  * @return string
-	  */
-	public function createNiceJson($json) {
-
-		$result      = '';
-		$pos         = 0;
-		$strLen      = strlen($json);
-		$indentStr   = '  ';
-		$newLine     = "\n";
-		$prevChar    = '';
-		$outOfQuotes = true;
-
-		for ($i=0; $i<=$strLen; $i++) {
-
-			$char = substr($json, $i, 1);
-
-			if ($char == '"' && $prevChar != '\\') {
-				$outOfQuotes = !$outOfQuotes;
-
-			} else if(($char == '}' || $char == ']') && $outOfQuotes) {
-				$result .= $newLine;
-				$pos --;
-					
-				for ($j=0; $j<$pos; $j++) {
-					$result .= $indentStr;
-				}
-			}
-
-			$result .= $char;
-
-			if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
-				$result .= $newLine;
-				
-				if ($char == '{' || $char == '[') {
-					$pos ++;
-				}
-
-				for ($j = 0; $j < $pos; $j++) {
-					$result .= $indentStr;
-				}
-			}       
-			$prevChar = $char;
-		}
-		return $result;
 	}
 }
