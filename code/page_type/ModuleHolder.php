@@ -63,8 +63,7 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 			'Title' => 'Submit a module',
 			'Content' => $this->dataRecord->AddContent
 			);
-		$this->reviewerEmail = 'modules@silverstripe.org';
-
+		$this->reviewerEmail = Config::inst()->get('Module', 'ReviewerEmail');
 		$content = $this->addContent;
 		$content['Form'] = $this->AddForm();
 

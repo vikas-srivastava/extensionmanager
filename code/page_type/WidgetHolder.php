@@ -61,8 +61,7 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 			'Title' => 'Submit a Widget',
 			'Content' => $this->dataRecord->AddContent
 			);
-		$this->reviewerEmail = 'widgets@silverstripe.org';
-
+		$this->reviewerEmail = Config::inst()->get('Widget', 'ReviewerEmail');
 		$content = $this->addContent;
 		$content['Form'] = $this->AddForm();
 

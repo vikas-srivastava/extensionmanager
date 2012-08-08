@@ -57,8 +57,7 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 			'Title' => 'Submit a Theme',
 			'Content' => $this->dataRecord->AddContent
 			);
-		$this->reviewerEmail = 'themes@silverstripe.org';
-
+		$this->reviewerEmail = Config::inst()->get('Theme', 'ReviewerEmail');
 		$content = $this->addContent;
 		$content['Form'] = $this->AddForm();
 

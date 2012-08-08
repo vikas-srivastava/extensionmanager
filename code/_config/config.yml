@@ -1,0 +1,6 @@
+Module:
+  ReviewerEmail: modules@silverstripe.org 
+Theme:
+  ReviewerEmail: themes@silverstripe.org
+Widget:
+  ReviewerEmail: widgets@silverstripe.org

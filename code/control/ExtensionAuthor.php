@@ -68,7 +68,7 @@ class ExtensionAuthorController extends Controller {
 	}
 
 	/**
-	  * Gey Author Info of Extension
+	  * Get Author Info of Extension
 	  *
 	  * @param  int $extensionDataId 
 	  * @return array
@@ -76,5 +76,23 @@ class ExtensionAuthorController extends Controller {
 	public static function getAuthorsInformation($extensionDataId) {
 		$extensionId = ExtensionData::get()->byID($extensionDataId);
 		return $extensionId->ExtensionAuthors();
+	}
+
+	/**
+	 * Get comma seprated list of authors email
+	 *
+	 * @param  int $extensionDataId
+	 * @return string 
+	 */
+	public static function getAuthorsEmail($extensionDataId) {
+		$authors = ExtensionData::get()->byID($extensionDataId)->ExtensionAuthors();
+		$emails =  array();
+		
+		foreach ($authors as $author) {
+			array_push($emails, $author->Email);
+		}
+
+		$commaSeparatedEmail = implode(",", $emails);
+		return $commaSeparatedEmail;
 	}
 }

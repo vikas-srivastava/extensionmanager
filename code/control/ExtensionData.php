@@ -65,6 +65,38 @@ class ExtensionData extends DataObject {
 		'ExtensionAuthors' => 'Member',
 		'Keywords' => 'ExtensionKeywords',
 		);
+
+	public function onAfterWrite() {
+		if($this->isChanged('Accepted') && $this->Accepted) {
+	
+			$mailData = array(
+				'Subject' => $this->Type." '".$this->Name."' has been Approved",
+				'To' => ExtensionAuthorController::getAuthorsEmail($this->ID),
+				'From' => Config::inst()->get($this->Type, 'ReviewerEmail'),
+				'ExtensionType' => $this->Type,
+				'ExtensionName' => $this->Name,
+				'ExtensionPageUrl' => Director::absoluteBaseURL().'module/show/'.$this->ID,
+				'SubmittedBy' => ExtensionData::get()->byID(1)->SubmittedBy()->Name,
+				);
+			$this->sendMailtoAuthors($mailData);
+		}
+		parent::onAfterWrite();
+	}
+
+	/**
+	  * Sending mail after extension is approved.
+	  *
+	  * @param array $mailData
+	  */
+	private function sendMailtoAuthors($mailData) {
+		$From = $mailData['From'] ;
+		$To = $mailData['To'] ;
+		$Subject = $mailData['Subject'];
+		$email = new Email($From, $To, $Subject);
+		$email->setTemplate('ExtensionApproved');
+		$email->populateTemplate($mailData);
+		$email->send();
+	}
 } 
 
 class ExtensionData_Controller extends ContentController {
@@ -128,5 +160,5 @@ class ExtensionData_Controller extends ContentController {
     	else{
     		return $this->httpError(404, "Sorry that $this->type could not be found");
     	}
-    }
+    } 
 }

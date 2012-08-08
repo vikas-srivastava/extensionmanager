@@ -11,8 +11,8 @@ class ExtensionHolder extends Page {
 }
 class ExtensionHolder_Controller extends Page_Controller {
 
-	public $basePage, $baseLink, $addContent, $afterEditContent;
-	public $reviewerEmail; //todo will use for sending mail after extension submission
+	public $addContent, $afterEditContent,$reviewerEmail;
+	public $extensionName, $mailData, $extensionType ;
 	
 	/**
 	 * Setting up the form.
@@ -50,11 +50,23 @@ class ExtensionHolder_Controller extends Page_Controller {
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
 				if($saveJson) {
-					//need review: is it right way to get last written dataobject
 					$id = $saveJson;
 					$saveVersion = $json->saveVersionData($id);
 					if($saveVersion){
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');
+						$this->extensionType = ExtensionData::get()->byID($id)->Type;
+						$this->extensionName = ExtensionData::get()->byID($id)->Name;
+						
+						$this->mailData = array(
+							'ExtensionType' => $this->extensionType,
+							'SubmittedByName' => Member::currentUser()->Name,
+							'SubmittedByEmail' => Member::currentUser()->Email,
+							'ReviewAtUrl' => Director::absoluteBaseURL().'admin/extensions/ExtensionData/EditForm/field/ExtensionData/item/'.$id.'/edit',
+							'Subject' => 'New'.$this->extensionType." '".$this->extensionName."' ".' Submitted',
+							);
+
+						$this->sendMailtoAdmin();
+
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');				
 						return $this->redirectBack();
 					}
 				} else {
@@ -69,6 +81,19 @@ class ExtensionHolder_Controller extends Page_Controller {
 					if($deleteVersion){
 						$saveVersion = $json->saveVersionData($id);
 						if($saveVersion){
+							$this->extensionType = ExtensionData::get()->byID($id)->Type;
+							$this->extensionName = ExtensionData::get()->byID($id)->Name;
+
+							$this->mailData = array(
+								'ExtensionType' => $this->extensionType,
+								'SubmittedByName' => Member::currentUser()->Name,
+								'SubmittedByEmail' => Member::currentUser()->Email,
+								'ReviewAtUrl' => Director::absoluteBaseURL().'admin/extensions/ExtensionData/EditForm/field/ExtensionData/item/'.$id.'/edit',
+								'Subject' => $this->extensionType." '".$this->extensionName."' ".' Updated',
+								);
+
+							$this->sendMailtoAdmin();
+
 							$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating you extension'),'good');
 							return $this->redirectBack();
 						}
@@ -93,12 +118,26 @@ class ExtensionHolder_Controller extends Page_Controller {
 	  * @param string $url  
 	  * @return boolean
 	  */
-	public function isNewExtension($url) {
+	private function isNewExtension($url) {
 		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
 		if(!$Json) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	  * Sending mail after extension submission/update.
+	  *
+	  */
+	private function sendMailtoAdmin() {
+		$From = $this->mailData['SubmittedByEmail'] ;
+		$To = $this->reviewerEmail;  
+		$Subject = $this->mailData['Subject'];
+		$email = new Email($From, $To, $Subject);
+		$email->setTemplate('ExtensionSubmitted');
+		$email->populateTemplate($this->mailData);
+		$email->send();
 	}
 }
