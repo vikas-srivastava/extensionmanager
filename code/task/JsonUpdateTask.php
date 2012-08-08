@@ -4,9 +4,6 @@
  *
  * @package extensionmanager
  */
-
-use Composer\package\Dumper\ArrayDumper;
-
 class JsonUpdateTask extends DailyTask {
 	
 	function process() {
@@ -19,14 +16,7 @@ class JsonUpdateTask extends DailyTask {
 		if ($extensionData && !empty($extensionData)) {
 			$count = $extensionData->Count();
 			
-			$filename = 'packages.json';
-			$repo = array('packages' => array());
-
 			foreach ($extensionData as $extension) {
-				$json = new JsonHandler();
-				$jsonData = $json->cloneJson($extension->Url);
-				$packages = $jsonData['AllRelease'];
-				$dumper = new ArrayDumper;
 
 				$updateJson = $json->UpdateJson();               
 				if($updateJson) {
@@ -40,26 +30,12 @@ class JsonUpdateTask extends DailyTask {
 					}	
 				}
 				else {
-					echo  "$extension->Name  could not updated <br />" ;
-				} 
-
-				foreach ($packages as $package) {
-					$repo['packages'][$package->getPrettyName()][$package->getPrettyVersion()] = $dumper->dump($package);
-				}		
-			}
-
-			if(!empty($repo)) {
-				$packagesJsonData = Convert::array2json($repo);
-				$packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
-				fwrite($packageJsonFile, $packagesJsonData); 
-				fclose($packageJsonFile);
-				echo "<br /><br /><strong> package.json file created successfully...</strong><br />";
-			} else {
-				throw new InvalidArgumentException('package.json file could not be created');
+					throw new InvalidArgumentException("$extension->Name  could not updated <br />");
+				} 		
 			}
 			echo "<br /><br /><strong>{$count} Json File processed...</strong><br />";
 		} else { 
-			echo 'No Extension found...';
+			throw new InvalidArgumentException('No Extension found...');
 		}	
 	} 
 }
