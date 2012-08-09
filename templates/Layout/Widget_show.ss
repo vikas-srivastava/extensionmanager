@@ -148,5 +148,9 @@ according to diffrent design and data
     <% if $SnapShot %>
         <img src="$SnapShot.Url" alt="$SnapShot.Name"/> 
     <% end_if %>
+    
+    <% if $Disqus %>
+        $Disqus
+    <% end_if %>
    
  </div>

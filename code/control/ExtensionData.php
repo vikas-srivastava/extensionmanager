@@ -101,12 +101,17 @@ class ExtensionData extends DataObject {
 
 class ExtensionData_Controller extends ContentController {
 	
-	public $type;
+	public $type, $disqus;
 
 	static $allowed_actions = array(
 		'index',
 		'show',   
 		);
+
+	public function init() {
+        parent::init();
+        $this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
+    }
 
 	/**
 	  * Get one Extension data from database using
@@ -143,6 +148,7 @@ class ExtensionData_Controller extends ContentController {
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
     			'Category' => ExtensionCategory::getExtensionCategory($ExtensionData->CategoryID),
     			'SnapShot' => ExtensionSnapshot::getSnapshot($ExtensionData->ThumbnailID),
+    			'Disqus' => $this->disqus,
     			);  
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
     	}
