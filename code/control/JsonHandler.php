@@ -19,7 +19,7 @@ use Composer\Repository\RepositoryManager;
 use Composer\package\Dumper\ArrayDumper;
 use Composer\Json\JsonFile;
 
-class JsonHandler extends ContentController {
+class JsonHandler extends Controller {
 	
 	public $url;
 	public $latestReleaseData;

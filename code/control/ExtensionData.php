@@ -124,17 +124,6 @@ class ExtensionData_Controller extends ContentController {
 			}
 		}
 	}
-	
-    /**
-	  * Get Name of submiited by Member
-	  *
-	  *	@param ExtensionData
-	  * @return string
-	  */
-    static function getExtensionSubmittedBy($submittedByID) {
-    	$member = Member::get()->byID($submittedByID);
-    	return $member->FirstName.' '.$member->Lastname;
-    }
 
     /**
       * Show module data   
@@ -147,7 +136,7 @@ class ExtensionData_Controller extends ContentController {
     		$Data = array(
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
-    			'SubmittedBy' => $this->getExtensionSubmittedBy($ExtensionData->SubmittedByID),
+    			'SubmittedBy' => $ExtensionData->SubmittedBy()->Name,
     			'Keywords' => ExtensionKeywords::getExtensionKeywords($ExtensionData->ID),
     			'AuthorsDetail'=> ExtensionAuthorController::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),

@@ -11,9 +11,9 @@ class ExtensionAuthorController extends Controller {
 	  * Store Multiple Author Info in Member class
 	  * Url ID
 	  *
-	  * @param array $authorsRawData, int $extensionDataId 
+	  * @param array $authorsRawData, int $extensionId 
 	  */
-	public static function storeAuthorsInfo($authorsRawData,$extensionDataId) {	
+	public static function storeAuthorsInfo($authorsRawData,$extensionId) {	
 		
 		$totalAuthors = count($authorsRawData);
 		$authorsEmail = array();
@@ -54,7 +54,7 @@ class ExtensionAuthorController extends Controller {
 				$member->HomePage = $authorsHomepage[$i];
 				$member->Role = $authorsRole[$i];
 				$member->write();
-				$member->AuthorOf()->add($extensionDataId);				
+				$member->AuthorOf()->add($extensionId);				
 			} else {
 				$member = new Member();
 		        $member->Email = $authorsEmail[$i];
@@ -62,7 +62,7 @@ class ExtensionAuthorController extends Controller {
 		        $member->HomePage = $authorsHomepage[$i];
 				$member->Role = $authorsRole[$i];
 		        $member->write();
-		        $member->AuthorOf()->add($extensionDataId);
+		        $member->AuthorOf()->add($extensionId);
 			}
 		}
 	}
@@ -70,22 +70,22 @@ class ExtensionAuthorController extends Controller {
 	/**
 	  * Get Author Info of Extension
 	  *
-	  * @param  int $extensionDataId 
+	  * @param  int $extensionId 
 	  * @return array
 	  */
-	public static function getAuthorsInformation($extensionDataId) {
-		$extensionId = ExtensionData::get()->byID($extensionDataId);
+	public static function getAuthorsInformation($extensionId) {
+		$extensionId = ExtensionData::get()->byID($extensionId);
 		return $extensionId->ExtensionAuthors();
 	}
 
 	/**
 	 * Get comma seprated list of authors email
 	 *
-	 * @param  int $extensionDataId
+	 * @param  int $extensionId
 	 * @return string 
 	 */
-	public static function getAuthorsEmail($extensionDataId) {
-		$authors = ExtensionData::get()->byID($extensionDataId)->ExtensionAuthors();
+	public static function getAuthorsEmail($extensionId) {
+		$authors = ExtensionData::get()->byID($extensionId)->ExtensionAuthors();
 		$emails =  array();
 		
 		foreach ($authors as $author) {
