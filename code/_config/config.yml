@@ -1,6 +1,6 @@
 Module:
-  ReviewerEmail: modules@silverstripe.org 
+  ReviewerEmail: modules@openbees.org
 Theme:
-  ReviewerEmail: themes@silverstripe.org
+  ReviewerEmail: themes@openbees.org
 Widget:
-  ReviewerEmail: widgets@silverstripe.org
+  ReviewerEmail: widgets@openbees.org
