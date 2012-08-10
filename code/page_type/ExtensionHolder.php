@@ -11,8 +11,8 @@ class ExtensionHolder extends Page {
 }
 class ExtensionHolder_Controller extends Page_Controller {
 
-	public $addContent, $afterEditContent,$reviewerEmail;
-	public $extensionName, $mailData, $extensionType ;
+	public $addContent, $afterEditContent;
+	public $extensionName, $mailData, $extensionType;
 	
 	/**
 	 * Setting up the form.
@@ -61,7 +61,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 							'SubmittedByName' => Member::currentUser()->Name,
 							'SubmittedByEmail' => Member::currentUser()->Email,
 							'ReviewAtUrl' => Director::absoluteBaseURL().'admin/extensions/ExtensionData/EditForm/field/ExtensionData/item/'.$id.'/edit',
-							'Subject' => 'New'.$this->extensionType." '".$this->extensionName."' ".' Submitted',
+							'Subject' => 'New '.$this->extensionType." '".$this->extensionName."' ".' Submitted',
 							);
 
 						$this->sendMailtoAdmin();
@@ -133,7 +133,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 	  */
 	private function sendMailtoAdmin() {
 		$From = $this->mailData['SubmittedByEmail'] ;
-		$To = $this->reviewerEmail;  
+		$To = Config::inst()->get($this->mailData['ExtensionType'], 'ReviewerEmail');
 		$Subject = $this->mailData['Subject'];
 		$email = new Email($From, $To, $Subject);
 		$email->setTemplate('ExtensionSubmitted');

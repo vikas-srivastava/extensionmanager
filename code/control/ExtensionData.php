@@ -77,7 +77,6 @@ class ExtensionData extends DataObject {
 				'ExtensionName' => $this->Name,
 				'ExtensionPageUrl' => Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID,
 				'SubmittedBy' => $this->SubmittedBy()->Name,
-
 				);
 			$this->sendMailtoAuthors($mailData);
 		}
