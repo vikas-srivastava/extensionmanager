@@ -75,8 +75,9 @@ class ExtensionData extends DataObject {
 				'From' => Config::inst()->get($this->Type, 'ReviewerEmail'),
 				'ExtensionType' => $this->Type,
 				'ExtensionName' => $this->Name,
-				'ExtensionPageUrl' => Director::absoluteBaseURL().'module/show/'.$this->ID,
+				'ExtensionPageUrl' => Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID,
 				'SubmittedBy' => $this->SubmittedBy()->Name,
+
 				);
 			$this->sendMailtoAuthors($mailData);
 		}
