@@ -124,7 +124,7 @@ class ExtensionData_Controller extends ContentController {
 		$Params = $this->getURLParams();
 		
 		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {  
-			if($ExtensionData->Type == $this->type && $ExtensionData->Accepted == "1" ) {
+			if(Permission::check("ADMIN") || ($ExtensionData->Type == $this->type && $ExtensionData->Accepted == "1" )) {
 				return $ExtensionData;
 			}
 		}

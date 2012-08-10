@@ -58,9 +58,11 @@ class ExtensionHolder_Controller extends Page_Controller {
 						
 						$this->mailData = array(
 							'ExtensionType' => $this->extensionType,
+							'ExtensionName' => $this->extensionName,
 							'SubmittedByName' => Member::currentUser()->Name,
 							'SubmittedByEmail' => Member::currentUser()->Email,
 							'ReviewAtUrl' => Director::absoluteBaseURL().'admin/extensions/ExtensionData/EditForm/field/ExtensionData/item/'.$id.'/edit',
+							'DetailPageLink' => Director::absoluteBaseURL().strtolower($this->extensionType).'/show/'.$this->ID,
 							'Subject' => 'New '.$this->extensionType." '".$this->extensionName."' ".' Submitted',
 							);
 
@@ -86,9 +88,11 @@ class ExtensionHolder_Controller extends Page_Controller {
 
 							$this->mailData = array(
 								'ExtensionType' => $this->extensionType,
+								'ExtensionName' => $this->extensionName,
 								'SubmittedByName' => Member::currentUser()->Name,
 								'SubmittedByEmail' => Member::currentUser()->Email,
 								'ReviewAtUrl' => Director::absoluteBaseURL().'admin/extensions/ExtensionData/EditForm/field/ExtensionData/item/'.$id.'/edit',
+								'DetailPageLink' => Director::absoluteBaseURL().strtolower($this->extensionType).'/show/'.$this->ID,
 								'Subject' => $this->extensionType." '".$this->extensionName."' ".' Updated',
 								);
 
