@@ -142,14 +142,14 @@ class ExtensionData_Controller extends ContentController {
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
     			'SubmittedBy' => $ExtensionData->SubmittedBy()->Name,
-    			'Keywords' => ExtensionKeywords::getExtensionKeywords($ExtensionData->ID),
+    			'Keywords' => $ExtensionData->Keywords(),
     			'AuthorsDetail'=> ExtensionAuthorController::getAuthorsInformation($ExtensionData->ID),
     			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
     			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
     			'Category' => ExtensionCategory::getExtensionCategory($ExtensionData->CategoryID),
     			'SnapShot' => ExtensionSnapshot::getSnapshot($ExtensionData->ThumbnailID),
     			'Disqus' => $this->disqus,
-    			);  
+    			);
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
     	}
     	else{
