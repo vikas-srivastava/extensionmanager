@@ -24,7 +24,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 		if(!Member::currentUser()) return Security::permissionFailure();
 		
 		$fields = new FieldList(
-			new TextField ('Url', 'Please Submit Read-Only Url of your Extension Repository') 
+			new TextField ('Url', "Please Submit 'HTTP' Url of your Extension Repository") 
 			);
 		$actions = new FieldList(
 			new FormAction('submitUrl', 'Submit')
