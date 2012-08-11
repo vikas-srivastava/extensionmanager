@@ -40,9 +40,24 @@ class ExtensionData extends DataObject {
 		);	
 
 	static $searchable_fields = array(
-		'Name',
-		'Type',
-		'SubmittedByID' 
+		'Name' => array(
+			'title' => 'Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+		'Type' => array(
+			'title' => 'Extension Type',
+			),
+		'Keywords.KeywordName' => array(
+			'title' => 'Keyword',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+		'Category.CategoryName' => array(
+			'title' => 'Category',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			)
 		);
 
 	static $summary_fields = array(
@@ -68,7 +83,7 @@ class ExtensionData extends DataObject {
 
 	public function onAfterWrite() {
 		if($this->isChanged('Accepted') && $this->Accepted) {
-	
+
 			$mailData = array(
 				'Subject' => $this->Type." '".$this->Name."' has been Approved",
 				'To' => ExtensionAuthorController::getAuthorsEmail($this->ID),
@@ -109,9 +124,9 @@ class ExtensionData_Controller extends ContentController {
 		);
 
 	public function init() {
-        parent::init();
-        $this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
-    }
+		parent::init();
+		$this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
+	}
 
 	/**
 	  * Get one Extension data from database using

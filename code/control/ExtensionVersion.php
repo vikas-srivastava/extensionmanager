@@ -8,27 +8,52 @@
 class ExtensionVersion extends DataObject {
 
 	static $db = array(	
-       'SourceType' => 'Varchar(300)',
-       'SourceUrl' => 'Varchar(300)',
-       'SourceReference' => 'Varchar(300)',
-       'DistType' => 'Varchar(300)',
-       'DistUrl' => 'Varchar(300)',
-       'DistReference' => 'Varchar(300)',
-       'DistSha1Checksum' => 'Varchar(300)',
-       'Version' => 'Varchar(300)',
-       'PrettyVersion' => 'Varchar(300)',
-       'ReleaseDate' =>  'SS_Datetime',
-       );
+		'SourceType' => 'Varchar(300)',
+		'SourceUrl' => 'Varchar(300)',
+		'SourceReference' => 'Varchar(300)',
+		'DistType' => 'Varchar(300)',
+		'DistUrl' => 'Varchar(300)',
+		'DistReference' => 'Varchar(300)',
+		'DistSha1Checksum' => 'Varchar(300)',
+		'Version' => 'Varchar(300)',
+		'PrettyVersion' => 'Varchar(300)',
+		'ReleaseDate' =>  'SS_Datetime',
+		);
 
 	static $has_one = array(
-       'ExtensionData' => 'ExtensionData',
-       );
+		'ExtensionData' => 'ExtensionData',
+		);
+
+	static $searchable_fields = array(
+		'ExtensionData.Name' => array(
+			'title' => 'Extension Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+		'ExtensionData.Type' => array(
+			'title' => 'Extension Type',
+			),
+		'PrettyVersion' => array(
+			'title' => 'Version',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+
+		);
 
 	static $summary_fields = array(
-       'ID',
-       'ExtensionDataID',
-       'PrettyVersion',
-       );
+		'ExtensionData.Name' => array(
+			'title' => 'Extension Name',
+			),
+		'ExtensionData.Type' => array(
+			'title' => 'Extension Type',
+			),
+		'PrettyVersion' => array(
+			'title' => 'Version',
+			),
+		);
+
+
 
 	/**
 	 * Get each version belongs to Extension

@@ -15,9 +15,23 @@ class ExtensionCategory extends DataObject {
 		'Extensions' => 'ExtensionData',
 		);	
 
+	static $searchable_fields = array(
+		'CategoryName' => array(
+			'title' => 'Category Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+		'Extensions.Name' => array(
+			'title' => 'Extension Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			)
+		);
+
 	static $summary_fields = array(
-		'ID',
-		'CategoryName',
+		'CategoryName' => array(
+			'title' => 'Category Name',
+			),
 		);
 
 	/**
@@ -26,10 +40,10 @@ class ExtensionCategory extends DataObject {
 	  *	@param extensionData
 	  * @return string
 	  */
-    public static function getExtensionCategory($categoryID) {
-    	$category = ExtensionCategory::get()->byID($categoryID);
-    	if($category) {
-    		return $category->CategoryName;
-    	}	
-    }
+	public static function getExtensionCategory($categoryID) {
+		$category = ExtensionCategory::get()->byID($categoryID);
+		if($category) {
+			return $category->CategoryName;
+		}	
+	}
 }

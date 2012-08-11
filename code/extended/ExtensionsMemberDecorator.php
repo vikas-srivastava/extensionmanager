@@ -13,10 +13,18 @@ class ExtensionsMemberDecorator extends DataExtension {
 		);
 
 	static $has_many = array(
-        'SubmittedExtension' => 'ExtensionData',
-    );
+		'SubmittedExtension' => 'ExtensionData',
+		);
 
-    static $many_many = array(
+	static $many_many = array(
 		'AuthorOf' => 'ExtensionData',
+		);
+
+	static $searchable_fields = array(
+		'AuthorOf.Name' => array(
+			'title' => 'Extension Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			)
 		);
 }

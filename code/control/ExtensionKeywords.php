@@ -16,11 +16,22 @@ class ExtensionKeywords extends DataObject {
 		);
 
 	static $searchable_fields = array(
-		'KeywordName',
+		'KeywordName' => array(
+			'title' => 'Keyword Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			),
+		'Extension.Name' => array(
+			'title' => 'Extension Name',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchFilter',
+			)
 		);
 
 	static $summary_fields = array(
-		'KeywordName',
+		'KeywordName' => array(
+			'title' => 'Keyword Name',
+			),
 		);
 
 	/**
@@ -37,9 +48,9 @@ class ExtensionKeywords extends DataObject {
 				$keyword->Extension()->add($extensionId);				
 			} else {
 				$keyword = new ExtensionKeywords();
-		        $keyword->KeywordName = $rawKeywordData[$i] ;
-		        $keyword->write();
-		        $keyword->Extension()->add($extensionId);
+				$keyword->KeywordName = $rawKeywordData[$i] ;
+				$keyword->write();
+				$keyword->Extension()->add($extensionId);
 			}
 		}
 	}
