@@ -51,21 +51,22 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 		'addnew' => 'addnew',
 		);	
 
+	public function init() {
+		parent::init();
+		$this->extensionType = 'Module';
+	}
 	/**
 	 * Setting up the form for module submission.
 	 *
 	 * @return Array .
 	 */
 	function addNew() {
-
 		$this->basePage = $this->data();
 		$this->addContent = array(
 			'Title' => 'Submit a module',
 			'Content' => $this->dataRecord->AddContent
 			);
 		$content = $this->addContent;
-		$content['Form'] = $this->AddForm();
-
 		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
 	}
 
@@ -76,8 +77,15 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 	 */
 	function moduleList() { 
 		$modules = ExtensionData::get()->filter(array('Type' => 'Module', 'Accepted' => '1'))->sort('Name');
-			return $modules ;			
+		return $modules;
 	}	
-	//todo showing list of all module is not permanent solution 
-	//but we need more time for implementing solr or sphinx search  
-}			
+
+	/**
+	 * Show Module Search form.
+	 *
+	 * @return Array .
+	 */
+	function moduleSearch(){
+		return $this->ExtensionSearch();
+	}
+}

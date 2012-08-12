@@ -45,21 +45,27 @@ class ThemeHolder extends ExtensionHolder {
  */
 class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	
+	static $urlhandlers = array(
+		'addnew' => 'addnew',
+		);
+
+	public function init() {
+		parent::init();
+		$this->extensionType = 'Theme';
+	}
+
 	/**
 	 * Setting up the form for module submission.
 	 *
 	 * @return Array .
 	 */
 	function addNew() {
-
 		$this->basePage = $this->data();
 		$this->addContent = array(
 			'Title' => 'Submit a Theme',
 			'Content' => $this->dataRecord->AddContent
 			);
 		$content = $this->addContent;
-		$content['Form'] = $this->AddForm();
-
 		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
 	}
 
@@ -70,8 +76,15 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 */
 	function themeList() { 
 		$themes = ExtensionData::get()->filter(array('Type' => 'Theme','Accepted' => '1'))->sort('Name');
-			return $themes ;			
-	}	
-	//todo showing list of all themes is not permanent solution 
-	//but we need more time for implementing solr or sphinx search 
-}			
+		return $themes;
+	}
+
+	/**
+	 * Show Theme Search form.
+	 *
+	 * @return Array .
+	 */
+	function themeSearch(){
+		return $this->ExtensionSearch();
+	}
+}

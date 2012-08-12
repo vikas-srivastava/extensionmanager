@@ -13,6 +13,7 @@ class ExtensionData extends DataObject {
 		'Name' => 'VarChar(50)',
 		'Description' => 'VarChar(50)',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
+		'DetailPageLink' => 'VarChar(100)',
 		'Homepage' => 'VarChar(500)',
 		'Licence' => 'VarChar(500)',
 		'Version' => 'Varchar(30)',
@@ -61,9 +62,18 @@ class ExtensionData extends DataObject {
 		);
 
 	static $summary_fields = array(
-		'Name',
-		'Type',
-		'Description',
+		'Name' => array(
+			'title' => 'Name',
+			),
+		'Type' => array(
+			'title' => 'Extension Type',
+			),
+		'Description' => array(
+			'title' => 'Description',
+			),
+		'DetailPageLink' => array(
+			'title' => 'Detail Page',
+			)
 		);
 
 	static $has_one = array(
@@ -81,6 +91,28 @@ class ExtensionData extends DataObject {
 		'Keywords' => 'ExtensionKeywords',
 		);
 
+	public function getCustomSearchContext() {
+		$fields = $this->scaffoldSearchFields(array(
+			'restrictFields' => array('Name','Keywords.KeywordName','Category.CategoryName')
+			));
+		$filters = array(
+			'Name' => new PartialMatchFilter('Name'),
+			'Keyword' => new PartialMatchFilter('Keywords.KeywordName'),
+			'Category' => new ExactMatchFilter('Category.CategoryName'),
+			'Type' => new ExactMatchFilter('Type')
+			);
+		return new SearchContext(
+			$this->class,
+			$fields,
+			$filters
+			);
+	}
+
+	public function onBeforeWrite(){
+		$this->DetailPageLink = Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID;
+		parent::onBeforeWrite();
+	}
+
 	public function onAfterWrite() {
 		if($this->isChanged('Accepted') && $this->Accepted) {
 
@@ -90,7 +122,7 @@ class ExtensionData extends DataObject {
 				'From' => Config::inst()->get($this->Type, 'ReviewerEmail'),
 				'ExtensionType' => $this->Type,
 				'ExtensionName' => $this->Name,
-				'ExtensionPageUrl' => Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID,
+				'ExtensionPageUrl' => $this->DetailPageLink,
 				'SubmittedBy' => $this->SubmittedBy()->Name,
 				);
 			$this->sendMailtoAuthors($mailData);

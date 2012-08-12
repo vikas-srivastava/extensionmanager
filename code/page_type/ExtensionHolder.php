@@ -144,4 +144,37 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$email->populateTemplate($this->mailData);
 		$email->send();
 	}
+
+	/**
+	  * Create Extension search form based on type of Extension.
+	  *
+	  * @return boolean $form
+	  */
+	public function ExtensionSearch() {
+		$context = singleton('ExtensionData')->getCustomSearchContext();
+		$fields = $context->getSearchFields();
+		$form = new Form($this, "ExtensionSearch",
+			$fields,
+			new FieldList(
+				new FormAction('doSearch' , "Search $this->extensionType" )
+				)
+			);
+		$form->setFormMethod('GET');
+		$form->disableSecurityToken();
+		return $form;
+	}
+
+	/**
+	  * Search Form action.
+	  *
+	  * @param array $data, $form
+	  * @return array
+	  */
+	public function doSearch($data, $form) {
+		$context = singleton('ExtensionData')->getCustomSearchContext();
+		$results = $context->getResults($data);
+		return $this->customise(array(
+			'Results' => $results
+			))->renderWith(array('ExtensionSearch', 'Page'));
+	}
 }

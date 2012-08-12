@@ -49,21 +49,23 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 		'addnew' => 'addnew',
 		);	
 
+	public function init() {
+		parent::init();
+		$this->extensionType = 'Widget';
+	}
+
 	/**
 	 * Setting up the form for widget submission.
 	 *
 	 * @return Array .
 	 */
 	function addNew() {
-
 		$this->basePage = $this->data();
 		$this->addContent = array(
 			'Title' => 'Submit a Widget',
 			'Content' => $this->dataRecord->AddContent
 			);
 		$content = $this->addContent;
-		$content['Form'] = $this->AddForm();
-
 		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
 	}
 
@@ -74,8 +76,15 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 */
 	function widgetList() { 
 		$modules = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
-			return $modules ;			
-	}	
-	//todo showing list of all widget is not permanent solution 
-	//but we need more time for implementing solr or sphinx search  
-}			
+		return $modules;
+	}
+
+	/**
+	 * Show widget Search form.
+	 *
+	 * @return Array .
+	 */
+	function widgetSearch(){
+		return $this->ExtensionSearch();
+	}
+}
