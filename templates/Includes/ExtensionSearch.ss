@@ -1,4 +1,5 @@
 <div id="Content" class="searchResults typography">
+    
     <h1>$SearchTitle</h1>
     <% if Query %>
     <p class="searchQuery"><strong>You searched for &quot;{$Query}&quot;</strong></p>
@@ -7,7 +8,6 @@
     <% if ExtensionSearchResults %>
     <ul id="SearchResults">
         <% control ExtensionSearchResults %>
-        <% if Accepted %>
         <li>
             <a class="searchResultHeader" href="$DetailPageLink">
                 $Name
@@ -16,7 +16,6 @@
             <p>$Content.LimitWordCountXML</p>
             <a class="readMoreLink" href="$DetailPageLink" title="Read more about &quot;{$Name}&quot;">Read more about &quot;{$Name}&quot;...</a>
         </li>
-        <% end_if %>
         <% end_control %>
     </ul>
     <% else %>

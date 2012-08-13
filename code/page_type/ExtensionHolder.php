@@ -173,9 +173,12 @@ class ExtensionHolder_Controller extends Page_Controller {
 	public function doSearch($data, $form) {
 		$isFormSubmitted  = (isset($data['action_doSearch']) && ($data['action_doSearch'] == "Search $this->extensionType")) ? True : False ;
 		$context = singleton('ExtensionData')->getCustomSearchContext();
-		$results = $context->getResults($data);	
+		$results = $context->getResults($data)->filter(array(
+			'Type' => $this->extensionType,
+			'Accepted' => '1'
+			));	
 		return $this->customise(array(
-			'FormSubmitted' => $isFormSubmitted,
+			'FormSubmitted' => $isFormSubmitted, 
 			'ExtensionSearchResults' => $results,
 			'SearchTitle' => _t('SearchForm.SearchResults', 'Search Results')
 			));
