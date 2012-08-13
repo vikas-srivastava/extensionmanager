@@ -24,6 +24,12 @@
 			<% end_loop %>
 		</div>
 	</div>
-
 	<div style = "clear:both;"></div>
+
+	<div style = "margin-top:30px;">
+		<% if FormSubmitted %>
+		<% include ExtensionSearch %>
+		<% end_if %>
+	</div>
+
 </div>

@@ -1,12 +1,12 @@
 <div id="Content" class="searchResults typography">
-    <h1>Search Result</h1>
+    <h1>$SearchTitle</h1>
     <% if Query %>
     <p class="searchQuery"><strong>You searched for &quot;{$Query}&quot;</strong></p>
     <% end_if %>
-    
-    <% if Results %>
+
+    <% if ExtensionSearchResults %>
     <ul id="SearchResults">
-        <% control Results %>
+        <% control ExtensionSearchResults %>
         <% if Accepted %>
         <li>
             <a class="searchResultHeader" href="$DetailPageLink">
@@ -22,15 +22,15 @@
     <% else %>
     <p>Sorry, your search query did not return any results.</p>
     <% end_if %>
-    
-    <% if Results.MoreThanOnePage %>
+
+    <% if ExtensionSearchResults.MoreThanOnePage %>
     <div id="PageNumbers">
         <div class="pagination">
-            <% if Results.NotFirstPage %>
-            <a class="prev" href="$Results.PrevLink" title="View the previous page">&larr;</a>
+            <% if ExtensionSearchResults.NotFirstPage %>
+            <a class="prev" href="$ExtensionSearchResults.PrevLink" title="View the previous page">&larr;</a>
             <% end_if %>
             <span>
-                <% control Results.Pages %>
+                <% control ExtensionSearchResults.Pages %>
                 <% if CurrentBool %>
                 $PageNum
                 <% else %>
@@ -38,11 +38,11 @@
                 <% end_if %>
                 <% end_control %>
             </span>
-            <% if Results.NotLastPage %>
-            <a class="next" href="$Results.NextLink" title="View the next page">&rarr;</a>
+            <% if ExtensionSearchResults.NotLastPage %>
+            <a class="next" href="$ExtensionSearchResults.NextLink" title="View the next page">&rarr;</a>
             <% end_if %>
         </div>    
-        <p>Page $Results.CurrentPage of $Results.TotalPages</p>
+        <p>Page $ExtensionSearchResults.CurrentPage of $ExtensionSearchResults.TotalPages</p>
     </div>
     <% end_if %>
 </div>
