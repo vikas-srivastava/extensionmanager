@@ -183,4 +183,16 @@ class ExtensionHolder_Controller extends Page_Controller {
 			'SearchTitle' => _t('SearchForm.SearchResults', 'Search Results')
 			));
 	}
+
+	/**
+	  * Display 10 recently submitted Extensions.
+	  *
+	  * @return array
+	  */
+	public function newExtension() {
+		return ExtensionData::get()->filter(array(
+			'Accepted' => '1',
+			'Type' => $this->extensionType,
+			))->sort('Created', 'DESC')->limit('10');
+	}
 }

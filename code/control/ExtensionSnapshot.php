@@ -52,17 +52,5 @@ class ExtensionSnapshot extends Controller {
             $thumbnailObject->write();
             return $thumbnailObject->ID ;
         }
-
-    }
-
-    public static function getSnapshot($imageId) {
-    	$thumbnailObject = Image::get()->byID($imageId);
-    	if($thumbnailObject) {
-	    	$imageData = array(
-	    		'Url' => $thumbnailObject->URL,
-	    		'Name' => $thumbnailObject->Name,
-	    		);
-	    	return $imageData;
-    	}
     }
 }

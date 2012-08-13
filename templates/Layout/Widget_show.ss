@@ -12,7 +12,7 @@ according to diffrent design and data
         <% loop ExtensionData %>    
 
         <% if $Accepted != 1 %>
-            <h1>This Widget is yet not Approved by Widget Moderators</h1>
+        <h1>This Widget is yet not Approved by Widget Moderators</h1>
         <% end_if %>
 
         <h1>$Name</h1>
@@ -47,7 +47,7 @@ according to diffrent design and data
 
         <% loop ExtensionData %>
 
-      
+        
         <h2>Support </h2>
         <% if $SupportEmail %>
         <li>
@@ -92,7 +92,7 @@ according to diffrent design and data
         <% if $Keywords %>
         <h3>Keywords</h3>
         <% loop Keywords %>
-            $KeywordName 
+        $KeywordName 
         <% end_loop %>    
         <% end_if %>
         
@@ -103,58 +103,60 @@ according to diffrent design and data
         </li>
         <% end_if %> 
 
-    <% if $AuthorsDetail %>
-    <h2>Authors Detail</h2>
-    <% loop AuthorsDetail %>
-    <p>
-    <ul>
-        <% if $FirstName %>
-        <li>
-            Author Name : $FirstName
-        </li>
-        <% end_if %>  
+        <% if $AuthorsDetail %>
+        <h2>Authors Detail</h2>
+        <% loop AuthorsDetail %>
+        <p>
+            <ul>
+                <% if $FirstName %>
+                <li>
+                    Author Name : $FirstName
+                </li>
+                <% end_if %>  
 
-        <% if $Email %>
-        <li>
-            Author Email : $Email
-        </li>
-        <% end_if %>  
+                <% if $Email %>
+                <li>
+                    Author Email : $Email
+                </li>
+                <% end_if %>  
 
-        <% if $HomePage %>
-        <li>
-            Author HomePage : 
-            <a href="$AuthorHomePage "> $HomePage  </a>
-            <li>
-        <% end_if %>
+                <% if $HomePage %>
+                <li>
+                    Author HomePage : 
+                    <a href="$AuthorHomePage "> $HomePage  </a>
+                    <li>
+                        <% end_if %>
 
-        <% if $Role %>
-            <li>
-                Author Email : $Role 
-            </li>
-        <% end_if %>  
-    </ul>
-    </p>
-    <% end_loop %>        
-    <% end_if %>  
+                        <% if $Role %>
+                        <li>
+                            Author Email : $Role 
+                        </li>
+                        <% end_if %>  
+                    </ul>
+                </p>
+                <% end_loop %>        
+                <% end_if %>  
 
-    <% if VersionData %>
-    <h2>Subversion Detail</h2>
-        <% loop VersionData %>
-        <p> 
-            <h3>$PrettyVersion </h3> 
-            <a href="$DistUrl"> Download $DistType</a><br>
-            <a href="$SourceUrl"> Source Url</a><br><br> 
-        </p>
-        <% end_loop %>
-    <% end_if %> 
-    
-    <!--  Resize according to theme -->
-    <% if $SnapShot %>
-        <img src="$SnapShot.Url" alt="$SnapShot.Name"/> 
-    <% end_if %>
-    
-    <% if $Disqus %>
-        $Disqus
-    <% end_if %>
-   
- </div>
+                <% if VersionData %>
+                <h2>Subversion Detail</h2>
+                <% loop VersionData %>
+                <p> 
+                    <h3>$PrettyVersion </h3> 
+                    <a href="$DistUrl"> Download $DistType</a><br>
+                    <a href="$SourceUrl"> Source Url</a><br><br> 
+                </p>
+                <% end_loop %>
+                <% end_if %> 
+                
+                <!--  Resize according to theme -->
+                <% if $SnapShot %>
+                <img src="$SnapShot.Url" border="2" style="border:2px solid black;max-width:40%;"alt="$SnapShot.Name"/> 
+                <% end_if %>
+                
+                <div style = "margin-top:30px;">
+                    <% if $Disqus %>
+                    $Disqus
+                    <% end_if %>
+                </div>
+                
+            </div>
