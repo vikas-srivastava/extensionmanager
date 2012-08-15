@@ -46,11 +46,11 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$json = new JsonHandler();
 		$jsonData = $json->cloneJson($url);
 		
-		if($jsonData['LatestRelease']) {
+		if(!array_key_exists('ErrorMsg', $jsonData)) {
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
-				if($saveJson) {
-					$id = $saveJson;
+				if(!array_key_exists('ErrorMsg', $saveJson)) {
+					$id = $saveJson['ExtensionID'];
 					$saveVersion = $json->saveVersionData($id);
 					if($saveVersion){
 						$this->extensionType = ExtensionData::get()->byID($id)->Type;
@@ -72,13 +72,14 @@ class ExtensionHolder_Controller extends Page_Controller {
 						return $this->redirectBack();
 					}
 				} else {
-					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','We are unable to save module info, Please Re-check format of you composer.json file. '),'bad');
+					$form->sessionMessage(_t(
+						'ExtensionHolder.PROBLEMINSAVING',"We are unable to save Extension info, the parser reports: {$saveJson['ErrorMsg']} Please Re-check format of you composer.json file."),'bad');
 					return $this->redirectBack();
 				}
 			} else {
 				$updateJson = $json->updateJson();
-				if($updateJson) {
-					$id = $updateJson;
+				if(!array_key_exists('ErrorMsg', $updateJson)) {
+					$id = $updateJson['ExtensionID'];
 					$deleteVersion = $json->deleteVersionData($id);
 					if($deleteVersion){
 						$saveVersion = $json->saveVersionData($id);
@@ -106,7 +107,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 						return $this->redirectBack();
 					}
 				} else {
-					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINUPDATING','We are unable to UPDATE module info, Please Re-check format of you composer.json file. '),'bad');
+					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINUPDATING',"We had problems parsing your composer.json file, the parser reports: {$updateJson['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"),'bad');
 					return $this->redirectBack();
 				}
 			}
