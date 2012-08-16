@@ -10,8 +10,8 @@ class ExtensionData extends DataObject {
 	static $db = array(	
 		'Url' => 'Varchar(100)',
 		'Accepted' => 'Boolean',
-		'Name' => 'VarChar(50)',
-		'Description' => 'VarChar(50)',
+		'Name' => 'VarChar(100)',
+		'Description' => 'VarChar(500)',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'DetailPageLink' => 'VarChar(100)',
 		'Homepage' => 'VarChar(500)',
