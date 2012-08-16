@@ -43,8 +43,8 @@ class ExtensionHolder_Controller extends Page_Controller {
 			return $this->redirectBack();
 		}
 		
-		$json = new JsonHandler();
-		$jsonData = $json->cloneJson($url);
+		$json = new JsonHandler($url);
+		$jsonData = $json->cloneJson();
 		
 		if(!array_key_exists('ErrorMsg', $jsonData)) {
 			if($this->isNewExtension($url)) {

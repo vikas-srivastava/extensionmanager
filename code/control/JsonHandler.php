@@ -25,6 +25,15 @@ class JsonHandler extends Controller {
 	public $latestReleaseData;
 	public $versionData;
 	public $availableVersions;
+	public $repo;
+	public $errorInConstructer;
+
+	public function __construct($url) {
+		
+		$config = Factory::createConfig();
+		$this->repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
+		
+	}
 
 	/**
 	  * Convert a module url into json content 
@@ -32,21 +41,30 @@ class JsonHandler extends Controller {
 	  * @param string $url
 	  * @return array $data
 	  */
-	public function cloneJson($url) { 
-		$this->url = $url ;
+	public function cloneJson() { 
 		$jsonData = array();
+		try{
 
-		try{	
-			$config = Factory::createConfig();
-			$repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
+			$versions =  $this->repo->getPackages();
 			
-			if(!isset($repo)) {
-				throw new InvalidArgumentException('We are not able to parse submitted url "'
-					.$this->url.'" ');
-			} 
-			
-			$driver = $repo->getDriver();
+			if($versions) {
+				$releaseDateTimeStamps = array();
+				$this->versionData = $versions;
+				$this->availableVersions = count($this->versionData);
 
+				for ($i=0; $i < $this->availableVersions ; $i++) {
+					array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
+				}
+
+				foreach ($releaseDateTimeStamps as $key => $val) {
+					if ($val == max($releaseDateTimeStamps)) {
+						$this->latestReleaseData = $this->versionData[$key];
+					}
+				}
+			}
+
+			$driver = $this->repo->getDriver();
+			
 			$information = $driver->getComposerInformation($driver->getRootIdentifier());
 
 			if (!isset($information['name']) || !$information['name']) {
@@ -70,24 +88,6 @@ class JsonHandler extends Controller {
 					"The package name '{$information['name']}' is invalid,
 					it should not contain uppercase characters. We suggest using '{$suggestName}' instead. at '"
 					.$this->url."' ");
-			}
-
-			$versions =  $repo->getPackages();			
-			
-			if($versions) {
-				$releaseDateTimeStamps = array();
-				$this->versionData = $versions;
-				$this->availableVersions = count($this->versionData);
-
-				for ($i=0; $i < $this->availableVersions ; $i++) {
-					array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
-				}
-
-				foreach ($releaseDateTimeStamps as $key => $val) {
-					if ($val == max($releaseDateTimeStamps)) {
-						$this->latestReleaseData = $this->versionData[$key];
-					}
-				}
 			}
 		} catch (Exception $e) {
 			$jsonData['ErrorMsg'] = $e->getMessage();
