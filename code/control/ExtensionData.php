@@ -11,7 +11,7 @@ class ExtensionData extends DataObject {
 		'Url' => 'Varchar(100)',
 		'Accepted' => 'Boolean',
 		'Name' => 'VarChar(100)',
-		'Description' => 'VarChar(500)',
+		'Description' => 'Text',
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'DetailPageLink' => 'VarChar(100)',
 		'Homepage' => 'VarChar(500)',
