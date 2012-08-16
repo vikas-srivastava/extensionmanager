@@ -30,7 +30,7 @@ class JsonHandler extends Controller {
 	public $packageName;
 
 	public function __construct($url) {
-		
+		$this->url;
 		$config = Factory::createConfig();
 		$this->repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
 		
