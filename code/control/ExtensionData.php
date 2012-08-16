@@ -107,12 +107,13 @@ class ExtensionData extends DataObject {
 			);
 	}
 
-	public function onBeforeWrite(){
-		$this->DetailPageLink = Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID;
-		parent::onBeforeWrite();
-	}
-
 	public function onAfterWrite() {
+
+		if(!$this->DetailPageLink) {
+			$this->DetailPageLink = Director::absoluteBaseURL().strtolower($this->Type).'/show/'.$this->ID;
+			$this->write();
+		}
+
 		if($this->isChanged('Accepted') && $this->Accepted) {
 
 			$mailData = array(
