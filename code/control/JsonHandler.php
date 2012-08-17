@@ -53,7 +53,7 @@ class JsonHandler extends Controller {
 					$this->latestReleasePackage = $package;
 				}
 
-				$this->packageName = $this->latestReleaseData->getPrettyName();
+				$this->packageName = $this->latestReleasePackage->getPrettyName();
 
 				if (!isset($package->packageName)){
 					throw new InvalidArgumentException("The package name was not found in the composer.json at '"
