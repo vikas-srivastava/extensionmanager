@@ -6,7 +6,7 @@
  * <code>
  * $json = new JsonReader();
  * $json->cloneJson($url);
- * $json->saveJson($url,$latestReleaseData);
+ * $json->saveJson($url,$latestReleasePackage);
  * </code>
  *
  * @package extensionmanager
@@ -22,8 +22,8 @@ use Composer\Json\JsonFile;
 class JsonHandler extends Controller {
 	
 	public $url;
-	public $latestReleaseData;
-	public $versionData;
+	public $latestReleasePackage;
+	public $packages;
 	public $availableVersions;
 	public $repo;
 	public $errorInConstructer;
@@ -46,55 +46,45 @@ class JsonHandler extends Controller {
 		$jsonData = array();
 		try{
 
-			$versions =  $this->repo->getPackages();
+			$this->packages = $this->repo->getPackages();
 			
-			if($versions) {
-				$releaseDateTimeStamps = array();
-				$this->versionData = $versions;
-				$this->availableVersions = count($this->versionData);
-
-				for ($i=0; $i < $this->availableVersions ; $i++) {
-					array_push($releaseDateTimeStamps, date_timestamp_get($this->versionData[$i]->getReleaseDate()));
+			foreach ($this->packages as $package) {
+				if($package->getStability() == 'stable') {
+					$this->latestReleasePackage = $package;
 				}
 
-				foreach ($releaseDateTimeStamps as $key => $val) {
-					if ($val == max($releaseDateTimeStamps)) {
-						$this->latestReleaseData = $this->versionData[$key];
-					}
+				$this->packageName = $this->latestReleaseData->getPrettyName();
+
+				if (!isset($package->packageName)){
+					throw new InvalidArgumentException("The package name was not found in the composer.json at '"
+						.$this->url."' in '". $package->getPrettyVersion."' ");
 				}
-			}
 
-			$this->packageName = $this->latestReleaseData->getPrettyName();
+				if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $package->packageName)) {
+					throw new InvalidArgumentException(
+						"The package name '{$this->packageName}' is invalid, it should have a vendor name,
+						a forward slash, and a package name. The vendor and package name can be words separated by -, . or _.
+						The complete name should match '[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*' at "
+						.$this->url."' in '". $package->getPrettyVersion."' ");
+				}
 
-			if (!isset($this->packageName)){
-				throw new InvalidArgumentException("The package name was not found in the composer.json at '"
-					.$this->url."' ");
-			}
+				if (preg_match('{[A-Z]}', $package->packageName)) {
+					$suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $package->packageName);
+					$suggestName = strtolower($suggestName);
 
-			if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $this->packageName)) {
-				throw new InvalidArgumentException(
-					"The package name '{$this->packageName}' is invalid, it should have a vendor name,
-					a forward slash, and a package name. The vendor and package name can be words separated by -, . or _.
-					The complete name should match '[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*' at "
-					.$this->url."'");
-			}
-
-			if (preg_match('{[A-Z]}', $this->packageName)) {
-				$suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $this->packageName);
-				$suggestName = strtolower($suggestName);
-
-				throw new InvalidArgumentException(
-					"The package name '{$this->packageName}' is invalid,
-					it should not contain uppercase characters. We suggest using '{$suggestName}' instead. at '"
-					.$this->url."' ");
+					throw new InvalidArgumentException(
+						"The package name '{$this->packageName}' is invalid,
+						it should not contain uppercase characters. We suggest using '{$suggestName}' instead. at '"
+						.$this->url."' in '". $package->getPrettyVersion."' ");
+				}
 			}
 		} catch (Exception $e) {
 			$jsonData['ErrorMsg'] = $e->getMessage();
 			return $jsonData;
 		}
 
-		$jsonData['AllRelease'] = $this->versionData;
-		$jsonData['LatestRelease'] = $this->latestReleaseData;
+		$jsonData['AllRelease'] = $this->packages;
+		$jsonData['LatestRelease'] = $this->latestReleasePackage;
 		return $jsonData;		
 	}
 
@@ -138,27 +128,27 @@ class JsonHandler extends Controller {
 	function dataFields($ExtensionData) {
 		$saveDataFields = array();
 		try{
-			if($this->latestReleaseData->getPrettyName()) {
-				list($vendorName, $moduleName) = explode("/", $this->latestReleaseData->getPrettyName());
+			if($this->latestReleasePackage->getPrettyName()) {
+				list($vendorName, $moduleName) = explode("/", $this->latestReleasePackage->getPrettyName());
 				$ExtensionData->Name = $moduleName;
 			} else {
 				throw new InvalidArgumentException("We could not find Name field in composer.json at'"
 					.$this->url."' ");
 			}
 
-			if($this->latestReleaseData->getDescription()) {
-				$ExtensionData->Description = $this->latestReleaseData->getDescription();
+			if($this->latestReleasePackage->getDescription()) {
+				$ExtensionData->Description = $this->latestReleasePackage->getDescription();
 			} else {
 				throw new InvalidArgumentException("We could not find Description field in composer.json at'"
 					.$this->url."' ");
 			}
 
-			if($this->latestReleaseData->getPrettyVersion()) {
-				$ExtensionData->Version = $this->latestReleaseData->getPrettyVersion();
+			if($this->latestReleasePackage->getPrettyVersion()) {
+				$ExtensionData->Version = $this->latestReleasePackage->getPrettyVersion();
 			}
 
-			if($this->latestReleaseData->getType()) {
-				$type = $this->latestReleaseData->getType() ;
+			if($this->latestReleasePackage->getType()) {
+				$type = $this->latestReleasePackage->getType() ;
 				if(preg_match("/\bmodule\b/i", $type)){
 
 					$ExtensionData->Type = 'Module';
@@ -176,20 +166,20 @@ class JsonHandler extends Controller {
 				}
 			}
 
-			if($this->latestReleaseData->getHomepage()) {
-				$ExtensionData->Homepage = $this->latestReleaseData->getHomepage();
+			if($this->latestReleasePackage->getHomepage()) {
+				$ExtensionData->Homepage = $this->latestReleasePackage->getHomepage();
 			}
 
-			if($this->latestReleaseData->getReleaseDate()) {
-				$ExtensionData->ReleaseTime = $this->latestReleaseData->getReleaseDate()->format('Y-m-d H:i:s');
+			if($this->latestReleasePackage->getReleaseDate()) {
+				$ExtensionData->ReleaseTime = $this->latestReleasePackage->getReleaseDate()->format('Y-m-d H:i:s');
 			}
 
-			if($this->latestReleaseData->getLicense()) {
-				$ExtensionData->Licence = $this->latestReleaseData->getLicense();
+			if($this->latestReleasePackage->getLicense()) {
+				$ExtensionData->Licence = $this->latestReleasePackage->getLicense();
 			}
 
-			if($this->latestReleaseData->getSupport()) {
-				$supportData = $this->latestReleaseData->getSupport() ;
+			if($this->latestReleasePackage->getSupport()) {
+				$supportData = $this->latestReleasePackage->getSupport() ;
 				if(array_key_exists('email',$supportData)) {
 					$ExtensionData->SupportEmail = $supportData['email'];
 				}
@@ -210,69 +200,69 @@ class JsonHandler extends Controller {
 				}
 			}
 
-			if($this->latestReleaseData->getTargetDir()) {
-				$ExtensionData->TargetDir = $this->latestReleaseData->getTargetDir();
+			if($this->latestReleasePackage->getTargetDir()) {
+				$ExtensionData->TargetDir = $this->latestReleasePackage->getTargetDir();
 			}
 
-			if($this->latestReleaseData->getRequires()) {
-				$ExtensionData->Require = serialize($this->latestReleaseData->getRequires());
+			if($this->latestReleasePackage->getRequires()) {
+				$ExtensionData->Require = serialize($this->latestReleasePackage->getRequires());
 			} else {
 				throw new InvalidArgumentException("We could not find Require field in composer.json at'"
 					.$this->url."' ");
 			}
 
-			if($this->latestReleaseData->getDevRequires()) {
-				$ExtensionData->RequireDev = serialize($this->latestReleaseData->getDevRequires());
+			if($this->latestReleasePackage->getDevRequires()) {
+				$ExtensionData->RequireDev = serialize($this->latestReleasePackage->getDevRequires());
 			}
 
-			if($this->latestReleaseData->getConflicts()) {
-				$ExtensionData->Conflict = serialize($this->latestReleaseData->getConflicts());
+			if($this->latestReleasePackage->getConflicts()) {
+				$ExtensionData->Conflict = serialize($this->latestReleasePackage->getConflicts());
 			}
 
-			if($this->latestReleaseData->getReplaces()) {
-				$ExtensionData->Replace = serialize($this->latestReleaseData->getReplaces());
+			if($this->latestReleasePackage->getReplaces()) {
+				$ExtensionData->Replace = serialize($this->latestReleasePackage->getReplaces());
 			}
 
-			if($this->latestReleaseData->getProvides()) {
-				$ExtensionData->Provide = serialize($this->latestReleaseData->getProvides());
+			if($this->latestReleasePackage->getProvides()) {
+				$ExtensionData->Provide = serialize($this->latestReleasePackage->getProvides());
 			}
 
-			if($this->latestReleaseData->getSuggests()) {
-				$ExtensionData->Suggest = serialize($this->latestReleaseData->getSuggests());
+			if($this->latestReleasePackage->getSuggests()) {
+				$ExtensionData->Suggest = serialize($this->latestReleasePackage->getSuggests());
 			}
 
-			if($this->latestReleaseData->getExtra()) {
-				$ExtensionData->Extra = serialize($this->latestReleaseData->getExtra());
-				$extra = $this->latestReleaseData->getExtra();
+			if($this->latestReleasePackage->getExtra()) {
+				$ExtensionData->Extra = serialize($this->latestReleasePackage->getExtra());
+				$extra = $this->latestReleasePackage->getExtra();
 				if(array_key_exists('snapshot',$extra)) {
-					$ExtensionData->ThumbnailID = ExtensionSnapshot::saveSnapshot($extra['snapshot'],$this->latestReleaseData->getPrettyName());
+					$ExtensionData->ThumbnailID = ExtensionSnapshot::saveSnapshot($extra['snapshot'],$this->latestReleasePackage->getPrettyName());
 				} else {
 					throw new InvalidArgumentException("We could not find SnapShot url field in composer.json at'"
 						.$this->url."' ");
 				}
 			}
 
-			if($this->latestReleaseData->getRepositories()) {
-				$ExtensionData->Repositories = serialize($this->latestReleaseData->getRepositories());
+			if($this->latestReleasePackage->getRepositories()) {
+				$ExtensionData->Repositories = serialize($this->latestReleasePackage->getRepositories());
 			}
 
-			if($this->latestReleaseData->getIncludePaths()) {
-				$ExtensionData->IncludePath = serialize($this->latestReleaseData->getIncludePaths());
+			if($this->latestReleasePackage->getIncludePaths()) {
+				$ExtensionData->IncludePath = serialize($this->latestReleasePackage->getIncludePaths());
 			}
 
-			if($this->latestReleaseData->getMinimumStability()) {
-				$ExtensionData->MinimumStability = $this->latestReleaseData->getMinimumStability();
+			if($this->latestReleasePackage->getMinimumStability()) {
+				$ExtensionData->MinimumStability = $this->latestReleasePackage->getMinimumStability();
 			}
 
-			if($this->latestReleaseData->getAuthors()) {
-				ExtensionAuthorController::storeAuthorsInfo($this->latestReleaseData->getAuthors(),$ExtensionData->ID);
+			if($this->latestReleasePackage->getAuthors()) {
+				ExtensionAuthorController::storeAuthorsInfo($this->latestReleasePackage->getAuthors(),$ExtensionData->ID);
 			} else {
 				throw new InvalidArgumentException("We could not find Author Info field in composer.json at'"
 					.$this->url."' ");
 			}
 
-			if($this->latestReleaseData->getKeywords()) {
-				ExtensionKeywords::saveKeywords($this->latestReleaseData->getKeywords(),$ExtensionData->ID);
+			if($this->latestReleasePackage->getKeywords()) {
+				ExtensionKeywords::saveKeywords($this->latestReleasePackage->getKeywords(),$ExtensionData->ID);
 			} else {
 				throw new InvalidArgumentException("We could not find Keywords field in composer.json at'"
 					.$this->url."' ");
@@ -296,12 +286,12 @@ class JsonHandler extends Controller {
 	  */
 	public function saveVersionData($id) {
 		
-		
-		for ($i=0; $i < $this->availableVersions ; $i++) { 
+		foreach ($this->packages as $package) {
 			$version = new ExtensionVersion();
 			$version->ExtensionDataID = $id;
-			$result = $this->versionDataField($version,$this->versionData[$i]);
+			$result = $this->versionDataField($version, $package);
 		}
+
 		return $result ;
 	}
 
