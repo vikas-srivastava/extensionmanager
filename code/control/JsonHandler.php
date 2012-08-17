@@ -48,36 +48,46 @@ class JsonHandler extends Controller {
 
 			$this->packages = $this->repo->getPackages();
 			
+			$releaseDateTimeStamps = array();
+
+			$this->availableVersions = count($this->packages);
+
 			foreach ($this->packages as $package) {
-				if($package->getStability() == 'stable') {
-					$this->latestReleasePackage = $package;
-				}
 
-				$this->packageName = $this->latestReleasePackage->getPrettyName();
+				array_push($releaseDateTimeStamps, date_timestamp_get($package->getReleaseDate()));
 
-				if (!isset($package->packageName)){
+				$this->packageName = $package->getPrettyName();
+
+				if (!isset($this->packageName)){
 					throw new InvalidArgumentException("The package name was not found in the composer.json at '"
-						.$this->url."' in '". $package->getPrettyVersion."' ");
+						.$this->url."' in '". $package->getPrettyVersion()."' ");
 				}
 
-				if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $package->packageName)) {
+				if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $this->packageName)) {
 					throw new InvalidArgumentException(
 						"The package name '{$this->packageName}' is invalid, it should have a vendor name,
 						a forward slash, and a package name. The vendor and package name can be words separated by -, . or _.
 						The complete name should match '[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*' at "
-						.$this->url."' in '". $package->getPrettyVersion."' ");
+						.$this->url."' in '". $package->getPrettyVersion()."' ");
 				}
 
-				if (preg_match('{[A-Z]}', $package->packageName)) {
-					$suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $package->packageName);
+				if (preg_match('{[A-Z]}', $this->packageName)) {
+					$suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $this->packageName);
 					$suggestName = strtolower($suggestName);
 
 					throw new InvalidArgumentException(
 						"The package name '{$this->packageName}' is invalid,
 						it should not contain uppercase characters. We suggest using '{$suggestName}' instead. at '"
-						.$this->url."' in '". $package->getPrettyVersion."' ");
+						.$this->url."' in '". $package->getPrettyVersion()."' ");
 				}
 			}
+
+			foreach ($releaseDateTimeStamps as $key => $val) {
+				if ($val == max($releaseDateTimeStamps)) {
+					$this->latestReleasePackage = $this->packages[$key];
+				}
+			}
+
 		} catch (Exception $e) {
 			$jsonData['ErrorMsg'] = $e->getMessage();
 			return $jsonData;
