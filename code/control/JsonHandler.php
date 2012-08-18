@@ -45,16 +45,9 @@ class JsonHandler extends Controller {
 	public function cloneJson() { 
 		$jsonData = array();
 		try{
-
 			$this->packages = $this->repo->getPackages();
-			
-			$releaseDateTimeStamps = array();
-
-			$this->availableVersions = count($this->packages);
 
 			foreach ($this->packages as $package) {
-
-				array_push($releaseDateTimeStamps, date_timestamp_get($package->getReleaseDate()));
 
 				$this->packageName = $package->getPrettyName();
 
@@ -82,11 +75,7 @@ class JsonHandler extends Controller {
 				}
 			}
 
-			foreach ($releaseDateTimeStamps as $key => $val) {
-				if ($val == max($releaseDateTimeStamps)) {
-					$this->latestReleasePackage = $this->packages[$key];
-				}
-			}
+			$this->latestReleasePackage = $this->repo->findPackage($this->packageName,'9999999-dev');
 
 		} catch (Exception $e) {
 			$jsonData['ErrorMsg'] = $e->getMessage();
