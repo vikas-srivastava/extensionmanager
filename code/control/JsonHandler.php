@@ -214,7 +214,6 @@ class JsonHandler extends Controller {
 						$ExtensionData->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
 					}
 				}
-				Debug::show($allRequirePackage);
 				$ExtensionData->Require = serialize($allRequirePackage);
 			} else {
 				throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
