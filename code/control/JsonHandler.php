@@ -204,9 +204,20 @@ class JsonHandler extends Controller {
 			}
 
 			if($this->latestReleasePackage->getRequires()) {
-				$ExtensionData->Require = serialize($this->latestReleasePackage->getRequires());
+				$requires = $this->latestReleasePackage->getRequires();
+				$allRequirePackage = array();
+
+				foreach($requires as $requirePackage) {
+					$allRequirePackage[$requirePackage->getTarget()] = $requirePackage->getPrettyConstraint();
+
+					if($requirePackage->getTarget() == 'silverstripe/framework') {
+						$ExtensionData->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
+					}
+				}
+				Debug::show($allRequirePackage);
+				$ExtensionData->Require = serialize($allRequirePackage);
 			} else {
-				throw new InvalidArgumentException("We could not find Require field in composer.json at'"
+				throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
 					.$this->url."' ");
 			}
 
@@ -352,6 +363,19 @@ class JsonHandler extends Controller {
 			$version->ReleaseDate = $data->getReleaseDate()->format('Y-m-d H:i:s');
 		}
 		
+		if($data->getRequires()) {
+			$requires = $this->latestReleasePackage->getRequires();
+
+			foreach($requires as $requirePackage) {
+				if($requirePackage->getTarget() == 'silverstripe/framework') {
+					$version->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
+				}
+			}
+		} else {
+			throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
+				.$this->url."' ");
+		}
+
 		$version->write();
 		return true;
 	}

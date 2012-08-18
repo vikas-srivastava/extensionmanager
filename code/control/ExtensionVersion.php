@@ -17,6 +17,7 @@ class ExtensionVersion extends DataObject {
 		'DistSha1Checksum' => 'Varchar(300)',
 		'Version' => 'Varchar(300)',
 		'PrettyVersion' => 'Varchar(300)',
+		'CompatibleSilverStripeVersion' => 'VarChar(20)',
 		'ReleaseDate' =>  'SS_Datetime',
 		);
 
@@ -50,6 +51,9 @@ class ExtensionVersion extends DataObject {
 			),
 		'PrettyVersion' => array(
 			'title' => 'Version',
+			),
+		'CompatibleSilverStripeVersions' => array(
+			'title' => 'Compatible SilverStripe Versions',
 			),
 		);
 

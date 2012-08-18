@@ -3,7 +3,7 @@
 		<div class="content">$Content</div>
 	</article>
 	
-	<div style= "float:Left;">
+	<div style= "float:Left; width:70%;">
 		<% if themeSearch %>
 		<h1>Search Theme</h1>
 		$themeSearch

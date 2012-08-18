@@ -15,6 +15,7 @@ class ExtensionData extends DataObject {
 		"Type" => "Enum('Module, Theme, Widget', 'Module')",
 		'DetailPageLink' => 'VarChar(100)',
 		'Homepage' => 'VarChar(500)',
+		'CompatibleSilverStripeVersion' => 'VarChar(20)',
 		'Licence' => 'VarChar(500)',
 		'Version' => 'Varchar(30)',
 		'AuthorsInfo' => 'VarChar(500)',
@@ -49,6 +50,11 @@ class ExtensionData extends DataObject {
 		'Type' => array(
 			'title' => 'Extension Type',
 			),
+		'CompatibleSilverStripeVersion' => array(
+			'title' => 'Compatible SilverStripe Versions',
+			'field' => 'TextField',
+			'filter' => 'PartialMatchfilter'
+			),
 		'Keywords.KeywordName' => array(
 			'title' => 'Keyword',
 			'field' => 'TextField',
@@ -70,6 +76,9 @@ class ExtensionData extends DataObject {
 			),
 		'Description' => array(
 			'title' => 'Description',
+			),
+		'CompatibleSilverStripeVersion' => array(
+			'title' => 'Compatible SilverStripe Versions',
 			),
 		'DetailPageLink' => array(
 			'title' => 'Detail Page',
@@ -93,10 +102,12 @@ class ExtensionData extends DataObject {
 
 	public function getCustomSearchContext() {
 		$fields = $this->scaffoldSearchFields(array(
-			'restrictFields' => array('Name','Keywords.KeywordName','Category.CategoryName')
+			'restrictFields' => array('Name','CompatibleSilverStripeVersion','Keywords.KeywordName','Category.CategoryName')
 			));
+
 		$filters = array(
 			'Name' => new PartialMatchFilter('Name'),
+			'CompatibleSilverStripeVersion' => new PartialMatchfilter('CompatibleSilverStripeVersion'),
 			'Keyword' => new PartialMatchFilter('Keywords.KeywordName'),
 			'Category' => new PartialMatchFilter('Category.CategoryName'),
 			);
