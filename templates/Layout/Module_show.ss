@@ -29,6 +29,12 @@ according to diffrent design and data
         </li>
         <% end_if %>
 
+        <% if $CompatibleSilverStripeVersion %>
+        <li>
+            Compatible SilverStripe Version : $CompatibleSilverStripeVersion
+        </li>
+        <% end_if %>
+
         <% if $Homepage %>
         <li>
             <a href="$Homepage">Home Page</a>
