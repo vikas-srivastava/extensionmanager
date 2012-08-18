@@ -25,8 +25,8 @@ class CreatePackageJsonTask extends QuarterHourlyTask {
 			foreach ($extensionData as $extension) {
 				// Include only Approved extensions
 				if($extension->Accepted == '1') {
-					$json = new JsonHandler();
-					$jsonData = $json->cloneJson($extension->Url);
+					$json = new JsonHandler($extension->Url);
+					$jsonData = $json->cloneJson();
 					$packages = $jsonData['AllRelease'];
 					$dumper = new ArrayDumper;
 					foreach ($packages as $package) {
