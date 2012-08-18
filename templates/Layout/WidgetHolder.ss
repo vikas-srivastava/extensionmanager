@@ -19,7 +19,7 @@
 
 		<div>
 			<h3>Available Widgets</h3>
-			<%if ThemeList %>
+			<%if WidgetList %>
 			<% loop widgetList %>
 			<li><a href="widget/show/$ID">$Name</a></li>
 			<% end_loop %>
