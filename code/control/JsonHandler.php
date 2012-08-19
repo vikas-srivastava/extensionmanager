@@ -128,8 +128,8 @@ class JsonHandler extends Controller {
 		$saveDataFields = array();
 		try{
 			if($this->latestReleasePackage->getPrettyName()) {
-				list($vendorName, $moduleName) = explode("/", $this->latestReleasePackage->getPrettyName());
-				$ExtensionData->Name = $moduleName;
+				list($vendorName, $extensionName) = explode("/", $this->latestReleasePackage->getPrettyName());
+				$ExtensionData->Name = $extensionName;
 			} else {
 				throw new InvalidArgumentException("We could not find Name field in composer.json at'"
 					.$this->url."' ");
