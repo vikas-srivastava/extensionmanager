@@ -9,6 +9,16 @@ use Composer\package\Dumper\ArrayDumper;
 
 class CreatePackageJsonTask extends QuarterHourlyTask {
 	
+	/**
+	 * Check that the user has appropriate permissions to execute this task
+	 */
+	public function init() {
+		if(!Director::is_cli() && !Director::isDev() && !Permission::check('ADMIN')) {
+			return Security::permissionFailure();
+		}
+		parent::init();
+	}
+
 	function process() {
 		$this->CreatePackageJson();
 	}
@@ -35,7 +45,7 @@ class CreatePackageJsonTask extends QuarterHourlyTask {
 				}
 			}
 
-			if(!empty($repo)) {
+			if(!empty($repo['packages'])) {
 				$packagesJsonData = Convert::array2json($repo);
 				$packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
 				fwrite($packageJsonFile, $packagesJsonData); 
