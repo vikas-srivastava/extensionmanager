@@ -1,6 +1,7 @@
 ExtensionData:
 	testmodule:
 		ID: '1'
+		Name: testmodule
 		RepositoryUrl: test-url
 
 Member:
