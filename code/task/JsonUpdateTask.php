@@ -6,6 +6,16 @@
  */
 class JsonUpdateTask extends DailyTask {
 	
+	/**
+	 * Check that the user has appropriate permissions to execute this task
+	 */
+	public function init() {
+		if(!Director::is_cli() && !Director::isDev() && !Permission::check('ADMIN')) {
+			return Security::permissionFailure();
+		}
+		parent::init();
+	}
+
 	function process() {
 		$this->updateJson();
 	}
