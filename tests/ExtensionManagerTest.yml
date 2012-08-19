@@ -1,5 +1,6 @@
-Module:
+ExtensionData:
 	testmodule:
+		ID: '1'
 		RepositoryUrl: test-url
 
 Member:
