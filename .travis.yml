@@ -13,6 +13,7 @@ before_script:
   - cd ss3/extensionmanager 
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install
+  - cd ~/builds
   - mysql -e "create database IF NOT EXISTS ss_extensionamanger_test;"
   - cd ss3/framework
   - ./sake dev/build "flush=1"
