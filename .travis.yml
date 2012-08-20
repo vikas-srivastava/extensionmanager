@@ -12,7 +12,7 @@ before_script:
   - mv vikas-srivastava/extensionmanager ss3/extensionmanager
   - cd ss3/extensionmanager 
   - curl -s http://getcomposer.org/installer | php
-  - composer.phar install
+  - php composer.phar install
   - mysql -e "create database IF NOT EXISTS ss_extensionamanger_test;"
   - cd ss3/framework
   - ./sake dev/build "flush=1"
