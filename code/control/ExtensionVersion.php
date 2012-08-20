@@ -67,7 +67,9 @@ class ExtensionVersion extends DataObject {
 	 * @return dataobjectset
 	 */
 	public static function getExtensionVersion($extensionId) {
-		return ExtensionVersion::get()->filter(array('ExtensionDataID' => $extensionId));
+		return ExtensionVersion::get()->filter(array(
+			'ExtensionDataID' => $extensionId
+			));
 	}
 
 	/**
@@ -78,6 +80,9 @@ class ExtensionVersion extends DataObject {
 	 * @return dataobject
 	 */
 	public static function getLatestVersionDistUrl($extensionId) {
-		return ExtensionVersion::get()->filter(array('ExtensionDataID' => $extensionId))->exclude('Version', '9999999-dev')->sort('Version','DESC')->First();
+		return ExtensionVersion::get()->filter(array(
+			'ExtensionDataID' => $extensionId,
+			'Version' => '9999999-dev'
+			))->First();
 	}
 }
