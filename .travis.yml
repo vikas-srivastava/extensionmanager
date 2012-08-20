@@ -10,8 +10,11 @@ before_script:
   - git clone git://github.com/silverstripe-themes/silverstripe-simple.git themes/simple
   - cd ~/builds
   - mv vikas-srivastava/extensionmanager ss3/extensionmanager
+  - cd extensionmanager 
+  - curl -s http://getcomposer.org/installer | php
+  - composer.phar install
   - mysql -e "create database IF NOT EXISTS ss_extensionamanger_test;"
   - cd ss3/framework
   - ./sake dev/build "flush=1"
 script:
-  - ./sake dev/tests/module/extensionmanager "flush=1"
+  - ./sake dev/tests/extensionmanager "flush=1"
