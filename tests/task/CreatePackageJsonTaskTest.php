@@ -11,6 +11,7 @@ class CreatePackageJsonTaskTest extends SapphireTest {
 		try {
 			$PackageJson =  new CreatePackageJsonTask_Manual();
 			$PackageJson->run(null);
+			$this->assertFileExist(BASE_PATH.DIRECTORY_SEPARATOR.'packages.json');
 		} catch (InvalidArgumentException $expected) {
 			return;
 		}
