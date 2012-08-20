@@ -20,6 +20,10 @@ extension.silverstripe.org (proposed website for silverstripe extensions)
  
  * http://openbees.blogspot.in/
  * https://github.com/vikas-srivastava/extensionmanager/blob/master/docs/en/index.md 
+
+## Demo Website 
+ 
+ * http://extension.openbees.org/ 
  
 ## Installation Instructions
  
