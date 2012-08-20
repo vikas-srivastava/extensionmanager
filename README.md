@@ -1,11 +1,11 @@
-## ExtensionManager module
-
-https://secure.travis-ci.org/vikas-srivastava/extensionmanager.png
+# ExtensionManager Module
 
 ## Overview
 
 Allows logged-in members to submit modules, themes and widgets on 
 extension.silverstripe.org (proposed website for silverstripe extensions)
+
+[![Build Status](https://secure.travis-ci.org/vikas-srivastava/extensionmanager.png?branch=master)](http://travis-ci.org/vikas-srivastava/extensionmanager)
 
 ## Maintainer Contact 
  
