@@ -22,6 +22,6 @@
 
  Step 14,15,16 - After successfull submission it sends mail about new submission to module moderators and displays submitted/updated message to user.
 
- ##Fetch Data 
+ ## Fetch Data 
 
  Step A & B - [show()](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/ExtensionData.php#L197) function in ExtensionData class which is responible for providing data to [Module_show](https://github.com/vikas-srivastava/extensionmanager/blob/master/templates/Layout/Module_show.ss),[theme_show](https://github.com/vikas-srivastava/extensionmanager/blob/master/templates/Layout/Theme_show.ss), [widget_show](https://github.com/vikas-srivastava/extensionmanager/blob/master/templates/Layout/Widget_show.ss) templates. By using some [Url Rules]() show() function provides data to these templates on load of [Module](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Module.php),[Theme](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Theme.php),[Widgets](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/Widget.php) classes.
