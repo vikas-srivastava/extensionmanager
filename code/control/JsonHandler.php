@@ -174,7 +174,13 @@ class JsonHandler extends Controller {
 			}
 
 			if($this->latestReleasePackage->getLicense()) {
-				$ExtensionData->Licence = $this->latestReleasePackage->getLicense();
+				$licence = $this->latestReleasePackage->getLicense();
+				if(array_key_exists('type',$licence)) {
+					$ExtensionData->LicenceType = $licence['type'];
+				}
+				if(array_key_exists('description',$licence)) {
+					$ExtensionData->LicenceDescription = $licence['description'];
+				}
 			}
 
 			if($this->latestReleasePackage->getSupport()) {
