@@ -1,5 +1,7 @@
 ## ExtensionManager module
 
+https://secure.travis-ci.org/vikas-srivastava/extensionmanager.png
+
 ## Overview
 
 Allows logged-in members to submit modules, themes and widgets on 
