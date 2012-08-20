@@ -15,6 +15,8 @@ before_script:
   - php composer.phar install
   - cd ~/builds
   - mysql -e "create database IF NOT EXISTS ss_extensionamanger_test;"
+  - mv -f ss3/extensionmanager/tests/travis/_config.php.travis ss3/mysite/_config.php
+  - mv -f ss3/extensionmanager/tests/travis/_ss_environment.php.travis ss3/_ss_environment.php 
   - cd ss3/framework
   - ./sake dev/build "flush=1"
 script:
