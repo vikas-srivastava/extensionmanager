@@ -14,10 +14,15 @@ Using composer we can get detail of subversion and there gisturl.
 
 ![Detail Module page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/subversion-data.png)
 
+### Disqus Comments
+
+Disqus comments System.
+
+![Detail Module page](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/disqus-comment.png)
 
 ### Theme & Widget Pages
 
-Right now we have similar data on themes/widgets pages but later we will modify them.
+Right now we have similar kind of data on themes/widgets pages but later we will modify them according to their design.
 
 Theme Page: 
 

@@ -13,10 +13,10 @@ To install this module:
 
 2. Add the folder to your SilverStripe installation and rename it to ``extensionmanager``.
 
-3. Access ``/dev/build/?flush=all`` to install the module.
+3. Go to root of module ``cd path/to/extensionmanager``.
 
-4. Go to root of module ``cd path/to/extensionmanager``.
+4. Install composer binary with ``curl -s http://getcomposer.org/installer | php`` [see here for global installation](https://github.com/composer/composer#composer---package-management-for-php). 
 
-5. Install composer binary with ``curl -s http://getcomposer.org/installer | php`` [see here for global installation](https://github.com/composer/composer#composer---package-management-for-php). 
+5. Run following command for installing dependencies of this module ``php composer.phar install``.
 
-6. Run following command for installing dependencies of this module ``composer.phar install``.
+6. Access ``/dev/build/?flush=all`` to install the module.
