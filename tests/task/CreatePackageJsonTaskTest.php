@@ -4,9 +4,9 @@
 * @subpackage tests
 */
 class CreatePackageJsonTaskTest extends SapphireTest {
-	/*
-	 * Test for CreatePackageJson function
-	 */
+	/**
+     * @expectedException InvalidArgumentException
+     */
 	function testCreatePackageJson() {
 		
 			$PackageJson =  new CreatePackageJsonTask_Manual();
