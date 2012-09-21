@@ -251,9 +251,6 @@ class JsonHandler extends Controller {
 				$extra = $this->latestReleasePackage->getExtra();
 				if(array_key_exists('snapshot',$extra)) {
 					$ExtensionData->ThumbnailID = ExtensionSnapshot::saveSnapshot($extra['snapshot'],$this->latestReleasePackage->getPrettyName());
-				} else {
-					throw new InvalidArgumentException("We could not find SnapShot url field in composer.json at'"
-						.$this->url."' ");
 				}
 			}
 
