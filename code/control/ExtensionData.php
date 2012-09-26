@@ -109,8 +109,8 @@ class ExtensionData extends DataObject {
 		$filters = array(
 			'Name' => new PartialMatchFilter('Name'),
 			'CompatibleSilverStripeVersion' => new PartialMatchfilter('CompatibleSilverStripeVersion'),
-			'Keyword' => new PartialMatchFilter('Keywords.KeywordName'),
-			'Category' => new PartialMatchFilter('Category.CategoryName'),
+			'Keywords.KeywordName' => new PartialMatchFilter('Keywords.KeywordName'),
+			'Category.CategoryName' => new PartialMatchFilter('Category.CategoryName'),
 			);
 		return new SearchContext(
 			$this->class,
