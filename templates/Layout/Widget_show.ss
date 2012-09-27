@@ -17,6 +17,8 @@ according to diffrent design and data
 
         <h1>$Name</h1>
 
+        <h3> Vendor Name : $VendorName </h3>
+
         <% if $Description %>
         <li>
             Description : $Description

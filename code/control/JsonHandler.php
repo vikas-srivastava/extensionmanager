@@ -129,6 +129,7 @@ class JsonHandler extends Controller {
 		try{
 			if($this->latestReleasePackage->getPrettyName()) {
 				list($vendorName, $extensionName) = explode("/", $this->latestReleasePackage->getPrettyName());
+				$ExtensionData->VendorName = $vendorName;
 				$ExtensionData->Name = $extensionName;
 			} else {
 				throw new InvalidArgumentException("We could not find Name field in composer.json at'"
