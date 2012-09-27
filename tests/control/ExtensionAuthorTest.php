@@ -3,7 +3,7 @@
 * @package extensionmanager
 * @subpackage tests
 */
-class ExtensionAuthorControllerTest extends SapphireTest {
+class ExtensionAuthorTest extends SapphireTest {
 
 	static $fixture_file = 'extensionmanager/tests/ExtensionManagerTest.yml';
 
@@ -11,7 +11,7 @@ class ExtensionAuthorControllerTest extends SapphireTest {
 
 		$authorsRawData = array(
 			'0' => array(
-				'name' => 'TestUser',
+				'name' => 'Test User',
 				'email' => 'testuser@test.com',
 				'homepage' => 'www.test.com',
 				'role' => 'test-Developer'
@@ -21,13 +21,14 @@ class ExtensionAuthorControllerTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$extensionId = $obj->ID;
 		$ExtensionAuthorController = new ExtensionAuthorController();
-		$memberId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);
-		$member = Member::get()->byID($memberId['0']);
+		$extensionAuthorsId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);
+		$extensionAuthor = ExtensionAuthor::get()->byID($extensionAuthorsId['0']);
 
-		$this->assertEquals($member->Email , 'testuser@test.com');
-		$this->assertEquals($member->FirstName , 'TestUser');
-		$this->assertEquals($member->HomePage , 'www.test.com');
-		$this->assertEquals($member->Role , 'test-Developer');
+		$this->assertEquals($extensionAuthor->Email , 'testuser@test.com');
+		$this->assertEquals($extensionAuthor->FirstName , 'Test');
+		$this->assertEquals($extensionAuthor->LastName , 'User');
+		$this->assertEquals($extensionAuthor->HomePage , 'www.test.com');
+		$this->assertEquals($extensionAuthor->Role , 'test-Developer');
 	}
 
 	/**

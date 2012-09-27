@@ -9,11 +9,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 FulltextSearchable::enable();
 
 /**
-  * Extending Member class.
-  */
-Object::add_extension('Member', 'ExtensionsMemberDecorator');
-
-/**
   * Url rule for handling module pages.
   */
 Director::addRules(100, array(
