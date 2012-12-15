@@ -1,6 +1,8 @@
 {
 	"name": "silverstripe/extensionmanager",
-	"description": "The SilverStripe.org Extension Manager ",
+	"description": "The SilverStripe.org Extension Manager Module (unstable version)",
+	"homepage": "http://extension.openbees.org/",
+	"license": "BSD-3-Clause",
 	"type": "silverstripe-module",
 	"keywords": ["silverstripe", "cms", "extension manager"],
 	"authors": [
@@ -12,7 +14,8 @@
 		
 	"require": {
 			"php": ">=5.3.2",
-			"composer/composer": "1.0.0-alpha5"
-	}
-
+			"composer/composer": "master-dev",
+			"composer/installers": "*"
+	},
+	"minimum-stability": "dev"
 }	
