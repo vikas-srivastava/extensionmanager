@@ -59,14 +59,11 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function addNew() {
-		$this->basePage = $this->data();
-		$this->addContent = array(
-			'Title' => 'Submit a Theme',
-			'Content' => $this->dataRecord->AddContent
-			);
-		$content = $this->addContent;
-		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
+	function ThemeSubmissionForm() {
+		$formSectionData = new DataObject();
+ 		$formSectionData->Form = $this->AddForm($this->extensionType);
+		$formSectionData->Content = $this->dataRecord->AddContent;
+		return $formSectionData;
 	}
 
 	/**

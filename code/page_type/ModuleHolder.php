@@ -55,19 +55,17 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 		parent::init();
 		$this->extensionType = 'Module';
 	}
+	
 	/**
 	 * Setting up the form for module submission.
 	 *
 	 * @return Array .
 	 */
-	function addNew() {
-		$this->basePage = $this->data();
-		$this->addContent = array(
-			'Title' => 'Submit a module',
-			'Content' => $this->dataRecord->AddContent
-			);
-		$content = $this->addContent;
-		return $this->customise($content)->renderWith(array('ExtensionHolder', 'Page'));
+	function ModuleSubmissionForm() {
+		$formSectionData = new DataObject();
+ 		$formSectionData->Form = $this->AddForm($this->extensionType);
+		$formSectionData->Content = $this->dataRecord->AddContent;
+		return $formSectionData;
 	}
 
 	/**

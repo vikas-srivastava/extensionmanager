@@ -12,9 +12,7 @@
 
 	<div style = "float:Right;">
 		<div style= "float:Right;margin-top:50px;margin-bottom:30px;">
-			<h3>
-				<a class="submitButton" href="{$Link}addnew">Submit new Module Here</a>
-			</h3>
+			<% with ModuleSubmissionForm %> $Content <br> $Form <% end_with %>	
 		</div>
 
 		<div>

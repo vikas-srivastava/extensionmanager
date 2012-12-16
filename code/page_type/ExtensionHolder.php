@@ -19,15 +19,15 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 *
 	 * @return Form .
 	 */
-	public function AddForm() {
+	public function AddForm($extensionType) {
 
 		if(!Member::currentUser()) return Security::permissionFailure();
 		
 		$fields = new FieldList(
-			new TextField ('Url', "Please Submit 'HTTP' Url of your Extension Repository") 
+			new TextField ('Url', "Read-Only Url of your $extensionType Repository") 
 			);
 		$actions = new FieldList(
-			new FormAction('submitUrl', 'Submit')
+			new FormAction('submitUrl', "Submit $extensionType")
 			);
 		$validator = new RequiredFields('URL');
 		return new Form($this, 'AddForm', $fields, $actions, $validator);
