@@ -12,7 +12,7 @@ according to diffrent design and data
         <% loop ExtensionData %>    
 
         <% if $Accepted != 1 %>
-        <h1>This Widget is yet not Approved by Theme Moderators</h1>
+        <h1>This Theme is yet not Approved by Theme Moderators</h1>
         <% end_if %>
 
         <h1>$Name</h1>

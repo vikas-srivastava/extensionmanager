@@ -263,10 +263,6 @@ class JsonHandler extends Controller {
 				$ExtensionData->IncludePath = serialize($this->latestReleasePackage->getIncludePaths());
 			}
 
-			if($this->latestReleasePackage->getMinimumStability()) {
-				$ExtensionData->MinimumStability = $this->latestReleasePackage->getMinimumStability();
-			}
-
 			if($this->latestReleasePackage->getAuthors()) {
 				ExtensionAuthorController::storeAuthorsInfo($this->latestReleasePackage->getAuthors(),$ExtensionData->ID);
 			} else {
