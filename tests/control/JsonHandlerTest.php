@@ -39,7 +39,7 @@ class JsonHandlerTest extends SapphireTest {
 	}
 
 	function testSaveJsonFunction() {
-		$repoUrl = 'https://github.com/vikas-srivastava/demo_module_repo.git';
+		$repoUrl = 'https://github.com/vikas-srivastava/extensionmanager.git';
 		$jsonHandler = new JsonHandler($repoUrl);
 		$jsonHandler->repo = new MockVCSRepositoryWithRealValues();
 		$result = $jsonHandler->cloneJson();

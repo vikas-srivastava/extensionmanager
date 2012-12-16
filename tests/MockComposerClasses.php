@@ -119,7 +119,7 @@ class MockMemoryPackageMasterBranch {
 	}
 
 	function getType() {
-		return 'silverstripe/module';
+		return 'silverstripe-module';
 	}
 
 	function getPrettyVersion() {
@@ -139,7 +139,7 @@ class MockMemoryPackageMasterBranch {
 
 	function getRequires() {
 		$requirePackage = new MockLink();
-		return array($requirePackage);
+		return $requirePackage;
 	}
 
 	function getDevRequires() {
@@ -163,9 +163,6 @@ class MockMemoryPackageMasterBranch {
 	function getIncludePaths() {
 	}
 
-	function getMinimumStability() {
-	}
-
 	function getReleaseDate() {
 	}
 
@@ -177,7 +174,7 @@ class MockMemoryPackageMasterBranch {
 
 	function getAuthors() {
 		return array(array(
-			'name' => 'TestUser',
+			'name' => 'Test User',
 			'email' => 'testuser@test.com',
 			'homepage' => 'www.test.com',
 			'role' => 'test-Developer'

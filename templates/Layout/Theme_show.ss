@@ -116,9 +116,9 @@ according to diffrent design and data
         <% loop AuthorsDetail %>
         <p>
             <ul>
-                <% if $FirstName %>
+                <% if $Name %>
                 <li>
-                    Author Name : $FirstName
+                    Author Name : $Name
                 </li>
                 <% end_if %>  
 

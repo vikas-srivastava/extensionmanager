@@ -8,8 +8,7 @@
 class ExtensionAuthor extends DataObject {
 	static $db = array (
 		'Email' => 'varchar(300)',
-		'FirstName' => 'Varchar(100)',
-		'LastName' => 'Varchar(100)',
+		'Name' => 'Varchar(100)',
 		'HomePage' => 'Varchar(300)',
 		'Role' => 'Varchar(300)',
 		);
@@ -40,27 +39,24 @@ class ExtensionAuthorController extends Controller {
 		$extensionAuthorsId = array();
 		
 		foreach($authorsRawData as $author) {
-			if(!((array_key_exists('name', $author)))) {
-				throw new InvalidArgumentException('Make sure Name field exists in author info');
-			}
-
-			if(!((array_key_exists('email', $author)))) {
+			
+			if(((array_key_exists('email', $author)))){
+				if(ExtensionAuthor::get()->filter("Email" , $author['email'])->first()) {
+					$extensionAuthor = ExtensionAuthor::get()->filter("Email" , $author['email'])->first();
+					$extensionAuthor->Email = $author['email'];
+				} else {
+					$extensionAuthor = new ExtensionAuthor;
+					$extensionAuthor->Email = $author['email'];
+				}
+			} else {
 				throw new InvalidArgumentException('make sure Email field exists in author info');
 			}
 
-			$name = preg_split('/ (?!.* )/',$author['name']);
-			$firstName = $name[0];
-			$lastName = $name[1];
-
-			if(ExtensionAuthor::get()->filter("Email" , $author['email'])->first()) {
-				$extensionAuthor = ExtensionAuthor::get()->filter("Email" , $author['email'])->first();
+			if(((array_key_exists('name', $author)))){
+				$extensionAuthor->Name = $author['name'];
 			} else {
-				$extensionAuthor = new ExtensionAuthor;
+				throw new InvalidArgumentException('Make sure Name field exists in author info');
 			}
-
-			$extensionAuthor->Email = $author['email'];
-			$extensionAuthor->FirstName = $firstName;
-			$extensionAuthor->LastName = $lastName;
 
 			if(array_key_exists('homepage', $author)) {
 				$extensionAuthor->HomePage = $author['homepage'];

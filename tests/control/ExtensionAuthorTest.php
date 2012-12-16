@@ -25,8 +25,7 @@ class ExtensionAuthorTest extends SapphireTest {
 		$extensionAuthor = ExtensionAuthor::get()->byID($extensionAuthorsId['0']);
 
 		$this->assertEquals($extensionAuthor->Email , 'testuser@test.com');
-		$this->assertEquals($extensionAuthor->FirstName , 'Test');
-		$this->assertEquals($extensionAuthor->LastName , 'User');
+		$this->assertEquals($extensionAuthor->Name , 'Test User');
 		$this->assertEquals($extensionAuthor->HomePage , 'www.test.com');
 		$this->assertEquals($extensionAuthor->Role , 'test-Developer');
 	}
