@@ -10,6 +10,7 @@ class ExtensionData extends DataObject {
 	static $db = array(	
 		'Url' => 'Varchar(100)',
 		'Accepted' => 'Boolean',
+		'Title' => 'VarChar(100)',
 		'VendorName'=> 'VarChar(100)',
 		'Name' => 'VarChar(100)',
 		'Description' => 'Text',

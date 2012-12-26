@@ -11,7 +11,7 @@ class ExtensionHolder extends Page {
 }
 class ExtensionHolder_Controller extends Page_Controller {
 
-	public $addContent, $afterEditContent;
+	public $addContent, $afterEditContent,$latestReleasePackage;
 	public $extensionName, $mailData, $extensionType;
 	
 	/**
@@ -38,15 +38,22 @@ class ExtensionHolder_Controller extends Page_Controller {
 	 */
 	public function submitUrl($data, $form) {
 		$url = $data['Url'];
-		if(empty($url) || substr($url,0, 4) != "http" || (preg_match('{//.+@}', $url))) {
-			$form->sessionMessage(_t('ExtensionHolder.BADURL','Please enter a valid URL'), 'bad');
+		if(empty($url)) {
+			$form->sessionMessage(_t('ExtensionHolder.BADURL','Please enter URL'), 'bad');
 			return $this->redirectBack();
-		}
-		
+		} elseif (substr($url,0, 4) != "http" && substr($url,0, 3) != "git") {
+			$form->sessionMessage(_t('ExtensionHolder.BADURL',"Please enter valid 'HTTP' or 'GIT Read-only' URL "), 'bad');
+			return $this->redirectBack();
+		} elseif (substr($url,0, 4) == "git@") {
+			$form->sessionMessage(_t('ExtensionHolder.BADURL',"'SSH' URL is not allowed, Please enter valid 'HTTP' or 'GIT Read-only' URL"), 'bad');
+			return $this->redirectBack();
+		} 
+
 		$json = new JsonHandler($url);
 		$jsonData = $json->cloneJson();
 		
 		if(!array_key_exists('ErrorMsg', $jsonData)) {
+			$this->latestReleasePackage = $jsonData['LatestRelease'];
 			if($this->isNewExtension($url)) {
 				$saveJson = $json->saveJson();
 				if(!array_key_exists('ErrorMsg', $saveJson)) {
@@ -68,7 +75,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 
 						$this->sendMailtoAdmin();
 
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for your submission'),'good');				
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for submitting "'.$this->extensionName.'" '.$this->extensionType),'good');				
 						return $this->redirectBack();
 					}
 				} else {
@@ -99,7 +106,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 
 							$this->sendMailtoAdmin();
 
-							$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating you extension'),'good');
+							$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating your "'.$this->extensionName.'" '.$this->extensionType ),'good');
 							return $this->redirectBack();
 						}
 					} else {
@@ -124,8 +131,12 @@ class ExtensionHolder_Controller extends Page_Controller {
 	  * @return boolean
 	  */
 	private function isNewExtension($url) {
-		$Json = ExtensionData::get()->filter(array("Url" => "$url"))->First();
-		if(!$Json) {
+		$extension = ExtensionData::get()->filter(array(
+			// should we use url or title for checking existing module ?
+			//"Url" => "$url"
+			"Title" => $this->latestReleasePackage->getPrettyName()
+			))->First();
+		if(!$extension) {
 			return true;
 		} else {
 			return false;

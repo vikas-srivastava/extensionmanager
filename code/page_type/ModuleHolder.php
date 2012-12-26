@@ -47,10 +47,6 @@ class ModuleHolder extends ExtensionHolder{
  */
 class ModuleHolder_Controller extends ExtensionHolder_Controller {
 
-	static $urlhandlers = array(
-		'addnew' => 'addnew',
-		);	
-
 	public function init() {
 		parent::init();
 		$this->extensionType = 'Module';

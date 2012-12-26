@@ -95,7 +95,6 @@ class JsonHandler extends Controller {
 	function saveJson() {
 		$ExtensionData = new ExtensionData();
 		$ExtensionData->SubmittedByID = Member::currentUserID();
-		$ExtensionData->Url = $this->url;
 		$result = $this->dataFields($ExtensionData);
 		return $result ;
 	}			
@@ -107,13 +106,13 @@ class JsonHandler extends Controller {
 	  */
 	function updateJson() {
 
-		$ExtensionData = ExtensionData::get()->filter(array("Url" => $this->url))->First();
+		$ExtensionData = ExtensionData::get()->filter(array("Title" => $this->latestReleasePackage->getPrettyName()))->First();
 
 		if($ExtensionData) {
 			$result = $this->dataFields($ExtensionData);
 			return $result ;
 		} else {
-			return Null ;
+			return ;
 		}		
 	}
 
@@ -127,8 +126,11 @@ class JsonHandler extends Controller {
 	function dataFields($ExtensionData) {
 		$saveDataFields = array();
 		try{
+			$ExtensionData->Url = $this->url;
+
 			if($this->latestReleasePackage->getPrettyName()) {
 				list($vendorName, $extensionName) = explode("/", $this->latestReleasePackage->getPrettyName());
+				$ExtensionData->Title = $this->latestReleasePackage->getPrettyName();
 				$ExtensionData->VendorName = $vendorName;
 				$ExtensionData->Name = $extensionName;
 			} else {
