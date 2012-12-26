@@ -42,7 +42,7 @@
 
 	<div style = "margin-top:30px;">
 		<% if FormSubmitted %>
-		<% include ExtensionSearch %>
+		<% include ExtensionSearchResult %>
 		<% end_if %>
 	</div>
 

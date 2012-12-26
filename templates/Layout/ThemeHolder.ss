@@ -4,10 +4,10 @@
 	</article>
 	
 	<div style= "float:Left; width:70%;">
-		<% if themeSearch %>
+		
 		<h1>Search Theme</h1>
-		$themeSearch
-		<% end_if %>
+		<% include ExtensionSearchForm %>
+		
 	</div>
 
 	<div style = "float:Right;">
@@ -41,7 +41,7 @@
 
 	<div style = "margin-top:30px;">
 		<% if FormSubmitted %>
-		<% include ExtensionSearch %>
+		<% include ExtensionSearchResult %>
 		<% end_if %>
 	</div>
 
