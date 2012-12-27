@@ -103,6 +103,15 @@ class ExtensionData extends DataObject {
 		'Keywords' => 'ExtensionKeywords',
 		);
 
+	public function getCMSFields() {
+        $fields = parent::getCMSFields();
+        $fields->removeByName("CategoryID");
+        $field = new DropdownField('CategoryID', 'Category', ExtensionCategory::get()->map('ID', 'CategoryName'));
+        $field->setEmptyString('(Select one)');
+        $fields->addFieldToTab('Root.Main', $field,'Title');
+        return $fields;
+    }
+
 	public function getCustomSearchContext() {
 		$fields = $this->scaffoldSearchFields(array(
 			'restrictFields' => array('Name','CompatibleSilverStripeVersion','Keywords.KeywordName','Category.CategoryName')

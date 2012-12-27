@@ -15,7 +15,7 @@ extension.silverstripe.org (proposed website for silverstripe extensions)
 
 ## Requirements
 
- * silverstripe 3.0
+ * silverstripe 3.*
  * [composer](https://github.com/composer/composer)
 
 ## Documentation
