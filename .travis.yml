@@ -22,4 +22,4 @@ before_script:
   - ./sake dev/build "flush=1"
   - - cd ~/builds/ss3
 script:
-  - phpunit -c phpunit.xml.dist 
+  - phpunit -c phpunit.xml.dist

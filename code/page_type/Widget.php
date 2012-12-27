@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Acts as base class for Detailed Widget Pages .
@@ -16,7 +16,7 @@ class Widget_Controller extends ExtensionData_Controller {
         $this->type = 'Widget';
     }
 
-    public function index() {        
-        $this->redirect('widgets/');    
+    public function index() {
+        $this->redirect('widgets/');
     }
 }

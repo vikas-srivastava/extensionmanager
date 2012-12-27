@@ -1,13 +1,13 @@
 <?php
 /**
- * Acts as base class for stroing and handling 
+ * Acts as base class for stroing and handling
  * Extensions(Module/Widget/Theme) Versions data.
  *
  * @package extensionmanager
  */
 class ExtensionVersion extends DataObject {
 
-	static $db = array(	
+	static $db = array(
 		'SourceType' => 'Varchar(300)',
 		'SourceUrl' => 'Varchar(300)',
 		'SourceReference' => 'Varchar(300)',

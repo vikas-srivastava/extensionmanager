@@ -37,9 +37,9 @@ class ExtensionAuthorController extends Controller {
 
 		$totalAuthors = count($authorsRawData);
 		$extensionAuthorsId = array();
-		
+
 		foreach($authorsRawData as $author) {
-			
+
 			if(((array_key_exists('email', $author)))){
 				if(ExtensionAuthor::get()->filter("Email" , $author['email'])->first()) {
 					$extensionAuthor = ExtensionAuthor::get()->filter("Email" , $author['email'])->first();

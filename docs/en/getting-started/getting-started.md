@@ -1,4 +1,4 @@
-# Getting started with SilverStripe's Extension Manager Module 
+# Getting started with SilverStripe's Extension Manager Module
 
 ## Requirements
 
@@ -15,7 +15,7 @@ To install this module:
 
 3. Go to root of module ``cd path/to/extensionmanager``.
 
-4. Install composer binary with ``curl -s http://getcomposer.org/installer | php`` [see here for global installation](https://github.com/composer/composer#composer---package-management-for-php). 
+4. Install composer binary with ``curl -s http://getcomposer.org/installer | php`` [see here for global installation](https://github.com/composer/composer#composer---package-management-for-php).
 
 5. Run following command for installing dependencies of this module ``php composer.phar install``.
 

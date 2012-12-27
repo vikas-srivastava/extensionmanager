@@ -3,13 +3,13 @@ Right Now all module/widget/themes are look similar. But they will change later
 according to diffrent design and data
 -->
 
-<div class="content-container">    
+<div class="content-container">
 
     <div class="content">$Content</div>
-    
-    <% if ExtensionData %>      
+
+    <% if ExtensionData %>
     <ul >
-        <% loop ExtensionData %>    
+        <% loop ExtensionData %>
 
         <% if $Accepted != 1 %>
         <h1>This Widget is yet not Approved by Widget Moderators</h1>
@@ -22,7 +22,7 @@ according to diffrent design and data
         <% if $Description %>
         <li>
             Description : $Description
-        </li> 
+        </li>
         <% end_if %>
 
         <% if $Version %>
@@ -49,13 +49,13 @@ according to diffrent design and data
         <li>
             Category : $Category
         </li>
-        <% end_if %> 
+        <% end_if %>
 
-        <h3><a href="$DownloadLink.DistUrl"> Download Latest Version</a></h3>     
+        <h3><a href="$DownloadLink.DistUrl"> Download Latest Version</a></h3>
 
         <% loop ExtensionData %>
 
-        
+
         <h2>Support </h2>
         <% if $SupportEmail %>
         <li>
@@ -73,17 +73,17 @@ according to diffrent design and data
         <li>
             <a href="$SupportSource">Support Source</a>
         </li>
-        <% end_if %>   
+        <% end_if %>
 
         <% if $SupportForum %>
         <li>
-            <a href="$SupportForum">Support Forum</a> 
+            <a href="$SupportForum">Support Forum</a>
         </li>
         <% end_if %>
 
         <% if $SupportWiki %>
         <li>
-            <a href="$SupportWiki">Support Wiki</a> 
+            <a href="$SupportWiki">Support Wiki</a>
         </li>
         <% end_if %>
 
@@ -100,16 +100,16 @@ according to diffrent design and data
         <% if $Keywords %>
         <h3>Keywords</h3>
         <% loop Keywords %>
-        $KeywordName 
-        <% end_loop %>    
+        $KeywordName
+        <% end_loop %>
         <% end_if %>
-        
+
         <% if $SubmittedBy %>
         <h3>Submitted By</h3>
         <li>
             Submitted By : $SubmittedBy
         </li>
-        <% end_if %> 
+        <% end_if %>
 
         <% if $AuthorsDetail %>
         <h2>Authors Detail</h2>
@@ -120,51 +120,51 @@ according to diffrent design and data
                 <li>
                     Author Name : $Name
                 </li>
-                <% end_if %>  
+                <% end_if %>
 
                 <% if $Email %>
                 <li>
                     Author Email : $Email
                 </li>
-                <% end_if %>  
+                <% end_if %>
 
                 <% if $HomePage %>
                 <li>
-                    Author HomePage : 
+                    Author HomePage :
                     <a href="$AuthorHomePage "> $HomePage  </a>
                     <li>
                         <% end_if %>
 
                         <% if $Role %>
                         <li>
-                            Author Email : $Role 
+                            Author Email : $Role
                         </li>
-                        <% end_if %>  
+                        <% end_if %>
                     </ul>
                 </p>
-                <% end_loop %>        
-                <% end_if %>  
+                <% end_loop %>
+                <% end_if %>
 
                 <% if VersionData %>
                 <h2>Subversion Detail</h2>
                 <% loop VersionData %>
-                <p> 
-                    <h3>$PrettyVersion </h3> 
+                <p>
+                    <h3>$PrettyVersion </h3>
                     <a href="$DistUrl"> Download $DistType</a><br>
-                    <a href="$SourceUrl"> Source Url</a><br><br> 
+                    <a href="$SourceUrl"> Source Url</a><br><br>
                 </p>
                 <% end_loop %>
-                <% end_if %> 
-                
+                <% end_if %>
+
                 <!--  Resize according to theme -->
                 <% if $SnapShot %>
-                <img src="$SnapShot.Url" border="2" style="border:2px solid black;max-width:40%;"alt="$SnapShot.Name"/> 
+                <img src="$SnapShot.Url" border="2" style="border:2px solid black;max-width:40%;"alt="$SnapShot.Name"/>
                 <% end_if %>
-                
+
                 <div style = "margin-top:30px;">
                     <% if $Disqus %>
                     $Disqus
                     <% end_if %>
                 </div>
-                
+
             </div>

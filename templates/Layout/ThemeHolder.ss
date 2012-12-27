@@ -1,13 +1,13 @@
-<div class="content-container">	
+<div class="content-container">
 	<article>
 		<div class="content">$Content</div>
 	</article>
-	
+
 	<div style= "float:Left; width:70%;">
-		
+
 		<h1>Search Theme</h1>
 		<% include ExtensionSearchForm %>
-		
+
 	</div>
 
 	<div style = "float:Right;">

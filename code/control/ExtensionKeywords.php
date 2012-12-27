@@ -1,9 +1,9 @@
 <?php
 /**
- * Base class for handling extension tags 
- * 
+ * Base class for handling extension tags
+ *
  * @package extensionmanager
- */	
+ */
 
 class ExtensionKeywords extends DataObject {
 
@@ -37,15 +37,15 @@ class ExtensionKeywords extends DataObject {
 	/**
 	  * Store Keywords in seprate dataobject
 	  *
-	  * @param array $authorsRawData, int $extensionId 
+	  * @param array $authorsRawData, int $extensionId
 	  */
 	public static function saveKeywords($rawKeywordData, $extensionId) {
 
 		$totalKeywords = count($rawKeywordData);
-		for ($i = 0; $i < $totalKeywords; $i++) { 	
-			
+		for ($i = 0; $i < $totalKeywords; $i++) {
+
 			if($keyword = ExtensionKeywords::get()->filter("KeywordName" , $rawKeywordData[$i])->first()) {
-				$keyword->Extension()->add($extensionId);				
+				$keyword->Extension()->add($extensionId);
 			} else {
 				$keyword = new ExtensionKeywords();
 				$keyword->KeywordName = $rawKeywordData[$i] ;

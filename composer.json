@@ -1,4 +1,4 @@
-{	
+{
 	"minimum-stability": "dev",
 	"name": "silverstripe/extensionmanager",
 	"description": "The SilverStripe.org Extension Manager Module (unstable version)",
@@ -12,15 +12,15 @@
 		"email": "viky2130@gmail.com"
 		}
 	],
-		
+
 	"require": {
 			"php": ">=5.3.3",
 			"composer/composer": "dev-master",
 			"composer/installers": "*"
 	},
-	
+
 	"extra":
 		{
 			"snapshot" : "http://openbees.org/images/extenisonmanager.png"
 		}
-}	
+}

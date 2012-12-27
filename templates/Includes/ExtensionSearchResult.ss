@@ -1,5 +1,5 @@
 <div id="Content" class="searchResults typography">
-    
+
     <h1>$SearchTitle</h1>
     <% if Query %>
     <p class="searchQuery"><strong>You searched for &quot;{$Query}&quot;</strong></p>
@@ -40,7 +40,7 @@
             <% if ExtensionSearchResults.NotLastPage %>
             <a class="next" href="$ExtensionSearchResults.NextLink" title="View the next page">&rarr;</a>
             <% end_if %>
-        </div>    
+        </div>
         <p>Page $ExtensionSearchResults.CurrentPage of $ExtensionSearchResults.TotalPages</p>
     </div>
     <% end_if %>

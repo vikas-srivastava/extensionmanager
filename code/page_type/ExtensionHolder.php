@@ -1,8 +1,8 @@
 <?php
 /**
- * This class will serve as base class for 
+ * This class will serve as base class for
  * all the ExtensionHolder classes (module/widget/theme)
- * contains extension submission forms and their handler. 
+ * contains extension submission forms and their handler.
  *
  * @package extensionmanager
  */
@@ -13,7 +13,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 
 	public $addContent, $afterEditContent,$latestReleasePackage;
 	public $extensionName, $mailData, $extensionType;
-	
+
 	/**
 	 * Setting up the form.
 	 *
@@ -22,9 +22,9 @@ class ExtensionHolder_Controller extends Page_Controller {
 	public function AddForm($extensionType) {
 
 		if(!Member::currentUser()) return Security::permissionFailure();
-		
+
 		$fields = new FieldList(
-			new TextField ('Url', "Read-Only Url of your $extensionType Repository") 
+			new TextField ('Url', "Read-Only Url of your $extensionType Repository")
 			);
 		$actions = new FieldList(
 			new FormAction('submitUrl', "Submit $extensionType")
@@ -47,11 +47,11 @@ class ExtensionHolder_Controller extends Page_Controller {
 		} elseif (substr($url,0, 4) == "git@") {
 			$form->sessionMessage(_t('ExtensionHolder.BADURL',"'SSH' URL is not allowed, Please enter valid 'HTTP' or 'GIT Read-only' URL"), 'bad');
 			return $this->redirectBack();
-		} 
+		}
 
 		$json = new JsonHandler($url);
 		$jsonData = $json->cloneJson();
-		
+
 		if(!array_key_exists('ErrorMsg', $jsonData)) {
 			$this->latestReleasePackage = $jsonData['LatestRelease'];
 			if($this->isNewExtension($url)) {
@@ -62,7 +62,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 					if($saveVersion){
 						$this->extensionType = ExtensionData::get()->byID($id)->Type;
 						$this->extensionName = ExtensionData::get()->byID($id)->Name;
-						
+
 						$this->mailData = array(
 							'ExtensionType' => $this->extensionType,
 							'ExtensionName' => $this->extensionName,
@@ -75,7 +75,7 @@ class ExtensionHolder_Controller extends Page_Controller {
 
 						$this->sendMailtoAdmin();
 
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for submitting "'.$this->extensionName.'" '.$this->extensionType),'good');				
+						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for submitting "'.$this->extensionName.'" '.$this->extensionType),'good');
 						return $this->redirectBack();
 					}
 				} else {
@@ -121,13 +121,13 @@ class ExtensionHolder_Controller extends Page_Controller {
 		} else {
 			$form->sessionMessage(_t('ExtensionHolder.NOJSON',"We had problems parsing your composer.json file, the parser reports: {$jsonData['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"), 'bad');
 			return $this->redirectBack();
-		}	
+		}
 	}
 
 	/**
-	  * Check if submitted module is new or old  
+	  * Check if submitted module is new or old
 	  *
-	  * @param string $url  
+	  * @param string $url
 	  * @return boolean
 	  */
 	private function isNewExtension($url) {
@@ -188,9 +188,9 @@ class ExtensionHolder_Controller extends Page_Controller {
 		$results = $context->getResults($data)->filter(array(
 			'Type' => $this->extensionType,
 			'Accepted' => '1'
-			));	
+			));
 		return $this->customise(array(
-			'FormSubmitted' => $isFormSubmitted, 
+			'FormSubmitted' => $isFormSubmitted,
 			'ExtensionSearchResults' => $results,
 			'SearchTitle' => _t('SearchForm.SearchResults', 'Search Results')
 			));

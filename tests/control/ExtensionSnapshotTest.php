@@ -8,7 +8,7 @@ class ExtensionSnapshotTest extends SapphireTest {
 	static $fixture_file = 'extensionmanager/tests/ExtensionManagerTest.yml';
 
 	function testSaveSnapshot() {
-		
+
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$realUrl = 'http://openbees.org/images/Demo.jpg';
 
@@ -28,4 +28,4 @@ class ExtensionSnapshotTest extends SapphireTest {
 
 		ExtensionSnapshot::saveSnapshot($fakeUrl, $obj->Name);
 	}
-}	
+}

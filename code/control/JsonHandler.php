@@ -1,7 +1,7 @@
 <?php
 /**
  * All task related to json file.
- * 
+ *
  * Usage:
  * <code>
  * $json = new JsonReader();
@@ -20,7 +20,7 @@ use Composer\package\Dumper\ArrayDumper;
 use Composer\Json\JsonFile;
 
 class JsonHandler extends Controller {
-	
+
 	public $url;
 	public $latestReleasePackage;
 	public $packages;
@@ -33,16 +33,16 @@ class JsonHandler extends Controller {
 		$this->url = $url;
 		$config = Factory::createConfig();
 		$this->repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
-		
+
 	}
 
 	/**
-	  * Convert a module url into json content 
+	  * Convert a module url into json content
 	  *
 	  * @param string $url
 	  * @return array $data
 	  */
-	public function cloneJson() { 
+	public function cloneJson() {
 		$jsonData = array();
 		try{
 			$this->packages = $this->repo->getPackages();
@@ -84,11 +84,11 @@ class JsonHandler extends Controller {
 
 		$jsonData['AllRelease'] = $this->packages;
 		$jsonData['LatestRelease'] = $this->latestReleasePackage;
-		return $jsonData;		
+		return $jsonData;
 	}
 
 	/**
-	  * Save json content in database  
+	  * Save json content in database
 	  *
 	  * @return boolean
 	  */
@@ -97,10 +97,10 @@ class JsonHandler extends Controller {
 		$ExtensionData->SubmittedByID = Member::currentUserID();
 		$result = $this->dataFields($ExtensionData);
 		return $result ;
-	}			
+	}
 
 	/**
-	  * update json content in database  
+	  * update json content in database
 	  *
 	  * @return boolean
 	  */
@@ -113,14 +113,14 @@ class JsonHandler extends Controller {
 			return $result ;
 		} else {
 			return ;
-		}		
+		}
 	}
 
 	/**
-	  * Save each property of json content 
-	  * in corresponidng field of database  
+	  * Save each property of json content
+	  * in corresponidng field of database
 	  *
-	  * @param  object $ExtensionData 
+	  * @param  object $ExtensionData
 	  * @return boolean
 	  */
 	function dataFields($ExtensionData) {
@@ -290,13 +290,13 @@ class JsonHandler extends Controller {
 	}
 
 	/**
-	  * Save Version related data of Extension 
+	  * Save Version related data of Extension
 	  *
-	  * @param int $id  
+	  * @param int $id
 	  * @return boolean
 	  */
 	public function saveVersionData($id) {
-		
+
 		foreach ($this->packages as $package) {
 			$version = new ExtensionVersion();
 			$version->ExtensionDataID = $id;
@@ -307,9 +307,9 @@ class JsonHandler extends Controller {
 	}
 
 	/**
-	  * Delete old version of extension  
+	  * Delete old version of extension
 	  *
-	  * @param  int $id 
+	  * @param  int $id
 	  * @return boolean
 	  */
 	public function deleteVersionData($id){
@@ -317,13 +317,13 @@ class JsonHandler extends Controller {
 	}
 
 	/**
-	  * Save each version related property of json content 
+	  * Save each version related property of json content
 	  *
-	  * @param  object $version, object $Data 
+	  * @param  object $version, object $Data
 	  * @return boolean
 	  */
 	public function versionDataField($version,$data) {
-		
+
 		if($data->getSourceType()) {
 			$version->SourceType = $data->getSourceType();
 		}
@@ -331,7 +331,7 @@ class JsonHandler extends Controller {
 		if($data->getSourceUrl()) {
 			$version->SourceUrl = $data->getSourceUrl();
 		}
-		
+
 		if($data->getSourceReference()) {
 			$version->SourceReference = $data->getSourceReference();
 		}
@@ -363,7 +363,7 @@ class JsonHandler extends Controller {
 		if($data->getReleaseDate()) {
 			$version->ReleaseDate = $data->getReleaseDate()->format('Y-m-d H:i:s');
 		}
-		
+
 		if($data->getRequires()) {
 			$requires = $this->latestReleasePackage->getRequires();
 

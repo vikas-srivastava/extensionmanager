@@ -1,19 +1,19 @@
 <?php
 /**
- * Class containing methods for fetching and storing  
+ * Class containing methods for fetching and storing
  * extension Category information.
  *
  * @package extensionmanager
  */
 class ExtensionCategory extends DataObject {
 
-	static $db = array(	
+	static $db = array(
 		'CategoryName' => 'Varchar(100)',
 		);
 
 	static $has_many = array(
 		'Extensions' => 'ExtensionData',
-		);	
+		);
 
 	static $searchable_fields = array(
 		'CategoryName' => array(
@@ -44,6 +44,6 @@ class ExtensionCategory extends DataObject {
 		$category = ExtensionCategory::get()->byID($categoryID);
 		if($category) {
 			return $category->CategoryName;
-		}	
+		}
 	}
 }

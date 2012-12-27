@@ -16,7 +16,7 @@ But recently submitted module is not appearing because its yet not accepted.
 
 ![Module listing](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/not-listing-newly-submitted-module.png)
 
-But Admin have rights to access these pages even before approval 
+But Admin have rights to access these pages even before approval
 
 ![unApproved Module](https://github.com/vikas-srivastava/extensionmanager/raw/master/docs/img/unapproved-module.png)
 

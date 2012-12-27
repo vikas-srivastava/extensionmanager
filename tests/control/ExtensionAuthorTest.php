@@ -45,6 +45,6 @@ class ExtensionAuthorTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$extensionId = $obj->ID;
 		$ExtensionAuthorController = new ExtensionAuthorController();
-		$memberId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);	
+		$memberId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);
 	}
 }

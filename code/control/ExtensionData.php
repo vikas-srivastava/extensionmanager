@@ -1,13 +1,13 @@
 <?php
 /**
- * Acts as base class for stroing and handling 
+ * Acts as base class for stroing and handling
  * Extensions(Module/Widget/Theme) Data .
  *
  * @package extensionmanager
  */
 class ExtensionData extends DataObject {
 
-	static $db = array(	
+	static $db = array(
 		'Url' => 'Varchar(100)',
 		'Accepted' => 'Boolean',
 		'Title' => 'VarChar(100)',
@@ -42,7 +42,7 @@ class ExtensionData extends DataObject {
 		'IncludePath' => 'VarChar(500)',
 		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
-		);	
+		);
 
 	static $searchable_fields = array(
 		'Name' => array(
@@ -158,15 +158,15 @@ class ExtensionData extends DataObject {
 		$email->populateTemplate($mailData);
 		$email->send();
 	}
-} 
+}
 
 class ExtensionData_Controller extends ContentController {
-	
+
 	public $type, $disqus;
 
 	static $allowed_actions = array(
 		'index',
-		'show',   
+		'show',
 		);
 
 	public function init() {
@@ -183,8 +183,8 @@ class ExtensionData_Controller extends ContentController {
 	  */
 	public function getExtensionData() {
 		$Params = $this->getURLParams();
-		
-		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {  
+
+		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {
 			if(Permission::check("ADMIN") || ($ExtensionData->Type == $this->type && $ExtensionData->Accepted == "1" )) {
 				return $ExtensionData;
 			}
@@ -192,13 +192,13 @@ class ExtensionData_Controller extends ContentController {
 	}
 
     /**
-      * Show module data   
+      * Show module data
       *
       * @return array
       */
-    function show() { 
+    function show() {
 
-    	if($ExtensionData = $this->getExtensionData($this->type)) {   
+    	if($ExtensionData = $this->getExtensionData($this->type)) {
     		$Data = array(
     			'MetaTitle' => $ExtensionData->Name,
     			'ExtensionData' => $ExtensionData,
@@ -216,5 +216,5 @@ class ExtensionData_Controller extends ContentController {
     	else{
     		return $this->httpError(404, "Sorry that $this->type could not be found");
     	}
-    } 
+    }
 }

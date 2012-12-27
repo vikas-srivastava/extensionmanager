@@ -1,8 +1,8 @@
-<div class="content-container">	
+<div class="content-container">
 	<article>
 		<div class="content">$Content</div>
 	</article>
-	
+
 	<div style= "float:Left; width:70%;">
 		<% if widgetSearch %>
 		<h1>Search Widget</h1>
@@ -45,5 +45,4 @@
 		<% include ExtensionSearchResult %>
 		<% end_if %>
 	</div>
-
 </div>

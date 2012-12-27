@@ -1,22 +1,22 @@
 <?php
 /**
- * Factory class for handling extension snapshot 
+ * Factory class for handling extension snapshot
  * Related tasks
- * 
+ *
  * @package extensionmanager
- */ 
+ */
 
 class ExtensionSnapshot extends Controller {
 
 	/**
-	  * Save Snapshots of extension in assets folder 
+	  * Save Snapshots of extension in assets folder
 	  *
-	  * @param string $thumbnailUrl, $extensionName  
-	  * @return int 
+	  * @param string $thumbnailUrl, $extensionName
+	  * @return int
 	  */
 	public static function saveSnapshot($thumbnailUrl, $extensionName) {
-		
-		$folderToSave = 'assets/Uploads/Snapshots/'; 
+
+		$folderToSave = 'assets/Uploads/Snapshots/';
 
 		$folderObject = Folder::get()->filter("Filename" , $folderToSave)->first();
 
@@ -27,9 +27,9 @@ class ExtensionSnapshot extends Controller {
 
 		$fileExtension = preg_replace('/^.*\.([^.]+)$/D', '$1', $thumbnailUrl);
 
-		$thumbnailBaseName = str_replace('/', '-', $extensionName); 
+		$thumbnailBaseName = str_replace('/', '-', $extensionName);
 
-		$thumbnailName = $thumbnailBaseName.'-thumbnail.'.$fileExtension; 
+		$thumbnailName = $thumbnailBaseName.'-thumbnail.'.$fileExtension;
 
 		$ch = curl_init();
 		$timeout = 30;
@@ -49,8 +49,8 @@ class ExtensionSnapshot extends Controller {
 
 		if($folderObject ) {
 			$thumbnailFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$folderToSave.$thumbnailName, 'w');
-			fwrite($thumbnailFile, $imageContent); 
-			fclose($thumbnailFile); 
+			fwrite($thumbnailFile, $imageContent);
+			fclose($thumbnailFile);
 		} else {
 			throw new InvalidArgumentException("Could not create $folderToSave , Please create it mannually ");
 		}

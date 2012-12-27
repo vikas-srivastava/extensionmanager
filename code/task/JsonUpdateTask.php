@@ -1,11 +1,11 @@
 <?php
 /**
- * For Updating composer.Json data of extensions. 
+ * For Updating composer.Json data of extensions.
  *
  * @package extensionmanager
  */
 class JsonUpdateTask extends DailyTask {
-	
+
 	/**
 	 * Check that the user has appropriate permissions to execute this task
 	 */
@@ -49,14 +49,14 @@ class JsonUpdateTask extends DailyTask {
 				}
 			}
 			echo "<br><br><strong>{$count} Repositories processed...</strong><br>";
-		} else { 
+		} else {
 			throw new InvalidArgumentException('No Extension found...');
 		}
-	} 
+	}
 }
 
 /**
- * For Manually Updating composer.Json data of extensions. 
+ * For Manually Updating composer.Json data of extensions.
  *
  * @package extensionmanager
  */

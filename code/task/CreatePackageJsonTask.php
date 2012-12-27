@@ -1,6 +1,6 @@
 <?php
 /**
- * Task for creating new package.json after every 15 Minutes. 
+ * Task for creating new package.json after every 15 Minutes.
  *
  * @package extensionmanager
  */
@@ -8,7 +8,7 @@
 use Composer\package\Dumper\ArrayDumper;
 
 class CreatePackageJsonTask extends QuarterHourlyTask {
-	
+
 	/**
 	 * Check that the user has appropriate permissions to execute this task
 	 */
@@ -48,18 +48,18 @@ class CreatePackageJsonTask extends QuarterHourlyTask {
 			if(!empty($repo['packages'])) {
 				$packagesJsonData = Convert::array2json($repo);
 				$packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
-				fwrite($packageJsonFile, $packagesJsonData); 
+				fwrite($packageJsonFile, $packagesJsonData);
 				fclose($packageJsonFile);
 				echo "<br /><br /><strong> package.json file created successfully...</strong><br />";
 			} else {
 				throw new InvalidArgumentException('package.json file could not be created');
 			}
 		}
-	}	
+	}
 }
 
 /**
- * For Manually Updating packages.json file. 
+ * For Manually Updating packages.json file.
  *
  * @package extensionmanager
  */

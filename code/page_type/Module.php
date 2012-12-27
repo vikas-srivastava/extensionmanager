@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Acts as base class for Detailed Module Pages .
  *
@@ -15,7 +15,7 @@ class Module_Controller extends ExtensionData_Controller {
         $this->type = 'Module';
     }
 
-    public function index() {        
+    public function index() {
         $this->redirect('modules/');
-    }      
+    }
 }

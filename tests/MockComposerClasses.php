@@ -7,18 +7,18 @@
  */
 
 class MockVcsRepositoryWithNameAbsent {
-	
+
 	function getPackages() {
 		$packages = new MockMemoryPackageWithNameAbsent();
 		return array($packages);
 	}
 
-	function findPackage() {	
+	function findPackage() {
 	}
 }
 
 class MockMemoryPackageWithNameAbsent {
-	
+
 	function getPrettyName() {
 	}
 
@@ -27,18 +27,18 @@ class MockMemoryPackageWithNameAbsent {
 }
 
 class MockVcsRepositoryWithWrongNameFormat {
-	
+
 	function getPackages() {
 		$packages = new MockMemoryPackageWithWrongNameFormat();
 		return array($packages);
 	}
 
-	function findPackage() {	
+	function findPackage() {
 	}
 }
 
 class MockMemoryPackageWithWrongNameFormat {
-	
+
 	function getPrettyName() {
 		return 'silverstripe\@#cms';
 	}
@@ -48,18 +48,18 @@ class MockMemoryPackageWithWrongNameFormat {
 }
 
 class MockVcsRepositoryWithCapitalLattersInName {
-	
+
 	function getPackages() {
 		$packages = new MockMemoryPackageWithCapitalLattersInName();
 		return array($packages);
 	}
 
-	function findPackage() {	
+	function findPackage() {
 	}
 }
 
 class MockMemoryPackageWithCapitalLattersInName {
-	
+
 	function getPrettyName() {
 		return 'SilverStripe/Cms';
 	}
@@ -69,7 +69,7 @@ class MockMemoryPackageWithCapitalLattersInName {
 }
 
 class MockVCSRepositoryWithRealValues {
-	
+
 	function getPackages() {
 		$package0 = new MockMemoryPackageTagVersion();
 		$package1 = new MockMemoryPackageMasterBranch();
@@ -80,13 +80,13 @@ class MockVCSRepositoryWithRealValues {
 		foreach ($this->getPackages() as $package) {
 			if ($name === $package->getName() && $version === $package->getVersion()) {
 				return $package;
-			}	
+			}
 		}
 	}
 }
 
 class MockMemoryPackageTagVersion {
-	
+
 	function getPrettyName() {
 		return 'silverstripe/cms';
 	}
@@ -101,7 +101,7 @@ class MockMemoryPackageTagVersion {
 }
 
 class MockMemoryPackageMasterBranch {
-	
+
 	function getPrettyName() {
 		return 'silverstripe/cms';
 	}

@@ -1,8 +1,8 @@
-<div class="content-container">	
+<div class="content-container">
 	<article>
 		<div class="content">$Content</div>
 	</article>
-	
+
 	<div style= "float:Left; width:70%;">
 		<% if moduleSearch %>
 		<h1>Search Module</h1>
@@ -12,7 +12,7 @@
 
 	<div style = "float:Right;">
 		<div style= "float:Right;margin-top:50px;margin-bottom:30px;">
-			<% with ModuleSubmissionForm %> $Content <br> $Form <% end_with %>	
+			<% with ModuleSubmissionForm %> $Content <br> $Form <% end_with %>
 		</div>
 
 		<div>
