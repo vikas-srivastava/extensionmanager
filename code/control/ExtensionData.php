@@ -196,7 +196,7 @@ class ExtensionData_Controller extends ContentController {
       *
       * @return array
       */
-    function show() {
+    public function show() {
 
     	if($ExtensionData = $this->getExtensionData($this->type)) {
     		$Data = array(
@@ -214,7 +214,7 @@ class ExtensionData_Controller extends ContentController {
     		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
     	}
     	else{
-    		return $this->httpError(404, "Sorry that $this->type could not be found");
+    		return $this->httpError(404, "Sorry $this->type could not be found");
     	}
     }
 }

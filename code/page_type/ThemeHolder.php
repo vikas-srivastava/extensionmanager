@@ -59,7 +59,7 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function ThemeSubmissionForm() {
+	public function ThemeSubmissionForm() {
 		$formSectionData = new DataObject();
  		$formSectionData->Form = $this->AddForm($this->extensionType);
 		$formSectionData->Content = $this->dataRecord->AddContent;
@@ -71,7 +71,7 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function themeList() {
+	public function ThemeList() {
 		$themes = ExtensionData::get()->filter(array('Type' => 'Theme','Accepted' => '1'))->sort('Name');
 		return $themes;
 	}
@@ -81,7 +81,7 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function themeSearch(){
-		return $this->ExtensionSearch();
+	public function ThemeSearch(){
+		return $this->extensionSearch();
 	}
 }

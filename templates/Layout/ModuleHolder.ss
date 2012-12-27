@@ -4,9 +4,9 @@
 	</article>
 
 	<div style= "float:Left; width:70%;">
-		<% if moduleSearch %>
+		<% if ModuleSearch %>
 		<h1>Search Module</h1>
-		$moduleSearch
+		$ModuleSearch
 		<% end_if %>
 	</div>
 

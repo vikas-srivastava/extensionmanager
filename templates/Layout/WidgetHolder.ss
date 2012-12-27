@@ -4,9 +4,9 @@
 	</article>
 
 	<div style= "float:Left; width:70%;">
-		<% if widgetSearch %>
+		<% if WidgetSearch %>
 		<h1>Search Widget</h1>
-		$widgetSearch
+		$WidgetSearch
 		<% end_if %>
 	</div>
 
@@ -18,7 +18,7 @@
 		<div>
 			<h3>Available Widgets</h3>
 			<%if WidgetList %>
-			<% loop widgetList %>
+			<% loop WidgetList %>
 			<li><a href="widget/show/$ID">$Name</a></li>
 			<% end_loop %>
 			<% end_if %>

@@ -11,8 +11,12 @@ class ExtensionHolder extends Page {
 }
 class ExtensionHolder_Controller extends Page_Controller {
 
-	public $addContent, $afterEditContent,$latestReleasePackage;
-	public $extensionName, $mailData, $extensionType;
+	public $addContent;
+	public $afterEditContent;
+	public $latestReleasePackage;
+	public $extensionName;
+	public $mailData;
+	public $extensionType;
 
 	/**
 	 * Setting up the form.
@@ -162,10 +166,10 @@ class ExtensionHolder_Controller extends Page_Controller {
 	  *
 	  * @return boolean $form
 	  */
-	public function ExtensionSearch() {
+	public function extensionSearch() {
 		$context = singleton('ExtensionData')->getCustomSearchContext();
 		$fields = $context->getSearchFields();
-		$form = new Form($this, "ExtensionSearch",
+		$form = new Form($this, "extensionSearch",
 			$fields,
 			new FieldList(
 				new FormAction('doSearch' , "Search $this->extensionType" )

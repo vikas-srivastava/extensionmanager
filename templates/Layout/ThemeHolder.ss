@@ -5,8 +5,11 @@
 
 	<div style= "float:Left; width:70%;">
 
+		<% if ThemeSearch %>
 		<h1>Search Theme</h1>
 		<% include ExtensionSearchForm %>
+		$ThemeSearch
+		<% end_if %>
 
 	</div>
 

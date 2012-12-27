@@ -92,7 +92,7 @@ class JsonHandler extends Controller {
 	  *
 	  * @return boolean
 	  */
-	function saveJson() {
+	public function saveJson() {
 		$ExtensionData = new ExtensionData();
 		$ExtensionData->SubmittedByID = Member::currentUserID();
 		$result = $this->dataFields($ExtensionData);
@@ -104,7 +104,7 @@ class JsonHandler extends Controller {
 	  *
 	  * @return boolean
 	  */
-	function updateJson() {
+	public function updateJson() {
 
 		$ExtensionData = ExtensionData::get()->filter(array("Title" => $this->latestReleasePackage->getPrettyName()))->First();
 
@@ -123,7 +123,7 @@ class JsonHandler extends Controller {
 	  * @param  object $ExtensionData
 	  * @return boolean
 	  */
-	function dataFields($ExtensionData) {
+	public function dataFields($ExtensionData) {
 		$saveDataFields = array();
 		try{
 			$ExtensionData->Url = $this->url;

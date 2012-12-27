@@ -31,7 +31,7 @@ class WidgetHolder extends ExtensionHolder {
 
 		);
 
-	function getCMSFields() {
+	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->addFieldToTab("Root.Main", new HTMLEditorField("AddContent", "Content for 'add' page"));
 		return $fields;
@@ -59,7 +59,7 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function WidgetSubmissionForm() {
+	public function WidgetSubmissionForm() {
 		$formSectionData = new DataObject();
  		$formSectionData->Form = $this->AddForm($this->extensionType);
 		$formSectionData->Content = $this->dataRecord->AddContent;
@@ -71,7 +71,7 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function widgetList() {
+	public function WidgetList() {
 		$modules = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
 		return $modules;
 	}
@@ -81,7 +81,7 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function widgetSearch(){
-		return $this->ExtensionSearch();
+	public function WidgetSearch(){
+		return $this->extensionSearch();
 	}
 }

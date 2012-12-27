@@ -57,7 +57,7 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function ModuleSubmissionForm() {
+	public function ModuleSubmissionForm() {
 		$formSectionData = new DataObject();
  		$formSectionData->Form = $this->AddForm($this->extensionType);
 		$formSectionData->Content = $this->dataRecord->AddContent;
@@ -69,7 +69,7 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function moduleList() {
+	public function ModuleList() {
 		$modules = ExtensionData::get()->filter(array('Type' => 'Module', 'Accepted' => '1'))->sort('Name');
 		return $modules;
 	}
@@ -79,7 +79,7 @@ class ModuleHolder_Controller extends ExtensionHolder_Controller {
 	 *
 	 * @return Array .
 	 */
-	function moduleSearch(){
-		return $this->ExtensionSearch();
+	public function ModuleSearch(){
+		return $this->extensionSearch();
 	}
 }
