@@ -21,7 +21,7 @@ class ExtensionAuthorTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$extensionId = $obj->ID;
 		$ExtensionAuthorController = new ExtensionAuthorController();
-		$extensionAuthorsId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);
+		$extensionAuthorsId = $ExtensionAuthorController->store_authors_info($authorsRawData,$extensionId);
 		$extensionAuthor = ExtensionAuthor::get()->byID($extensionAuthorsId['0']);
 
 		$this->assertEquals($extensionAuthor->Email , 'testuser@test.com');
@@ -45,6 +45,6 @@ class ExtensionAuthorTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$extensionId = $obj->ID;
 		$ExtensionAuthorController = new ExtensionAuthorController();
-		$memberId = $ExtensionAuthorController->storeAuthorsInfo($authorsRawData,$extensionId);
+		$memberId = $ExtensionAuthorController->store_authors_info($authorsRawData,$extensionId);
 	}
 }

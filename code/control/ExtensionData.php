@@ -132,7 +132,7 @@ class ExtensionData extends DataObject {
 
 			$mailData = array(
 				'Subject' => $this->Type." '".$this->Name."' has been Approved",
-				'To' => ExtensionAuthorController::getAuthorsEmail($this->ID),
+				'To' => ExtensionAuthorController::get_authors_email($this->ID),
 				'From' => Config::inst()->get($this->Type, 'ReviewerEmail'),
 				'ExtensionType' => $this->Type,
 				'ExtensionName' => $this->Name,
@@ -204,10 +204,10 @@ class ExtensionData_Controller extends ContentController {
     			'ExtensionData' => $ExtensionData,
     			'SubmittedBy' => $ExtensionData->SubmittedBy()->Name,
     			'Keywords' => $ExtensionData->Keywords(),
-    			'AuthorsDetail'=> ExtensionAuthorController::getAuthorsInformation($ExtensionData->ID),
-    			'VersionData' => ExtensionVersion::getExtensionVersion($ExtensionData->ID),
-    			'DownloadLink' => ExtensionVersion::getLatestVersionDistUrl($ExtensionData->ID),
-    			'Category' => ExtensionCategory::getExtensionCategory($ExtensionData->CategoryID),
+    			'AuthorsDetail'=> ExtensionAuthorController::get_authors_information($ExtensionData->ID),
+    			'VersionData' => ExtensionVersion::get_extension_version($ExtensionData->ID),
+    			'DownloadLink' => ExtensionVersion::get_latest_version_dist_url($ExtensionData->ID),
+    			'Category' => ExtensionCategory::get_extension_category($ExtensionData->CategoryID),
     			'SnapShot' => $ExtensionData->Thumbnail(),
     			'Disqus' => $this->disqus,
     			);

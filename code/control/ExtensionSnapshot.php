@@ -14,7 +14,7 @@ class ExtensionSnapshot extends Controller {
 	  * @param string $thumbnailUrl, $extensionName
 	  * @return int
 	  */
-	public static function saveSnapshot($thumbnailUrl, $extensionName) {
+	public static function save_snapshot($thumbnailUrl, $extensionName) {
 
 		$folderToSave = 'assets/Uploads/Snapshots/';
 

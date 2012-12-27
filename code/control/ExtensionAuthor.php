@@ -33,7 +33,7 @@ class ExtensionAuthorController extends Controller {
 	  *
 	  * @param array $authorsRawData, int $extensionId
 	  */
-	public static function storeAuthorsInfo($authorsRawData,$extensionId) {
+	public static function store_authors_info($authorsRawData,$extensionId) {
 
 		$totalAuthors = count($authorsRawData);
 		$extensionAuthorsId = array();
@@ -84,7 +84,7 @@ class ExtensionAuthorController extends Controller {
 	  * @param  int $extensionId
 	  * @return array
 	  */
-	public static function getAuthorsInformation($extensionId) {
+	public static function get_authors_information($extensionId) {
 		$extensionId = ExtensionData::get()->byID($extensionId);
 		return $extensionId->ExtensionAuthors();
 	}
@@ -95,7 +95,7 @@ class ExtensionAuthorController extends Controller {
 	 * @param  int $extensionId
 	 * @return string
 	 */
-	public static function getAuthorsEmail($extensionId) {
+	public static function get_authors_email($extensionId) {
 		$authors = ExtensionData::get()->byID($extensionId)->ExtensionAuthors();
 		$emails =  array();
 

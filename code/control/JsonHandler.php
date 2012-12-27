@@ -253,7 +253,7 @@ class JsonHandler extends Controller {
 				$ExtensionData->Extra = serialize($this->latestReleasePackage->getExtra());
 				$extra = $this->latestReleasePackage->getExtra();
 				if(array_key_exists('snapshot',$extra)) {
-					$ExtensionData->ThumbnailID = ExtensionSnapshot::saveSnapshot($extra['snapshot'],$this->latestReleasePackage->getPrettyName());
+					$ExtensionData->ThumbnailID = ExtensionSnapshot::save_snapshot($extra['snapshot'],$this->latestReleasePackage->getPrettyName());
 				}
 			}
 
@@ -266,14 +266,14 @@ class JsonHandler extends Controller {
 			}
 
 			if($this->latestReleasePackage->getAuthors()) {
-				ExtensionAuthorController::storeAuthorsInfo($this->latestReleasePackage->getAuthors(),$ExtensionData->ID);
+				ExtensionAuthorController::store_authors_info($this->latestReleasePackage->getAuthors(),$ExtensionData->ID);
 			} else {
 				throw new InvalidArgumentException("We could not find Author Info field in composer.json at'"
 					.$this->url."' ");
 			}
 
 			if($this->latestReleasePackage->getKeywords()) {
-				ExtensionKeywords::saveKeywords($this->latestReleasePackage->getKeywords(),$ExtensionData->ID);
+				ExtensionKeywords::save_keywords($this->latestReleasePackage->getKeywords(),$ExtensionData->ID);
 			} else {
 				throw new InvalidArgumentException("We could not find Keywords field in composer.json at'"
 					.$this->url."' ");

@@ -39,7 +39,7 @@ class ExtensionKeywords extends DataObject {
 	  *
 	  * @param array $authorsRawData, int $extensionId
 	  */
-	public static function saveKeywords($rawKeywordData, $extensionId) {
+	public static function save_keywords($rawKeywordData, $extensionId) {
 
 		$totalKeywords = count($rawKeywordData);
 		for ($i = 0; $i < $totalKeywords; $i++) {

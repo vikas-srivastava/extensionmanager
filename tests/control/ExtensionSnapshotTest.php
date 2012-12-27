@@ -12,7 +12,7 @@ class ExtensionSnapshotTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$realUrl = 'http://openbees.org/images/Demo.jpg';
 
-		$imageId = ExtensionSnapshot::saveSnapshot($realUrl, $obj->Name);
+		$imageId = ExtensionSnapshot::save_snapshot($realUrl, $obj->Name);
 		$image = Image::get()->byID($imageId);
 
 		$this->assertFileExists(BASE_PATH.DIRECTORY_SEPARATOR.$image->Filename);
@@ -26,6 +26,6 @@ class ExtensionSnapshotTest extends SapphireTest {
 		$obj = $this->objFromFixture('ExtensionData', 'testmodule');
 		$fakeUrl = 'http://openbees.org/images/FakeImage.jpg';
 
-		ExtensionSnapshot::saveSnapshot($fakeUrl, $obj->Name);
+		ExtensionSnapshot::save_snapshot($fakeUrl, $obj->Name);
 	}
 }

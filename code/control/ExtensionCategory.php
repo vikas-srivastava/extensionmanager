@@ -40,7 +40,7 @@ class ExtensionCategory extends DataObject {
 	  *	@param extensionData
 	  * @return string
 	  */
-	public static function getExtensionCategory($categoryID) {
+	public static function get_extension_category($categoryID) {
 		$category = ExtensionCategory::get()->byID($categoryID);
 		if($category) {
 			return $category->CategoryName;
