@@ -79,17 +79,6 @@ class ExtensionAuthorController extends Controller {
 	}
 
 	/**
-	  * Get Author Info of Extension
-	  *
-	  * @param  int $extensionId
-	  * @return array
-	  */
-	public static function get_authors_information($extensionId) {
-		$extensionId = ExtensionData::get()->byID($extensionId);
-		return $extensionId->ExtensionAuthors();
-	}
-
-	/**
 	 * Get comma seprated list of authors email
 	 *
 	 * @param  int $extensionId

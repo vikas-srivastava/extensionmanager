@@ -4,7 +4,7 @@
  *
  * @package extensionmanager
  */
-class WidgetHolder extends ExtensionHolder {
+class WidgetHolderPage extends ExtensionHolderPage {
 	static $db = array(
 		'AddContent' => 'HTMLText',
 		);
@@ -43,7 +43,7 @@ class WidgetHolder extends ExtensionHolder {
  *
  * @package extensionmanager
  */
-class WidgetHolder_Controller extends ExtensionHolder_Controller {
+class WidgetHolderPage_Controller extends ExtensionHolderPage_Controller {
 
 	static $urlhandlers = array(
 		'addnew' => 'addnew',
@@ -83,5 +83,35 @@ class WidgetHolder_Controller extends ExtensionHolder_Controller {
 	 */
 	public function WidgetSearch(){
 		return $this->extensionSearch();
+	}
+
+	/**
+     * Show Widget data.
+     *
+     * @return array
+     */
+	public function show(){
+		$selectedWidget = $this->SelectedWidget();
+		if($selectedWidget){
+			return array(
+				"Title" => $selectedWidget->Name,
+				);
+		} else{
+			return $this->httpError("404");
+		}
+	}
+
+	/**
+	 * Get Selected Theme.
+	 *
+	 * @return array
+	 */
+	public function SelectedWidget(){
+		$widget = null;
+		$param = $this->getRequest()->param("ID");
+		if($param){
+			$widget =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Widget') AND (Accepted = '1')")->first();
+		}
+		return $widget;
 	}
 }

@@ -31,19 +31,6 @@ class ExtensionCategory extends DataObject {
 	static $summary_fields = array(
 		'CategoryName' => array(
 			'title' => 'Category Name',
-			),
-		);
-
-	/**
-	  * Get Category Name of Extension
-	  *
-	  *	@param extensionData
-	  * @return string
-	  */
-	public static function get_extension_category($categoryID) {
-		$category = ExtensionCategory::get()->byID($categoryID);
-		if($category) {
-			return $category->CategoryName;
-		}
-	}
+		),
+	);
 }

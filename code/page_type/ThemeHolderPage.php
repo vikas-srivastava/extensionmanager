@@ -4,7 +4,7 @@
  *
  * @package extensionmanager
  */
-class ThemeHolder extends ExtensionHolder {
+class ThemeHolderPage extends ExtensionHolderPage {
 	static $db = array(
 		'AddContent' => 'HTMLText',
 		);
@@ -43,7 +43,7 @@ class ThemeHolder extends ExtensionHolder {
  *
  * @package extensionmanager
  */
-class ThemeHolder_Controller extends ExtensionHolder_Controller {
+class ThemeHolderPage_Controller extends ExtensionHolderPage_Controller {
 
 	static $urlhandlers = array(
 		'addnew' => 'addnew',
@@ -83,5 +83,35 @@ class ThemeHolder_Controller extends ExtensionHolder_Controller {
 	 */
 	public function ThemeSearch(){
 		return $this->extensionSearch();
+	}
+
+	/**
+     * Show Theme data.
+     *
+     * @return array
+     */
+	public function show(){
+		$selectedTheme = $this->SelectedTheme();
+		if($selectedTheme){
+			return array(
+				"Title" => $selectedTheme->Name,
+				);
+		} else{
+			return $this->httpError("404");
+		}
+	}
+
+	/**
+	 * Get Selected Theme.
+	 *
+	 * @return array
+	 */
+	public function SelectedTheme(){
+		$theme = null;
+		$param = $this->getRequest()->param("ID");
+		if($param){
+			$theme =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Theme') AND (Accepted = '1')")->first();
+		}
+		return $theme;
 	}
 }

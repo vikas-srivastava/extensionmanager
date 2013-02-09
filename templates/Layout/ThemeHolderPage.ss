@@ -7,7 +7,6 @@
 
 		<% if ThemeSearch %>
 		<h1>Search Theme</h1>
-		<% include ExtensionSearchForm %>
 		$ThemeSearch
 		<% end_if %>
 

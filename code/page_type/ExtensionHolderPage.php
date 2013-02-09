@@ -6,10 +6,10 @@
  *
  * @package extensionmanager
  */
-class ExtensionHolder extends Page {
+class ExtensionHolderPage extends Page {
 
 }
-class ExtensionHolder_Controller extends Page_Controller {
+class ExtensionHolderPage_Controller extends Page_Controller {
 
 	public $addContent;
 	public $afterEditContent;
@@ -17,6 +17,14 @@ class ExtensionHolder_Controller extends Page_Controller {
 	public $extensionName;
 	public $mailData;
 	public $extensionType;
+	public $disqus;
+
+	public function init(){
+		parent::init();
+		Requirements::themedCSS("site");
+		$this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
+		Requirements::javascript('themes/AddOns-Theme/bootstrap/js/bootstrap-tab.js');
+	}
 
 	/**
 	 * Setting up the form.
@@ -210,5 +218,16 @@ class ExtensionHolder_Controller extends Page_Controller {
 			'Accepted' => '1',
 			'Type' => $this->extensionType,
 			))->sort('Created', 'DESC')->limit('10');
+	}
+
+	/**
+	  * Return Javascript code for Discus.
+	  *
+	  * @return string
+	  */
+	public function Disqus(){
+		if($this->disqus){
+			return $this->disqus;
+		}
 	}
 }

@@ -32,8 +32,8 @@
 		<h1>New Modules</h1>
 		(Images should display in slideshow/showcase)
 		<% loop NewExtension %>
-		<h3><a href="module/show/$ID">$Name</a></h3>
-		<a href="module/show/$ID">
+		<h3><a href="$Link">$Name</a></h3>
+		<a href="$Link">
 			<img src="$Thumbnail.URL" border="2" style="border:2px solid black;max-width:40%;" alt="$Thumbnail.Name" />
 		</a>
 		<% end_loop %>

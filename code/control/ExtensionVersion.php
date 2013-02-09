@@ -57,21 +57,6 @@ class ExtensionVersion extends DataObject {
 			),
 		);
 
-
-
-	/**
-	 * Get each version belongs to Extension
-	 * Url ID
-	 *
-	 * @param int $extensionId
-	 * @return dataobjectset
-	 */
-	public static function get_extension_version($extensionId) {
-		return ExtensionVersion::get()->filter(array(
-			'ExtensionDataID' => $extensionId
-			));
-	}
-
 	/**
 	 * Get each version belongs to Extension
 	 * Url ID

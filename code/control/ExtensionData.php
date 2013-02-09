@@ -42,6 +42,7 @@ class ExtensionData extends DataObject {
 		'IncludePath' => 'VarChar(500)',
 		'Bin' => 'VarChar(500)',
 		'MinimumStability' => 'VarChar(500)',
+		'URLSegment' => 'Varchar(200)'
 		);
 
 	static $searchable_fields = array(
@@ -167,63 +168,30 @@ class ExtensionData extends DataObject {
 		$email->populateTemplate($mailData);
 		$email->send();
 	}
-}
-
-class ExtensionData_Controller extends ContentController {
-
-	public $type, $disqus;
-
-	static $allowed_actions = array(
-		'index',
-		'show',
-		);
-
-	public function init() {
-		parent::init();
-		$this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
-	}
 
 	/**
-	  * Get one Extension data from database using
-	  * Url ID
+	  * ModuleHolder Page Link.
 	  *
-	  * @param string $type
-	  * @return array
+	  * @return string $modulePageLink
 	  */
-	public function getExtensionData() {
-		$Params = $this->getURLParams();
-
-		if(is_numeric($Params['ID']) && $ExtensionData = ExtensionData::get()->byID((int)$Params['ID'])) {
-			if(Permission::check("ADMIN") || ($ExtensionData->Type == $this->type && $ExtensionData->Accepted == "1" )) {
-				return $ExtensionData;
-			}
+	public function Link(){
+		$extensionPageLink = "";
+		$id = $this->ID;
+		if($this->URLSegment){
+			$id = $this->URLSegment;
 		}
+		if($this->Type == 'Module'){
+			$page = Page::get()->filter('ClassName','ModuleHolderPage')->first();
+			$extensionPageLink = $page ? $page->Link("show/$id") : "";
+		}
+		if($this->Type == 'Theme'){
+			$page = Page::get()->filter('ClassName','ThemeHolderPage')->first();
+			$extensionPageLink = $page ? $page->Link("show/$id") : "";
+		}
+		if($this->Type == 'Widget'){
+			$page = Page::get()->filter('ClassName','WidgetHolderPage')->first();
+			$extensionPageLink = $page ? $page->Link("show/$id") : "";
+		}
+		return $extensionPageLink;
 	}
-
-    /**
-      * Show module data
-      *
-      * @return array
-      */
-    public function show() {
-
-    	if($ExtensionData = $this->getExtensionData($this->type)) {
-    		$Data = array(
-    			'MetaTitle' => $ExtensionData->Name,
-    			'ExtensionData' => $ExtensionData,
-    			'SubmittedBy' => $ExtensionData->SubmittedBy()->Name,
-    			'Keywords' => $ExtensionData->Keywords(),
-    			'AuthorsDetail'=> ExtensionAuthorController::get_authors_information($ExtensionData->ID),
-    			'VersionData' => ExtensionVersion::get_extension_version($ExtensionData->ID),
-    			'DownloadLink' => ExtensionVersion::get_latest_version_dist_url($ExtensionData->ID),
-    			'Category' => ExtensionCategory::get_extension_category($ExtensionData->CategoryID),
-    			'SnapShot' => $ExtensionData->Thumbnail(),
-    			'Disqus' => $this->disqus,
-    			);
-    		return $this->customise($Data)->renderWith(array($this->type.'_show', 'Page'));
-    	}
-    	else{
-    		return $this->httpError(404, "Sorry $this->type could not be found");
-    	}
-    }
 }
