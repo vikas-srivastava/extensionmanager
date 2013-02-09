@@ -23,6 +23,7 @@ class ExtensionHolderPage_Controller extends Page_Controller {
 		parent::init();
 		Requirements::themedCSS("site");
 		$this->disqus = file_get_contents(BASE_PATH.DIRECTORY_SEPARATOR.'extensionmanager/thirdparty/disqus.js');
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
 		Requirements::javascript('themes/AddOns-Theme/bootstrap/js/bootstrap-tab.js');
 	}
 
@@ -33,7 +34,7 @@ class ExtensionHolderPage_Controller extends Page_Controller {
 	 */
 	public function AddForm($extensionType) {
 
-		if(!Member::currentUser()) return Security::permissionFailure();
+		//if(!Member::currentUser()) return Security::permissionFailure();
 
 		$fields = new FieldList(
 			new TextField ('Url', "Read-Only Url of your $extensionType Repository")
