@@ -6,7 +6,7 @@
 
 ## Store Data
 
- Step 1 - User submits Url in [Form](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ExtensionHolder.php#L22) of their Module Repository using [ModuleHolder](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ModuleHolder.php) Page which is extended from [ExtensionHolder](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ExtensionHolder.php) Page class.
+ Step 1 - User submits Url in [Form](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ExtensionHolderPage.php#L22) of their Module Repository using [ModuleHolderPage](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ModuleHolderPage.php) Page which is extended from [ExtensionHolderPage](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/page_type/ExtensionHolderPage.php) Page class.
 
  Step 2 - Form action first confirms if module is new or author is updating his module then it creates object of [JsonHandler](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/JsonHandler.php) class and calls [cloneJson](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/JsonHandler.php#L32) function with submitted url as parameter.
 
@@ -14,7 +14,7 @@
 
  Step 5 - After some filtering JsonHandler returns array of packages containing Latest master branch package object and all versions object.
 
- Step 6 - ExtensionHolder class then passes this data to [saveJson](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/JsonHandler.php#L95) function of JsonHandler class.
+ Step 6 - ExtensionHolderPage class then passes this data to [saveJson](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/JsonHandler.php#L95) function of JsonHandler class.
 
  Step 7 - saveJson function first stores all the data in respective fields of [ExtensionData](https://github.com/vikas-srivastava/extensionmanager/blob/master/code/control/ExtensionData.php) class and checks if all the required fields are available in composer.json file of submitted module.
 

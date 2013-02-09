@@ -1,7 +1,7 @@
 <?php
 /**
  * This class will serve as base class for
- * all the ExtensionHolder classes (module/widget/theme)
+ * all the ExtensionHolderPage classes (module/widget/theme)
  * contains extension submission forms and their handler.
  *
  * @package extensionmanager
@@ -51,13 +51,13 @@ class ExtensionHolderPage_Controller extends Page_Controller {
 	public function submitUrl($data, $form) {
 		$url = $data['Url'];
 		if(empty($url)) {
-			$form->sessionMessage(_t('ExtensionHolder.BADURL','Please enter URL'), 'bad');
+			$form->sessionMessage(_t('ExtensionHolderPage.BADURL','Please enter URL'), 'bad');
 			return $this->redirectBack();
 		} elseif (substr($url,0, 4) != "http" && substr($url,0, 3) != "git") {
-			$form->sessionMessage(_t('ExtensionHolder.BADURL',"Please enter valid 'HTTP' or 'GIT Read-only' URL "), 'bad');
+			$form->sessionMessage(_t('ExtensionHolderPage.BADURL',"Please enter valid 'HTTP' or 'GIT Read-only' URL "), 'bad');
 			return $this->redirectBack();
 		} elseif (substr($url,0, 4) == "git@") {
-			$form->sessionMessage(_t('ExtensionHolder.BADURL',"'SSH' URL is not allowed, Please enter valid 'HTTP' or 'GIT Read-only' URL"), 'bad');
+			$form->sessionMessage(_t('ExtensionHolderPage.BADURL',"'SSH' URL is not allowed, Please enter valid 'HTTP' or 'GIT Read-only' URL"), 'bad');
 			return $this->redirectBack();
 		}
 
@@ -87,12 +87,12 @@ class ExtensionHolderPage_Controller extends Page_Controller {
 
 						$this->sendMailtoAdmin();
 
-						$form->sessionMessage(_t('ExtensionHolder.THANKSFORSUBMITTING','Thank you for submitting "'.$this->extensionName.'" '.$this->extensionType),'good');
+						$form->sessionMessage(_t('ExtensionHolderPage.THANKSFORSUBMITTING','Thank you for submitting "'.$this->extensionName.'" '.$this->extensionType),'good');
 						return $this->redirectBack();
 					}
 				} else {
 					$form->sessionMessage(_t(
-						'ExtensionHolder.PROBLEMINSAVING',"We are unable to save Extension info, the parser reports: {$saveJson['ErrorMsg']} Please Re-check format of you composer.json file."),'bad');
+						'ExtensionHolderPage.PROBLEMINSAVING',"We are unable to save Extension info, the parser reports: {$saveJson['ErrorMsg']} Please Re-check format of you composer.json file."),'bad');
 					return $this->redirectBack();
 				}
 			} else {
@@ -118,20 +118,20 @@ class ExtensionHolderPage_Controller extends Page_Controller {
 
 							$this->sendMailtoAdmin();
 
-							$form->sessionMessage(_t('ExtensionHolder.THANKSFORUPDATING','Thank you for Updating your "'.$this->extensionName.'" '.$this->extensionType ),'good');
+							$form->sessionMessage(_t('ExtensionHolderPageExtensionHolderPage.THANKSFORUPDATING','Thank you for Updating your "'.$this->extensionName.'" '.$this->extensionType ),'good');
 							return $this->redirectBack();
 						}
 					} else {
-						$form->sessionMessage(_t('ExtensionHolder.PROBLEMINSAVING','Something went wrong we are not able to save versions of submitted extension '),'bad');
+						$form->sessionMessage(_t('ExtensionHolderPage.PROBLEMINSAVING','Something went wrong we are not able to save versions of submitted extension '),'bad');
 						return $this->redirectBack();
 					}
 				} else {
-					$form->sessionMessage(_t('ExtensionHolder.PROBLEMINUPDATING',"We had problems parsing your composer.json file, the parser reports: {$updateJson['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"),'bad');
+					$form->sessionMessage(_t('ExtensionHolderPage.PROBLEMINUPDATING',"We had problems parsing your composer.json file, the parser reports: {$updateJson['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"),'bad');
 					return $this->redirectBack();
 				}
 			}
 		} else {
-			$form->sessionMessage(_t('ExtensionHolder.NOJSON',"We had problems parsing your composer.json file, the parser reports: {$jsonData['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"), 'bad');
+			$form->sessionMessage(_t('ExtensionHolderPage.NOJSON',"We had problems parsing your composer.json file, the parser reports: {$jsonData['ErrorMsg']} Please read our extension Submission Guide for more details and submit url again"), 'bad');
 			return $this->redirectBack();
 		}
 	}
