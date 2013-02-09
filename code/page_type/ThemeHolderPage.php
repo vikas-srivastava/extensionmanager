@@ -73,7 +73,9 @@ class ThemeHolderPage_Controller extends ExtensionHolderPage_Controller {
 	 */
 	public function ThemeList() {
 		$themes = ExtensionData::get()->filter(array('Type' => 'Theme','Accepted' => '1'))->sort('Name');
-		return $themes;
+		$paginatedList = new PaginatedList($themes, $this->request);
+	   	$paginatedList->setPageLength(4);
+		return $paginatedList;
 	}
 
 	/**

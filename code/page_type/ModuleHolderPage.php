@@ -79,7 +79,9 @@ class ModuleHolderPage_Controller extends ExtensionHolderPage_Controller {
 	 */
 	public function ModuleList() {
 		$modules = ExtensionData::get()->filter(array('Type' => 'Module', 'Accepted' => '1'))->sort('Name');
-		return $modules;
+		$paginatedList = new PaginatedList($modules, $this->request);
+	   	$paginatedList->setPageLength(4);
+		return $paginatedList;
 	}
 
 	/**

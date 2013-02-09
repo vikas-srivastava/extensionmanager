@@ -72,8 +72,10 @@ class WidgetHolderPage_Controller extends ExtensionHolderPage_Controller {
 	 * @return Array .
 	 */
 	public function WidgetList() {
-		$modules = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
-		return $modules;
+		$widgets = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
+		$paginatedList = new PaginatedList($widgets, $this->request);
+	   	$paginatedList->setPageLength(4);
+		return $paginatedList;
 	}
 
 	/**
