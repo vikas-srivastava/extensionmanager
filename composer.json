@@ -1,6 +1,6 @@
 {
 	"minimum-stability": "dev",
-	"name": "silverstripe/extensionmanager",
+	"name": "vikas-srivastava/extensionmanager",
 	"description": "The SilverStripe.org Extension Manager Module (unstable version)",
 	"homepage": "http://extension.openbees.org/",
 	"license": "BSD-3-Clause",
