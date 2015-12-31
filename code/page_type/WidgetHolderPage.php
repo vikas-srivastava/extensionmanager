@@ -4,18 +4,19 @@
  *
  * @package extensionmanager
  */
-class WidgetHolderPage extends ExtensionHolderPage {
-	static $db = array(
-		'AddContent' => 'HTMLText',
-		);
+class WidgetHolderPage extends ExtensionHolderPage
+{
+    public static $db = array(
+        'AddContent' => 'HTMLText',
+        );
 
-	static $default_records = array(
-		array('Title' => "Widgets")
-		);
+    public static $default_records = array(
+        array('Title' => "Widgets")
+        );
 
-	//copied from addons module
-	static $defaults = array(
-		'AddContent' => "
+    //copied from addons module
+    public static $defaults = array(
+        'AddContent' => "
 		<h3>How do I submit a Widget to the SilverStripe directory?</h3>
 
 		<p>Complete and submit the form below. </p>
@@ -29,13 +30,14 @@ class WidgetHolderPage extends ExtensionHolderPage {
 
 		<p>Once your Widget is listed on the SilverStripe website, you can edit it via the same submission form </p>",
 
-		);
+        );
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Main", new HTMLEditorField("AddContent", "Content for 'add' page"));
-		return $fields;
-	}
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $fields->addFieldToTab("Root.Main", new HTMLEditorField("AddContent", "Content for 'add' page"));
+        return $fields;
+    }
 }
 
 /**
@@ -43,77 +45,84 @@ class WidgetHolderPage extends ExtensionHolderPage {
  *
  * @package extensionmanager
  */
-class WidgetHolderPage_Controller extends ExtensionHolderPage_Controller {
+class WidgetHolderPage_Controller extends ExtensionHolderPage_Controller
+{
 
-	static $urlhandlers = array(
-		'addnew' => 'addnew',
-		);
+    public static $urlhandlers = array(
+        'addnew' => 'addnew',
+        );
 
-	public function init() {
-		parent::init();
-		$this->extensionType = 'Widget';
-	}
+    public function init()
+    {
+        parent::init();
+        $this->extensionType = 'Widget';
+    }
 
-	/**
-	 * Setting up the form for widget submission.
-	 *
-	 * @return Array .
-	 */
-	public function WidgetSubmissionForm() {
-		$formSectionData = new DataObject();
- 		$formSectionData->Form = $this->AddForm($this->extensionType);
-		$formSectionData->Content = $this->dataRecord->AddContent;
-		return $formSectionData;
-	}
+    /**
+     * Setting up the form for widget submission.
+     *
+     * @return Array .
+     */
+    public function WidgetSubmissionForm()
+    {
+        $formSectionData = new DataObject();
+        $formSectionData->Form = $this->AddForm($this->extensionType);
+        $formSectionData->Content = $this->dataRecord->AddContent;
+        return $formSectionData;
+    }
 
-	/**
-	 * Show widget list on page
-	 *
-	 * @return Array .
-	 */
-	public function WidgetList() {
-		$widgets = ExtensionData::get()->filter(array('Type' => 'Widget','Accepted' => '1'))->sort('Name');
-		$paginatedList = new PaginatedList($widgets, $this->request);
-	   	$paginatedList->setPageLength(4);
-		return $paginatedList;
-	}
+    /**
+     * Show widget list on page
+     *
+     * @return Array .
+     */
+    public function WidgetList()
+    {
+        $widgets = ExtensionData::get()->filter(array('Type' => 'Widget', 'Accepted' => '1'))->sort('Name');
+        $paginatedList = new PaginatedList($widgets, $this->request);
+        $paginatedList->setPageLength(4);
+        return $paginatedList;
+    }
 
-	/**
-	 * Show widget Search form.
-	 *
-	 * @return Array .
-	 */
-	public function WidgetSearch(){
-		return $this->extensionSearch();
-	}
+    /**
+     * Show widget Search form.
+     *
+     * @return Array .
+     */
+    public function WidgetSearch()
+    {
+        return $this->extensionSearch();
+    }
 
-	/**
+    /**
      * Show Widget data.
      *
      * @return array
      */
-	public function show(){
-		$selectedWidget = $this->SelectedWidget();
-		if($selectedWidget){
-			return array(
-				"Title" => $selectedWidget->Name,
-				);
-		} else{
-			return $this->httpError("404");
-		}
-	}
+    public function show()
+    {
+        $selectedWidget = $this->SelectedWidget();
+        if ($selectedWidget) {
+            return array(
+                "Title" => $selectedWidget->Name,
+                );
+        } else {
+            return $this->httpError("404");
+        }
+    }
 
-	/**
-	 * Get Selected Theme.
-	 *
-	 * @return array
-	 */
-	public function SelectedWidget(){
-		$widget = null;
-		$param = $this->getRequest()->param("ID");
-		if($param){
-			$widget =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Widget') AND (Accepted = '1')")->first();
-		}
-		return $widget;
-	}
+    /**
+     * Get Selected Theme.
+     *
+     * @return array
+     */
+    public function SelectedWidget()
+    {
+        $widget = null;
+        $param = $this->getRequest()->param("ID");
+        if ($param) {
+            $widget =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Widget') AND (Accepted = '1')")->first();
+        }
+        return $widget;
+    }
 }

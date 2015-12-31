@@ -4,16 +4,17 @@
  *
  * @package extensionmanager
  */
-class ExtensionAdmin extends ModelAdmin {
+class ExtensionAdmin extends ModelAdmin
+{
 
-	static $menu_title = "Extensions";
-	static $url_segment = "extensions";
+    public static $menu_title = "Extensions";
+    public static $url_segment = "extensions";
 
-	static $managed_models = array(
-		"ExtensionData",
-		"ExtensionVersion",
-		"ExtensionCategory",
-		"ExtensionKeywords",
-		"Member",
-	);
+    public static $managed_models = array(
+        "ExtensionData",
+        "ExtensionVersion",
+        "ExtensionCategory",
+        "ExtensionKeywords",
+        "Member",
+    );
 }

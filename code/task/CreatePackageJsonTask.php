@@ -7,55 +7,59 @@
 
 use Composer\package\Dumper\ArrayDumper;
 
-class CreatePackageJsonTask extends QuarterHourlyTask {
+class CreatePackageJsonTask extends QuarterHourlyTask
+{
 
-	/**
-	 * Check that the user has appropriate permissions to execute this task
-	 */
-	public function init() {
-		if(!Director::is_cli() && !Director::isDev() && !Permission::check('ADMIN')) {
-			return Security::permissionFailure();
-		}
-		parent::init();
-	}
+    /**
+     * Check that the user has appropriate permissions to execute this task
+     */
+    public function init()
+    {
+        if (!Director::is_cli() && !Director::isDev() && !Permission::check('ADMIN')) {
+            return Security::permissionFailure();
+        }
+        parent::init();
+    }
 
-	function process() {
-		$this->CreatePackageJson();
-	}
+    public function process()
+    {
+        $this->CreatePackageJson();
+    }
 
-	function CreatePackageJson() {
-		$extensionData = ExtensionData::get();
-		$count = 0;
-		if ($extensionData && !empty($extensionData)) {
-			$count = $extensionData->Count();
+    public function CreatePackageJson()
+    {
+        $extensionData = ExtensionData::get();
+        $count = 0;
+        if ($extensionData && !empty($extensionData)) {
+            $count = $extensionData->Count();
 
-			$filename = 'packages.json';
-			$repo = array('packages' => array());
+            $filename = 'packages.json';
+            $repo = array('packages' => array());
 
-			foreach ($extensionData as $extension) {
-				// Include only Approved extensions
-				if($extension->Accepted == '1') {
-					$json = new JsonHandler($extension->Url);
-					$jsonData = $json->cloneJson();
-					$packages = $jsonData['AllRelease'];
-					$dumper = new ArrayDumper;
-					foreach ($packages as $package) {
-						$repo['packages'][$package->getPrettyName()][$package->getPrettyVersion()] = $dumper->dump($package);
-					}
-				}
-			}
+            foreach ($extensionData as $extension) {
+                // Include only Approved extensions
+                if ($extension->Accepted == '1') {
+                    $json = new JsonHandler($extension->Url);
+                    $jsonData = $json->cloneJson();
+                    $packages = $jsonData['AllRelease'];
+                    $dumper = new ArrayDumper;
+                    foreach ($packages as $package) {
+                        $repo['packages'][$package->getPrettyName()][$package->getPrettyVersion()] = $dumper->dump($package);
+                    }
+                }
+            }
 
-			if(!empty($repo['packages'])) {
-				$packagesJsonData = Convert::array2json($repo);
-				$packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
-				fwrite($packageJsonFile, $packagesJsonData);
-				fclose($packageJsonFile);
-				echo "<br /><br /><strong> package.json file created successfully...</strong><br />";
-			} else {
-				throw new InvalidArgumentException('package.json file could not be created');
-			}
-		}
-	}
+            if (!empty($repo['packages'])) {
+                $packagesJsonData = Convert::array2json($repo);
+                $packageJsonFile = fopen(BASE_PATH.DIRECTORY_SEPARATOR.$filename, 'w');
+                fwrite($packageJsonFile, $packagesJsonData);
+                fclose($packageJsonFile);
+                echo "<br /><br /><strong> package.json file created successfully...</strong><br />";
+            } else {
+                throw new InvalidArgumentException('package.json file could not be created');
+            }
+        }
+    }
 }
 
 /**
@@ -63,11 +67,13 @@ class CreatePackageJsonTask extends QuarterHourlyTask {
  *
  * @package extensionmanager
  */
-class CreatePackageJsonTask_Manual extends BuildTask {
+class CreatePackageJsonTask_Manual extends BuildTask
+{
 
-	function run($request) {
-		echo "Running Package.json Update task - Recreating package.json file\n\n";
-		$update = new CreatePackageJsonTask();
-		$update->process();
-	}
+    public function run($request)
+    {
+        echo "Running Package.json Update task - Recreating package.json file\n\n";
+        $update = new CreatePackageJsonTask();
+        $update->process();
+    }
 }

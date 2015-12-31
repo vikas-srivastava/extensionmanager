@@ -6,193 +6,244 @@
  * @subpackage tests
  */
 
-class MockVcsRepositoryWithNameAbsent {
+class MockVcsRepositoryWithNameAbsent
+{
 
-	function getPackages() {
-		$packages = new MockMemoryPackageWithNameAbsent();
-		return array($packages);
-	}
+    public function getPackages()
+    {
+        $packages = new MockMemoryPackageWithNameAbsent();
+        return array($packages);
+    }
 
-	function findPackage() {
-	}
+    public function findPackage()
+    {
+    }
 }
 
-class MockMemoryPackageWithNameAbsent {
+class MockMemoryPackageWithNameAbsent
+{
 
-	function getPrettyName() {
-	}
+    public function getPrettyName()
+    {
+    }
 
-	function getPrettyVersion() {
-	}
+    public function getPrettyVersion()
+    {
+    }
 }
 
-class MockVcsRepositoryWithWrongNameFormat {
+class MockVcsRepositoryWithWrongNameFormat
+{
 
-	function getPackages() {
-		$packages = new MockMemoryPackageWithWrongNameFormat();
-		return array($packages);
-	}
+    public function getPackages()
+    {
+        $packages = new MockMemoryPackageWithWrongNameFormat();
+        return array($packages);
+    }
 
-	function findPackage() {
-	}
+    public function findPackage()
+    {
+    }
 }
 
-class MockMemoryPackageWithWrongNameFormat {
+class MockMemoryPackageWithWrongNameFormat
+{
 
-	function getPrettyName() {
-		return 'silverstripe\@#cms';
-	}
+    public function getPrettyName()
+    {
+        return 'silverstripe\@#cms';
+    }
 
-	function getPrettyVersion() {
-	}
+    public function getPrettyVersion()
+    {
+    }
 }
 
-class MockVcsRepositoryWithCapitalLattersInName {
+class MockVcsRepositoryWithCapitalLattersInName
+{
 
-	function getPackages() {
-		$packages = new MockMemoryPackageWithCapitalLattersInName();
-		return array($packages);
-	}
+    public function getPackages()
+    {
+        $packages = new MockMemoryPackageWithCapitalLattersInName();
+        return array($packages);
+    }
 
-	function findPackage() {
-	}
+    public function findPackage()
+    {
+    }
 }
 
-class MockMemoryPackageWithCapitalLattersInName {
+class MockMemoryPackageWithCapitalLattersInName
+{
 
-	function getPrettyName() {
-		return 'SilverStripe/Cms';
-	}
+    public function getPrettyName()
+    {
+        return 'SilverStripe/Cms';
+    }
 
-	function getPrettyVersion() {
-	}
+    public function getPrettyVersion()
+    {
+    }
 }
 
-class MockVCSRepositoryWithRealValues {
+class MockVCSRepositoryWithRealValues
+{
 
-	function getPackages() {
-		$package0 = new MockMemoryPackageTagVersion();
-		$package1 = new MockMemoryPackageMasterBranch();
-		return array($package0,$package1);
-	}
+    public function getPackages()
+    {
+        $package0 = new MockMemoryPackageTagVersion();
+        $package1 = new MockMemoryPackageMasterBranch();
+        return array($package0,$package1);
+    }
 
-	function findPackage($name, $version) {
-		foreach ($this->getPackages() as $package) {
-			if ($name === $package->getName() && $version === $package->getVersion()) {
-				return $package;
-			}
-		}
-	}
+    public function findPackage($name, $version)
+    {
+        foreach ($this->getPackages() as $package) {
+            if ($name === $package->getName() && $version === $package->getVersion()) {
+                return $package;
+            }
+        }
+    }
 }
 
-class MockMemoryPackageTagVersion {
+class MockMemoryPackageTagVersion
+{
 
-	function getPrettyName() {
-		return 'silverstripe/cms';
-	}
+    public function getPrettyName()
+    {
+        return 'silverstripe/cms';
+    }
 
-	function getName() {
-		return 'silverstripe/cms';
-	}
+    public function getName()
+    {
+        return 'silverstripe/cms';
+    }
 
-	function getVersion() {
-		return 'v0.1';
-	}
+    public function getVersion()
+    {
+        return 'v0.1';
+    }
 }
 
-class MockMemoryPackageMasterBranch {
+class MockMemoryPackageMasterBranch
+{
 
-	function getPrettyName() {
-		return 'silverstripe/cms';
-	}
+    public function getPrettyName()
+    {
+        return 'silverstripe/cms';
+    }
 
-	function getName() {
-		return 'silverstripe/cms';
-	}
+    public function getName()
+    {
+        return 'silverstripe/cms';
+    }
 
-	function getVersion() {
-		return '9999999-dev';
-	}
+    public function getVersion()
+    {
+        return '9999999-dev';
+    }
 
-	function getDescription() {
-		return 'Just Fake Module For Testing';
-	}
+    public function getDescription()
+    {
+        return 'Just Fake Module For Testing';
+    }
 
-	function getType() {
-		return 'silverstripe-module';
-	}
+    public function getType()
+    {
+        return 'silverstripe-module';
+    }
 
-	function getPrettyVersion() {
-	}
+    public function getPrettyVersion()
+    {
+    }
 
-	function getHomepage() {
-	}
+    public function getHomepage()
+    {
+    }
 
-	function getLicense() {
-	}
+    public function getLicense()
+    {
+    }
 
-	function getSupport() {
-	}
+    public function getSupport()
+    {
+    }
 
-	function getTargetDir() {
-	}
+    public function getTargetDir()
+    {
+    }
 
-	function getRequires() {
-		$requirePackage = new MockLink();
-		return $requirePackage;
-	}
+    public function getRequires()
+    {
+        $requirePackage = new MockLink();
+        return $requirePackage;
+    }
 
-	function getDevRequires() {
-	}
+    public function getDevRequires()
+    {
+    }
 
-	function getConflicts() {
-	}
+    public function getConflicts()
+    {
+    }
 
-	function getReplaces() {
-	}
+    public function getReplaces()
+    {
+    }
 
-	function getProvides() {
-	}
+    public function getProvides()
+    {
+    }
 
-	function getSuggests() {
-	}
+    public function getSuggests()
+    {
+    }
 
-	function getRepositories() {
-	}
+    public function getRepositories()
+    {
+    }
 
-	function getIncludePaths() {
-	}
+    public function getIncludePaths()
+    {
+    }
 
-	function getReleaseDate() {
-	}
+    public function getReleaseDate()
+    {
+    }
 
-	function getExtra() {
-		return array(
-			'snapshot' => 'http://openbees.org/images/Demo.jpg'
-			);
-	}
+    public function getExtra()
+    {
+        return array(
+            'snapshot' => 'http://openbees.org/images/Demo.jpg'
+            );
+    }
 
-	function getAuthors() {
-		return array(array(
-			'name' => 'Test User',
-			'email' => 'testuser@test.com',
-			'homepage' => 'www.test.com',
-			'role' => 'test-Developer'
-			)
-		);
-	}
+    public function getAuthors()
+    {
+        return array(array(
+            'name' => 'Test User',
+            'email' => 'testuser@test.com',
+            'homepage' => 'www.test.com',
+            'role' => 'test-Developer'
+            )
+        );
+    }
 
-	function getKeywords() {
-		return array('silverstripe','cms','module');
-	}
+    public function getKeywords()
+    {
+        return array('silverstripe','cms','module');
+    }
 }
 
-class MockLink {
-	function getTarget(){
-		return 'silverstripe/framework';
-	}
+class MockLink
+{
+    public function getTarget()
+    {
+        return 'silverstripe/framework';
+    }
 
-	function getPrettyConstraint() {
-		return '3.0.1';
-	}
+    public function getPrettyConstraint()
+    {
+        return '3.0.1';
+    }
 }
