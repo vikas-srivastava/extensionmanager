@@ -19,365 +19,362 @@ use Composer\Repository\RepositoryManager;
 use Composer\package\Dumper\ArrayDumper;
 use Composer\Json\JsonFile;
 
-class JsonHandler extends Controller {
+class JsonHandler extends Controller
+{
 
-	public $url;
-	public $latestReleasePackage;
-	public $packages;
-	public $availableVersions;
-	public $repo;
-	public $errorInConstructer;
-	public $packageName;
+    public $url;
+    public $latestReleasePackage;
+    public $packages;
+    public $availableVersions;
+    public $repo;
+    public $errorInConstructer;
+    public $packageName;
 
-	public function __construct($url) {
-		$this->url = $url;
-		$config = Factory::createConfig();
-		$this->repo = new VcsRepository(array('url' => $url,''), new NullIO(), $config);
+    public function __construct($url)
+    {
+        $this->url = $url;
+        $config = Factory::createConfig();
+        $this->repo = new VcsRepository(array('url' => $url, ''), new NullIO(), $config);
+    }
 
-	}
+    /**
+      * Convert a module url into json content
+      *
+      * @param string $url
+      * @return array $data
+      */
+    public function cloneJson()
+    {
+        $jsonData = array();
+        try {
+            $this->packages = $this->repo->getPackages();
 
-	/**
-	  * Convert a module url into json content
-	  *
-	  * @param string $url
-	  * @return array $data
-	  */
-	public function cloneJson() {
-		$jsonData = array();
-		try{
-			$this->packages = $this->repo->getPackages();
+            foreach ($this->packages as $package) {
+                $this->packageName = $package->getPrettyName();
 
-			foreach ($this->packages as $package) {
+                if (!isset($this->packageName)) {
+                    throw new InvalidArgumentException("The package name was not found in the composer.json at '"
+                        .$this->url."' in '". $package->getPrettyVersion()."' ");
+                }
 
-				$this->packageName = $package->getPrettyName();
-
-				if (!isset($this->packageName)){
-					throw new InvalidArgumentException("The package name was not found in the composer.json at '"
-						.$this->url."' in '". $package->getPrettyVersion()."' ");
-				}
-
-				if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $this->packageName)) {
-					throw new InvalidArgumentException(
-						"The package name '{$this->packageName}' is invalid, it should have a vendor name,
+                if (!preg_match('{^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*$}i', $this->packageName)) {
+                    throw new InvalidArgumentException(
+                        "The package name '{$this->packageName}' is invalid, it should have a vendor name,
 						a forward slash, and a package name. The vendor and package name can be words separated by -, . or _.
 						The complete name should match '[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9]([_.-]?[a-z0-9]+)*' at "
-						.$this->url."' in '". $package->getPrettyVersion()."' ");
-				}
+                        .$this->url."' in '". $package->getPrettyVersion()."' ");
+                }
 
-				if (preg_match('{[A-Z]}', $this->packageName)) {
-					$suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $this->packageName);
-					$suggestName = strtolower($suggestName);
+                if (preg_match('{[A-Z]}', $this->packageName)) {
+                    $suggestName = preg_replace('{(?:([a-z])([A-Z])|([A-Z])([A-Z][a-z]))}', '\\1\\3-\\2\\4', $this->packageName);
+                    $suggestName = strtolower($suggestName);
 
-					throw new InvalidArgumentException(
-						"The package name '{$this->packageName}' is invalid,
+                    throw new InvalidArgumentException(
+                        "The package name '{$this->packageName}' is invalid,
 						it should not contain uppercase characters. We suggest using '{$suggestName}' instead. at '"
-						.$this->url."' in '". $package->getPrettyVersion()."' ");
-				}
-			}
+                        .$this->url."' in '". $package->getPrettyVersion()."' ");
+                }
+            }
 
-			$this->latestReleasePackage = $this->repo->findPackage($this->packageName,'9999999-dev');
+            $this->latestReleasePackage = $this->repo->findPackage($this->packageName, '9999999-dev');
+        } catch (Exception $e) {
+            $jsonData['ErrorMsg'] = $e->getMessage();
+            return $jsonData;
+        }
 
-		} catch (Exception $e) {
-			$jsonData['ErrorMsg'] = $e->getMessage();
-			return $jsonData;
-		}
+        $jsonData['AllRelease'] = $this->packages;
+        $jsonData['LatestRelease'] = $this->latestReleasePackage;
+        return $jsonData;
+    }
 
-		$jsonData['AllRelease'] = $this->packages;
-		$jsonData['LatestRelease'] = $this->latestReleasePackage;
-		return $jsonData;
-	}
+    /**
+      * Save json content in database
+      *
+      * @return boolean
+      */
+    public function saveJson()
+    {
+        $ExtensionData = new ExtensionData();
+        $ExtensionData->SubmittedByID = Member::currentUserID();
+        $result = $this->dataFields($ExtensionData);
+        return $result ;
+    }
 
-	/**
-	  * Save json content in database
-	  *
-	  * @return boolean
-	  */
-	public function saveJson() {
-		$ExtensionData = new ExtensionData();
-		$ExtensionData->SubmittedByID = Member::currentUserID();
-		$result = $this->dataFields($ExtensionData);
-		return $result ;
-	}
+    /**
+      * update json content in database
+      *
+      * @return boolean
+      */
+    public function updateJson()
+    {
+        $ExtensionData = ExtensionData::get()->filter(array("Title" => $this->latestReleasePackage->getPrettyName()))->First();
 
-	/**
-	  * update json content in database
-	  *
-	  * @return boolean
-	  */
-	public function updateJson() {
+        if ($ExtensionData) {
+            $result = $this->dataFields($ExtensionData);
+            return $result ;
+        } else {
+            return ;
+        }
+    }
 
-		$ExtensionData = ExtensionData::get()->filter(array("Title" => $this->latestReleasePackage->getPrettyName()))->First();
+    /**
+      * Save each property of json content
+      * in corresponidng field of database
+      *
+      * @param  object $ExtensionData
+      * @return boolean
+      */
+    public function dataFields($ExtensionData)
+    {
+        $saveDataFields = array();
+        try {
+            $ExtensionData->Url = $this->url;
 
-		if($ExtensionData) {
-			$result = $this->dataFields($ExtensionData);
-			return $result ;
-		} else {
-			return ;
-		}
-	}
+            if ($this->latestReleasePackage->getPrettyName()) {
+                list($vendorName, $extensionName) = explode("/", $this->latestReleasePackage->getPrettyName());
+                $ExtensionData->Title = $this->latestReleasePackage->getPrettyName();
+                $ExtensionData->VendorName = $vendorName;
+                $ExtensionData->Name = $extensionName;
+            } else {
+                throw new InvalidArgumentException("We could not find Name field in composer.json at'"
+                    .$this->url."' ");
+            }
 
-	/**
-	  * Save each property of json content
-	  * in corresponidng field of database
-	  *
-	  * @param  object $ExtensionData
-	  * @return boolean
-	  */
-	public function dataFields($ExtensionData) {
-		$saveDataFields = array();
-		try{
-			$ExtensionData->Url = $this->url;
+            if ($this->latestReleasePackage->getDescription()) {
+                $ExtensionData->Description = $this->latestReleasePackage->getDescription();
+            } else {
+                throw new InvalidArgumentException("We could not find Description field in composer.json at'"
+                    .$this->url."' ");
+            }
 
-			if($this->latestReleasePackage->getPrettyName()) {
-				list($vendorName, $extensionName) = explode("/", $this->latestReleasePackage->getPrettyName());
-				$ExtensionData->Title = $this->latestReleasePackage->getPrettyName();
-				$ExtensionData->VendorName = $vendorName;
-				$ExtensionData->Name = $extensionName;
-			} else {
-				throw new InvalidArgumentException("We could not find Name field in composer.json at'"
-					.$this->url."' ");
-			}
+            if ($this->latestReleasePackage->getPrettyVersion()) {
+                $ExtensionData->Version = $this->latestReleasePackage->getPrettyVersion();
+            }
 
-			if($this->latestReleasePackage->getDescription()) {
-				$ExtensionData->Description = $this->latestReleasePackage->getDescription();
-			} else {
-				throw new InvalidArgumentException("We could not find Description field in composer.json at'"
-					.$this->url."' ");
-			}
+            if ($this->latestReleasePackage->getType()) {
+                $type = $this->latestReleasePackage->getType() ;
+                if (preg_match("/\bmodule\b/i", $type)) {
+                    $ExtensionData->Type = 'Module';
+                } elseif (preg_match("/\btheme\b/i", $type)) {
+                    $ExtensionData->Type = 'Theme';
+                } elseif (preg_match("/\bwidget\b/i", $type)) {
+                    $ExtensionData->Type = 'Widget';
+                } else {
+                    throw new InvalidArgumentException("We could not find 'Type' field in composer.json at'"
+                        .$this->url."' ");
+                }
+            }
 
-			if($this->latestReleasePackage->getPrettyVersion()) {
-				$ExtensionData->Version = $this->latestReleasePackage->getPrettyVersion();
-			}
+            if ($this->latestReleasePackage->getHomepage()) {
+                $ExtensionData->Homepage = $this->latestReleasePackage->getHomepage();
+            }
 
-			if($this->latestReleasePackage->getType()) {
-				$type = $this->latestReleasePackage->getType() ;
-				if(preg_match("/\bmodule\b/i", $type)){
+            if ($this->latestReleasePackage->getReleaseDate()) {
+                $ExtensionData->ReleaseTime = $this->latestReleasePackage->getReleaseDate()->format('Y-m-d H:i:s');
+            }
 
-					$ExtensionData->Type = 'Module';
+            if ($this->latestReleasePackage->getLicense()) {
+                $licence = $this->latestReleasePackage->getLicense();
+                if (array_key_exists('type', $licence)) {
+                    $ExtensionData->LicenceType = $licence['type'];
+                }
+                if (array_key_exists('description', $licence)) {
+                    $ExtensionData->LicenceDescription = $licence['description'];
+                }
+            }
 
-				} elseif(preg_match("/\btheme\b/i", $type)) {
+            if ($this->latestReleasePackage->getSupport()) {
+                $supportData = $this->latestReleasePackage->getSupport() ;
+                if (array_key_exists('email', $supportData)) {
+                    $ExtensionData->SupportEmail = $supportData['email'];
+                }
+                if (array_key_exists('issues', $supportData)) {
+                    $ExtensionData->SupportIssues = $supportData['issues'];
+                }
+                if (array_key_exists('forum', $supportData)) {
+                    $ExtensionData->SupportForum = $supportData['forum'];
+                }
+                if (array_key_exists('wiki', $supportData)) {
+                    $ExtensionData->SupportWiki = $supportData['wiki'];
+                }
+                if (array_key_exists('irc', $supportData)) {
+                    $ExtensionData->SupportIrc = $supportData['irc'];
+                }
+                if (array_key_exists('source', $supportData)) {
+                    $ExtensionData->SupportSource = $supportData['source'];
+                }
+            }
 
-					$ExtensionData->Type = 'Theme';
+            if ($this->latestReleasePackage->getTargetDir()) {
+                $ExtensionData->TargetDir = $this->latestReleasePackage->getTargetDir();
+            }
 
-				} elseif(preg_match("/\bwidget\b/i", $type)) {
+            if ($this->latestReleasePackage->getRequires()) {
+                $requires = $this->latestReleasePackage->getRequires();
+                $allRequirePackage = array();
 
-					$ExtensionData->Type = 'Widget';
-				} else {
-					throw new InvalidArgumentException("We could not find 'Type' field in composer.json at'"
-						.$this->url."' ");
-				}
-			}
+                foreach ($requires as $requirePackage) {
+                    $allRequirePackage[$requirePackage->getTarget()] = $requirePackage->getPrettyConstraint();
 
-			if($this->latestReleasePackage->getHomepage()) {
-				$ExtensionData->Homepage = $this->latestReleasePackage->getHomepage();
-			}
+                    if ($requirePackage->getTarget() == 'silverstripe/framework') {
+                        $ExtensionData->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
+                    }
+                }
+                $ExtensionData->Require = serialize($allRequirePackage);
+            } else {
+                throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
+                    .$this->url."' ");
+            }
 
-			if($this->latestReleasePackage->getReleaseDate()) {
-				$ExtensionData->ReleaseTime = $this->latestReleasePackage->getReleaseDate()->format('Y-m-d H:i:s');
-			}
+            if ($this->latestReleasePackage->getDevRequires()) {
+                $ExtensionData->RequireDev = serialize($this->latestReleasePackage->getDevRequires());
+            }
 
-			if($this->latestReleasePackage->getLicense()) {
-				$licence = $this->latestReleasePackage->getLicense();
-				if(array_key_exists('type',$licence)) {
-					$ExtensionData->LicenceType = $licence['type'];
-				}
-				if(array_key_exists('description',$licence)) {
-					$ExtensionData->LicenceDescription = $licence['description'];
-				}
-			}
+            if ($this->latestReleasePackage->getConflicts()) {
+                $ExtensionData->Conflict = serialize($this->latestReleasePackage->getConflicts());
+            }
 
-			if($this->latestReleasePackage->getSupport()) {
-				$supportData = $this->latestReleasePackage->getSupport() ;
-				if(array_key_exists('email',$supportData)) {
-					$ExtensionData->SupportEmail = $supportData['email'];
-				}
-				if(array_key_exists('issues',$supportData)) {
-					$ExtensionData->SupportIssues = $supportData['issues'];
-				}
-				if(array_key_exists('forum',$supportData)) {
-					$ExtensionData->SupportForum = $supportData['forum'];
-				}
-				if(array_key_exists('wiki',$supportData)) {
-					$ExtensionData->SupportWiki = $supportData['wiki'];
-				}
-				if(array_key_exists('irc',$supportData)) {
-					$ExtensionData->SupportIrc = $supportData['irc'];
-				}
-				if(array_key_exists('source',$supportData)) {
-					$ExtensionData->SupportSource = $supportData['source'];
-				}
-			}
+            if ($this->latestReleasePackage->getReplaces()) {
+                $ExtensionData->Replace = serialize($this->latestReleasePackage->getReplaces());
+            }
 
-			if($this->latestReleasePackage->getTargetDir()) {
-				$ExtensionData->TargetDir = $this->latestReleasePackage->getTargetDir();
-			}
+            if ($this->latestReleasePackage->getProvides()) {
+                $ExtensionData->Provide = serialize($this->latestReleasePackage->getProvides());
+            }
 
-			if($this->latestReleasePackage->getRequires()) {
-				$requires = $this->latestReleasePackage->getRequires();
-				$allRequirePackage = array();
+            if ($this->latestReleasePackage->getSuggests()) {
+                $ExtensionData->Suggest = serialize($this->latestReleasePackage->getSuggests());
+            }
 
-				foreach($requires as $requirePackage) {
-					$allRequirePackage[$requirePackage->getTarget()] = $requirePackage->getPrettyConstraint();
+            if ($this->latestReleasePackage->getExtra()) {
+                $ExtensionData->Extra = serialize($this->latestReleasePackage->getExtra());
+                $extra = $this->latestReleasePackage->getExtra();
+                if (array_key_exists('snapshot', $extra)) {
+                    $ExtensionData->ThumbnailID = ExtensionSnapshot::save_snapshot($extra['snapshot'], $this->latestReleasePackage->getPrettyName());
+                }
+            }
 
-					if($requirePackage->getTarget() == 'silverstripe/framework') {
-						$ExtensionData->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
-					}
-				}
-				$ExtensionData->Require = serialize($allRequirePackage);
-			} else {
-				throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
-					.$this->url."' ");
-			}
+            if ($this->latestReleasePackage->getRepositories()) {
+                $ExtensionData->Repositories = serialize($this->latestReleasePackage->getRepositories());
+            }
 
-			if($this->latestReleasePackage->getDevRequires()) {
-				$ExtensionData->RequireDev = serialize($this->latestReleasePackage->getDevRequires());
-			}
+            if ($this->latestReleasePackage->getIncludePaths()) {
+                $ExtensionData->IncludePath = serialize($this->latestReleasePackage->getIncludePaths());
+            }
 
-			if($this->latestReleasePackage->getConflicts()) {
-				$ExtensionData->Conflict = serialize($this->latestReleasePackage->getConflicts());
-			}
+            if ($this->latestReleasePackage->getAuthors()) {
+                ExtensionAuthorController::store_authors_info($this->latestReleasePackage->getAuthors(), $ExtensionData->ID);
+            } else {
+                throw new InvalidArgumentException("We could not find Author Info field in composer.json at'"
+                    .$this->url."' ");
+            }
 
-			if($this->latestReleasePackage->getReplaces()) {
-				$ExtensionData->Replace = serialize($this->latestReleasePackage->getReplaces());
-			}
+            if ($this->latestReleasePackage->getKeywords()) {
+                ExtensionKeywords::save_keywords($this->latestReleasePackage->getKeywords(), $ExtensionData->ID);
+            } else {
+                throw new InvalidArgumentException("We could not find Keywords field in composer.json at'"
+                    .$this->url."' ");
+            }
+        } catch (Exception $e) {
+            $saveDataFields['ErrorMsg'] = $e->getMessage();
+            return $saveDataFields;
+        }
 
-			if($this->latestReleasePackage->getProvides()) {
-				$ExtensionData->Provide = serialize($this->latestReleasePackage->getProvides());
-			}
+        $ExtensionData->write();
+        $saveDataFields['ExtensionID'] = $ExtensionData->ID;
+        return $saveDataFields;
+    }
 
-			if($this->latestReleasePackage->getSuggests()) {
-				$ExtensionData->Suggest = serialize($this->latestReleasePackage->getSuggests());
-			}
+    /**
+      * Save Version related data of Extension
+      *
+      * @param int $id
+      * @return boolean
+      */
+    public function saveVersionData($id)
+    {
+        foreach ($this->packages as $package) {
+            $version = new ExtensionVersion();
+            $version->ExtensionDataID = $id;
+            $result = $this->versionDataField($version, $package);
+        }
 
-			if($this->latestReleasePackage->getExtra()) {
-				$ExtensionData->Extra = serialize($this->latestReleasePackage->getExtra());
-				$extra = $this->latestReleasePackage->getExtra();
-				if(array_key_exists('snapshot',$extra)) {
-					$ExtensionData->ThumbnailID = ExtensionSnapshot::save_snapshot($extra['snapshot'],$this->latestReleasePackage->getPrettyName());
-				}
-			}
+        return $result ;
+    }
 
-			if($this->latestReleasePackage->getRepositories()) {
-				$ExtensionData->Repositories = serialize($this->latestReleasePackage->getRepositories());
-			}
+    /**
+      * Delete old version of extension
+      *
+      * @param  int $id
+      * @return boolean
+      */
+    public function deleteVersionData($id)
+    {
+        return ExtensionVersion::get()->filter('ExtensionDataID', $id)->removeAll();
+    }
 
-			if($this->latestReleasePackage->getIncludePaths()) {
-				$ExtensionData->IncludePath = serialize($this->latestReleasePackage->getIncludePaths());
-			}
+    /**
+      * Save each version related property of json content
+      *
+      * @param  object $version, object $Data
+      * @return boolean
+      */
+    public function versionDataField($version, $data)
+    {
+        if ($data->getSourceType()) {
+            $version->SourceType = $data->getSourceType();
+        }
 
-			if($this->latestReleasePackage->getAuthors()) {
-				ExtensionAuthorController::store_authors_info($this->latestReleasePackage->getAuthors(),$ExtensionData->ID);
-			} else {
-				throw new InvalidArgumentException("We could not find Author Info field in composer.json at'"
-					.$this->url."' ");
-			}
+        if ($data->getSourceUrl()) {
+            $version->SourceUrl = $data->getSourceUrl();
+        }
 
-			if($this->latestReleasePackage->getKeywords()) {
-				ExtensionKeywords::save_keywords($this->latestReleasePackage->getKeywords(),$ExtensionData->ID);
-			} else {
-				throw new InvalidArgumentException("We could not find Keywords field in composer.json at'"
-					.$this->url."' ");
-			}
+        if ($data->getSourceReference()) {
+            $version->SourceReference = $data->getSourceReference();
+        }
 
-		} catch(Exception $e){
-			$saveDataFields['ErrorMsg'] = $e->getMessage();
-			return $saveDataFields;
-		}
+        if ($data->getDistType()) {
+            $version->DistType = $data->getDistType();
+        }
 
-		$ExtensionData->write();
-		$saveDataFields['ExtensionID'] = $ExtensionData->ID;
-		return $saveDataFields;
-	}
+        if ($data->getDistUrl()) {
+            $version->DistUrl = $data->getDistUrl();
+        }
 
-	/**
-	  * Save Version related data of Extension
-	  *
-	  * @param int $id
-	  * @return boolean
-	  */
-	public function saveVersionData($id) {
+        if ($data->getDistReference()) {
+            $version->DistReference = $data->getDistReference();
+        }
 
-		foreach ($this->packages as $package) {
-			$version = new ExtensionVersion();
-			$version->ExtensionDataID = $id;
-			$result = $this->versionDataField($version, $package);
-		}
+        if ($data->getDistSha1Checksum()) {
+            $version->DistSha1Checksum = $data->getDistSha1Checksum();
+        }
 
-		return $result ;
-	}
+        if ($data->getVersion()) {
+            $version->Version = $data->getVersion();
+        }
 
-	/**
-	  * Delete old version of extension
-	  *
-	  * @param  int $id
-	  * @return boolean
-	  */
-	public function deleteVersionData($id){
-		return ExtensionVersion::get()->filter('ExtensionDataID', $id)->removeAll();
-	}
+        if ($data->getPrettyVersion()) {
+            $version->PrettyVersion = $data->getPrettyVersion();
+        }
 
-	/**
-	  * Save each version related property of json content
-	  *
-	  * @param  object $version, object $Data
-	  * @return boolean
-	  */
-	public function versionDataField($version,$data) {
+        if ($data->getReleaseDate()) {
+            $version->ReleaseDate = $data->getReleaseDate()->format('Y-m-d H:i:s');
+        }
 
-		if($data->getSourceType()) {
-			$version->SourceType = $data->getSourceType();
-		}
+        if ($data->getRequires()) {
+            $requires = $this->latestReleasePackage->getRequires();
 
-		if($data->getSourceUrl()) {
-			$version->SourceUrl = $data->getSourceUrl();
-		}
+            foreach ($requires as $requirePackage) {
+                if ($requirePackage->getTarget() == 'silverstripe/framework') {
+                    $version->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
+                }
+            }
+        } else {
+            throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
+                .$this->url."' ");
+        }
 
-		if($data->getSourceReference()) {
-			$version->SourceReference = $data->getSourceReference();
-		}
-
-		if($data->getDistType()) {
-			$version->DistType = $data->getDistType();
-		}
-
-		if($data->getDistUrl()) {
-			$version->DistUrl = $data->getDistUrl();
-		}
-
-		if($data->getDistReference()) {
-			$version->DistReference = $data->getDistReference();
-		}
-
-		if($data->getDistSha1Checksum()) {
-			$version->DistSha1Checksum = $data->getDistSha1Checksum();
-		}
-
-		if($data->getVersion()) {
-			$version->Version = $data->getVersion();
-		}
-
-		if($data->getPrettyVersion()) {
-			$version->PrettyVersion = $data->getPrettyVersion();
-		}
-
-		if($data->getReleaseDate()) {
-			$version->ReleaseDate = $data->getReleaseDate()->format('Y-m-d H:i:s');
-		}
-
-		if($data->getRequires()) {
-			$requires = $this->latestReleasePackage->getRequires();
-
-			foreach($requires as $requirePackage) {
-				if($requirePackage->getTarget() == 'silverstripe/framework') {
-					$version->CompatibleSilverStripeVersion = $requirePackage->getPrettyConstraint();
-				}
-			}
-		} else {
-			throw new InvalidArgumentException("We could not find 'require' field in composer.json at'"
-				.$this->url."' ");
-		}
-
-		$version->write();
-		return true;
-	}
+        $version->write();
+        return true;
+    }
 }

@@ -4,18 +4,19 @@
  *
  * @package extensionmanager
  */
-class ThemeHolderPage extends ExtensionHolderPage {
-	static $db = array(
-		'AddContent' => 'HTMLText',
-		);
+class ThemeHolderPage extends ExtensionHolderPage
+{
+    public static $db = array(
+        'AddContent' => 'HTMLText',
+        );
 
-	static $default_records = array(
-		array('Title' => "Themes")
-		);
+    public static $default_records = array(
+        array('Title' => "Themes")
+        );
 
-	//copied from addons module
-	static $defaults = array(
-		'AddContent' => "
+    //copied from addons module
+    public static $defaults = array(
+        'AddContent' => "
 		<h3>How do I submit a Theme to the SilverStripe directory?</h3>
 
 		<p>Complete and submit the form below. </p>
@@ -29,13 +30,14 @@ class ThemeHolderPage extends ExtensionHolderPage {
 
 		<p>Once your Theme is listed on the SilverStripe website, you can edit it via the same submission form </p>",
 
-		);
+        );
 
-	function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->addFieldToTab("Root.Main", new HTMLEditorField("AddContent", "Content for 'add' page"));
-		return $fields;
-	}
+    public function getCMSFields()
+    {
+        $fields = parent::getCMSFields();
+        $fields->addFieldToTab("Root.Main", new HTMLEditorField("AddContent", "Content for 'add' page"));
+        return $fields;
+    }
 }
 
 /**
@@ -43,77 +45,84 @@ class ThemeHolderPage extends ExtensionHolderPage {
  *
  * @package extensionmanager
  */
-class ThemeHolderPage_Controller extends ExtensionHolderPage_Controller {
+class ThemeHolderPage_Controller extends ExtensionHolderPage_Controller
+{
 
-	static $urlhandlers = array(
-		'addnew' => 'addnew',
-		);
+    public static $urlhandlers = array(
+        'addnew' => 'addnew',
+        );
 
-	public function init() {
-		parent::init();
-		$this->extensionType = 'Theme';
-	}
+    public function init()
+    {
+        parent::init();
+        $this->extensionType = 'Theme';
+    }
 
-	/**
-	 * Setting up the form for module submission.
-	 *
-	 * @return Array .
-	 */
-	public function ThemeSubmissionForm() {
-		$formSectionData = new DataObject();
- 		$formSectionData->Form = $this->AddForm($this->extensionType);
-		$formSectionData->Content = $this->dataRecord->AddContent;
-		return $formSectionData;
-	}
+    /**
+     * Setting up the form for module submission.
+     *
+     * @return Array .
+     */
+    public function ThemeSubmissionForm()
+    {
+        $formSectionData = new DataObject();
+        $formSectionData->Form = $this->AddForm($this->extensionType);
+        $formSectionData->Content = $this->dataRecord->AddContent;
+        return $formSectionData;
+    }
 
-	/**
-	 * Show module list on page
-	 *
-	 * @return Array .
-	 */
-	public function ThemeList() {
-		$themes = ExtensionData::get()->filter(array('Type' => 'Theme','Accepted' => '1'))->sort('Name');
-		$paginatedList = new PaginatedList($themes, $this->request);
-	   	$paginatedList->setPageLength(4);
-		return $paginatedList;
-	}
+    /**
+     * Show module list on page
+     *
+     * @return Array .
+     */
+    public function ThemeList()
+    {
+        $themes = ExtensionData::get()->filter(array('Type' => 'Theme', 'Accepted' => '1'))->sort('Name');
+        $paginatedList = new PaginatedList($themes, $this->request);
+        $paginatedList->setPageLength(4);
+        return $paginatedList;
+    }
 
-	/**
-	 * Show Theme Search form.
-	 *
-	 * @return Array .
-	 */
-	public function ThemeSearch(){
-		return $this->extensionSearch();
-	}
+    /**
+     * Show Theme Search form.
+     *
+     * @return Array .
+     */
+    public function ThemeSearch()
+    {
+        return $this->extensionSearch();
+    }
 
-	/**
+    /**
      * Show Theme data.
      *
      * @return array
      */
-	public function show(){
-		$selectedTheme = $this->SelectedTheme();
-		if($selectedTheme){
-			return array(
-				"Title" => $selectedTheme->Name,
-				);
-		} else{
-			return $this->httpError("404");
-		}
-	}
+    public function show()
+    {
+        $selectedTheme = $this->SelectedTheme();
+        if ($selectedTheme) {
+            return array(
+                "Title" => $selectedTheme->Name,
+                );
+        } else {
+            return $this->httpError("404");
+        }
+    }
 
-	/**
-	 * Get Selected Theme.
-	 *
-	 * @return array
-	 */
-	public function SelectedTheme(){
-		$theme = null;
-		$param = $this->getRequest()->param("ID");
-		if($param){
-			$theme =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Theme') AND (Accepted = '1')")->first();
-		}
-		return $theme;
-	}
+    /**
+     * Get Selected Theme.
+     *
+     * @return array
+     */
+    public function SelectedTheme()
+    {
+        $theme = null;
+        $param = $this->getRequest()->param("ID");
+        if ($param) {
+            $theme =  ExtensionData::get()->where("(ID = '$param' OR URLSegment = '$param') AND (Type = 'Theme') AND (Accepted = '1')")->first();
+        }
+        return $theme;
+    }
 }
